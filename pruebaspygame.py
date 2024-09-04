@@ -1,6 +1,6 @@
 import pygame
 import numpy as np
-import random
+
 
 def get_num_arriba(a):
     val = []
@@ -49,6 +49,7 @@ def get_num_lado(a):
             val2.insert(0, cant)
         val.append(val2)
     return val
+
 def pcc_array_a_matriz(a):
     fila = a // 4
     columna = a % 4
