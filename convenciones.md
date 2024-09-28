@@ -1,6 +1,6 @@
 # Lista de convenciones a utilizar
 
-- Utilizamos snake_case
+- En general si no especificamos directamente utilizamos snake_case (esto incluye nombre de archivos y variables). 
 - Las clases son en PascalCase
 - Prefieran nombres largos en vez de cortos que no explican bien el codigo (ejemplo evitar abreviaturas o variables poco descriptivas). 
 - Docstrings
@@ -24,3 +24,4 @@
 - La mayoria de igualdades se separan por espacios.  ``` a = 1  ``` en vez de ```a=1```.
 
 - En general dejar una clase por archivo pero puede tener excepciones.
+
