@@ -14,7 +14,7 @@ ASCII_TRANSLATION = {
     0 : "@",
 }
 
-class ImageToAscii:
+class ImageToMatrix:
 
     def __init__(self, image_path, resize=10):
         self.image_path = image_path
