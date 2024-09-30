@@ -1,8 +1,8 @@
-from Boton import Boton
+from boton import Boton
 import numpy as np
 import pygame
 
-from Orientado_Objeto.Colores import Colores
+from colores import Colores
 
 
 class Tablero:
@@ -56,8 +56,8 @@ class Tablero:
 
         # Tamaño de los botones
         self.ancho_boton = 100
-        self.alto_boton = 50
-        self.espacio = 10
+        self.alto_boton = 100
+        self.espacio = 0
 
         # Crear una matriz 4x4 de None
         self.botones = [[None for _ in range(4)] for _ in range(4)]

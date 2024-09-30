@@ -73,7 +73,7 @@ VERDE = (0, 255, 0)
 # Tamaño de los botones
 ancho_boton = 100
 alto_boton = 50
-espacio = 10
+espacio = 0
 
 # Crear una fuente para los números
 fuente = pygame.font.SysFont('Arial', 24)
