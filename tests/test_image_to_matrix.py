@@ -1,5 +1,2 @@
-from unittest import TestCase
+from nonogram import ImageToMatrix
 
-
-class TestImageToMatrix(TestCase):
-    pass
