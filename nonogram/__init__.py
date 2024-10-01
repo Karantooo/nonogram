@@ -1,1 +1,1 @@
-from image_to_matrix import ImageToMatrix
+from .image_to_matrix import ImageToMatrix

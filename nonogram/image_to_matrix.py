@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 '''
 This class is created with the objective of transforming an image into an image made up with ascii characters instead of
 pixels.
@@ -16,11 +17,11 @@ ASCII_TRANSLATION = {
 
 class ImageToMatrix:
 
-    def __init__(self, image_path, resize=10):
+    def __init__(self, image_path, resize=10, thresh_hold=0.3):
         self.image_path = image_path
         self.image = None
         self.resize = resize
-        self.ascii_image = None
+        self.matrix = None
         self.original_height = None
         self.original_width = None
 
@@ -38,6 +39,8 @@ class ImageToMatrix:
         # It takes 1 single opencv image and it return an string with the frame alreade translate it
 
     def __image_to_ascii__(self, image, resize):
+        cv2.imshow("imagen", image)
+        cv2.waitKey(0)
         img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         img_gray = self.__resize_image__(img_gray, resize)
         shape_img = img_gray.shape[:2]
@@ -55,19 +58,19 @@ class ImageToMatrix:
     def generate_image(self):
         image = cv2.imread(self.image_path, 0)
 
-        if image == None:
+        if image is None:
             print("WARNING!!!\nCouldn't find the image to transform, please verify the path of the image.")
             return False
 
-        self.ascii_image = self.__image_to_ascii__(self.image, self.resize)
+        self.matrix = self.__image_to_ascii__(self.image, self.resize)
         self.original_height = image.shape[0]
         self.original_width = image.shape[1]
 
         return True
 
-    def show_ascii_image(self):
-        if self.ascii_image == None:
-            return "Coudn't find any ascii image, please try to generate one"
+    def show_matrix(self):
+        if self.matrix is None:
+            pass
 
         else:
-            return self.ascii_image
+            return np.zeros((2,2))
