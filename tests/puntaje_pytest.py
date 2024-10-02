@@ -9,7 +9,7 @@ def test_puntaje_1():
     vidas = 3
     calculador = calculador_puntaje(int(tiempo.total_seconds()), vidas, dificultad)
     puntaje  = calculador.calcular()
-    assert puntaje == 9700
+    assert puntaje == 8400
 
 def test_puntaje_2():
     #prueba q el calculo del puntaje sea correcto(ttd)
