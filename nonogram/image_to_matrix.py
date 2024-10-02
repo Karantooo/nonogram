@@ -39,8 +39,6 @@ class ImageToMatrix:
         # It takes 1 single opencv image and it return an string with the frame alreade translate it
 
     def __image_to_ascii__(self, image, resize):
-        cv2.imshow("imagen", image)
-        cv2.waitKey(0)
         img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         img_gray = self.__resize_image__(img_gray, resize)
         shape_img = img_gray.shape[:2]
@@ -56,15 +54,15 @@ class ImageToMatrix:
     #This function tries to generate the ascii image using the path on the constructor
     #If the program couldn't find the image it will return false
     def generate_image(self):
-        image = cv2.imread(self.image_path, 0)
+        self.image = cv2.imread(self.image_path, 0)
 
-        if image is None:
+        if self.image is None:
             print("WARNING!!!\nCouldn't find the image to transform, please verify the path of the image.")
             return False
 
-        self.matrix = self.__image_to_ascii__(self.image, self.resize)
-        self.original_height = image.shape[0]
-        self.original_width = image.shape[1]
+        # self.matrix = self.__image_to_ascii__(self.image, self.resize)
+        # self.original_height = self.image.shape[0]
+        # self.original_width = self.image.shape[1]
 
         return True
 
