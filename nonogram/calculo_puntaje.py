@@ -1,6 +1,6 @@
 import time
 from datetime import timedelta
-class calculo_puntaje:
+class calculador_puntaje:
 
     def __init__(self,tiempo: int, vidas: int, dificultad: int):
         self.vidas = vidas
