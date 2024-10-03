@@ -16,7 +16,7 @@ def test_puntaje_2():
     tiempo = timedelta(seconds= 60)
     dificultad = 1
     vidas = 1
-    calculador = calculador_puntaje(tiempo.total_seconds(), vidas, dificultad)
+    calculador = calculador_puntaje(int(tiempo.total_seconds()), vidas, dificultad)
     puntaje  = calculador.calcular()
     assert puntaje == 3600
 
