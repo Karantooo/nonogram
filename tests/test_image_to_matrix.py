@@ -9,7 +9,9 @@ class TestImageToMatrix:
     def test_creation_matrix_3x3_black(self):
         imagen_matrix = ImageToMatrix(r"../assets/3X3_black_and_white.png", 3)
         expected = np.zeros((3, 3), dtype=bool)
-        expected[1, 1] = expected[2, 0] = True
+        expected[2, 1] = expected[2, 2] = True
+        expected[1, 1] = True
+
         generated = imagen_matrix.show_matrix()
         assert np.array_equal(expected, generated)
 
