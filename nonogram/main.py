@@ -12,7 +12,7 @@ def main():
     # Configurar la pantalla
     screen = pygame.display.set_mode((1000, 700))
     pygame.display.set_caption("Mi primer juego en Pygame")
-    tablero = Tablero()
+    tablero = Tablero() # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
     corriendo = True
     while corriendo:
         for event in pygame.event.get():
