@@ -1,6 +1,7 @@
 import pytest
-from nonogram import ImageToMatrix
+from nonogram import ImageToMatrix, NoExisteMatrizError
 import numpy as np
+
 
 class TestImageToMatrix:
     def setup_method(self):
@@ -38,4 +39,10 @@ class TestImageToMatrix:
         expected[3, 1] = True
         generated = imagen_matrix.show_matrix()
         assert np.array_equal(expected, generated)
+
+    def test_no_hay_matriz(self):
+        with pytest.raises(NoExisteMatrizError):
+            matriz = ImageToMatrix(r"../assets/megumin.jpeg", 3)
+            matriz.matrix = None
+            matriz.show_matrix()
 

@@ -1,0 +1,2 @@
+class NoExisteMatrizError(Exception):
+    pass
