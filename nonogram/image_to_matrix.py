@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import math
-from .excepciones_imagenes import NoExisteMatrizError
+from .excepciones_imagenes import NoExisteMatrizError, ImagenError
 
 
 class ImageToMatrix:
@@ -78,8 +78,7 @@ class ImageToMatrix:
         self.image = cv2.imread(self.image_path, cv2.IMREAD_GRAYSCALE)
 
         if self.image is None:
-            print("WARNING!!!\nCouldn't find the image to transform, please verify the path of the image.")
-            return False
+            raise ImagenError
 
         self.original_height = self.image.shape[0]
         self.original_width = self.image.shape[1]
