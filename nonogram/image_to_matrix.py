@@ -27,7 +27,7 @@ class ImageToMatrix:
         self.original_width = None
         self.matrix = None
         self.image = None
-        self.re_generate_image()
+        self.re_generate_matrix()
 
     def __resize_image__(self, image: np.ndarray, columns: int = 10) -> np.ndarray:
         """
@@ -69,7 +69,7 @@ class ImageToMatrix:
         return matrix
 
 
-    def re_generate_image(self) -> bool:
+    def re_generate_matrix(self) -> bool:
         """
         Genera la matriz de bool con la que se representa el nonogram
         Returns:
