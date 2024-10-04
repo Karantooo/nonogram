@@ -1,7 +1,3 @@
-'''
-This class is created with the objective of transforming an image into an image made up with ascii characters instead of
-pixels.
-'''
 import cv2
 import numpy as np
 import math
@@ -9,8 +5,21 @@ from .excepciones_imagenes import NoExisteMatrizError
 
 
 class ImageToMatrix:
+    """
+    Esta clase contiene gestiona la transformacion de una imagen a una matriz de numpy de true o false
+    El objetivo es utilizarla para generar mapas de nuestro nonogram
+    """
 
     def __init__(self, image_path: str, columns: int, thresh_hold: float = 0.5):
+        """
+        Constructor de la clase que genera una matriz de bool encargandose de gestionar el tamanio de la misma
+        Se indica un thresh_hold que vendria siendo el porcentaje de color en gray_scale desde el cual se considera
+        blanco o negro.
+        Args:
+            image_path: path en el sistema de la imagen que se quiere procesar
+            columns: columnas que tendra la matriz de bool generada
+            thresh_hold:valor que se utiliza para determinar si un pixel es True o False (negro o blanco respectivamente)
+        """
         self.image_path = image_path
         self.columns = columns
         self.thresh_hold = thresh_hold
@@ -20,11 +29,17 @@ class ImageToMatrix:
         self.image = None
         self.re_generate_image()
 
-    # This function takes an image and resize it to a new format
-    # This has to be do to make the image on the correct size so a terminal can show the ascii image with no problem
-    # the image is just an opencv image, the default rescaling means a 1//rescaling
+    def __resize_image__(self, image: np.ndarray, columns: int = 10) -> np.ndarray:
+        """
+        Funcion que toma una imagen y la cambia a una nueva resolucion
+        Args:
+            image (np.ndarray): imagen a transformar
+            columns (int): cantidad de columnas o pixeles de anchura que tendra la imagen
 
-    def __resize_image__(self, image: np.ndarray, columns: int = 10):
+        Returns:
+            imagen con las nuevas dimensiones
+
+        """
 
         # Si las columnas son invalidas se settea las columnas al tamanio original
         columns = columns if (columns <= self.original_width or columns <= 0) else self.original_width
@@ -36,10 +51,13 @@ class ImageToMatrix:
 
         return cv2.resize(image, resolution, interpolation=cv2.INTER_AREA)
 
-        # This function handles the main focus of this class that is the translation of the image into ascii
-        # It takes 1 single opencv image and it return an string with the frame already translate it
-
     def __image_to_matrix__(self) -> np.ndarray:
+        """
+        Metodo encargado de transformar la imagen a una matriz de bool
+        Returns:
+            Una matriz de numpy de bool
+
+        """
         img_gray_resized = self.__resize_image__(self.image, self.columns)
         shape_img = img_gray_resized.shape[:2]
         matrix = np.zeros(shape_img, dtype=bool)
@@ -50,8 +68,7 @@ class ImageToMatrix:
 
         return matrix
 
-    #  function tries to generate the ascii image using the path on the constructor
-    # If the program couldn't find the image it will return false
+
     def re_generate_image(self) -> bool:
         """
         Genera la matriz de bool con la que se representa el nonogram
@@ -71,7 +88,14 @@ class ImageToMatrix:
         return True
 
     def show_matrix(self):
+        """
+        Muestra la matriz de bool generada
+        Returns:
+            Muestra la matriz de bool
+        Raises:
+            NoExisteMatrizError: Si no hay una matriz de bool generada
 
+        """
         if self.matrix is None:
             raise NoExisteMatrizError
 
