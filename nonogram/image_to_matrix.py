@@ -5,6 +5,7 @@ pixels.
 import cv2
 import numpy as np
 import math
+from .excepciones_imagenes import NoExisteMatrizError
 
 
 class ImageToMatrix:
@@ -72,7 +73,7 @@ class ImageToMatrix:
     def show_matrix(self):
 
         if self.matrix is None:
-            pass
+            raise NoExisteMatrizError
 
         else:
             return self.matrix
