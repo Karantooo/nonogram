@@ -1,5 +1,5 @@
 import pytest
-from nonogram import ImageToMatrix, NoExisteMatrizError
+from nonogram import ImageToMatrix, NoExisteMatrizError, ImagenError
 import numpy as np
 
 
@@ -45,4 +45,8 @@ class TestImageToMatrix:
             matriz = ImageToMatrix(r"../assets/megumin.jpeg", 3)
             matriz.matrix = None
             matriz.show_matrix()
+
+    def test_imagen_invalida(self):
+        with pytest.raises(ImagenError):
+            matriz = ImageToMatrix(r"fake_path", columns=2)
 

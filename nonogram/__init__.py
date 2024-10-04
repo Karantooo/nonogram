@@ -1,2 +1,2 @@
 from .image_to_matrix import ImageToMatrix
-from .excepciones_imagenes import NoExisteMatrizError
+from .excepciones_imagenes import NoExisteMatrizError, ImagenError
