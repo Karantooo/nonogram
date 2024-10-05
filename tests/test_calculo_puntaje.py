@@ -28,9 +28,10 @@ def test_puntaje_3():
     assert puntaje == 0
 
 def test_puntaje_4():
+    #test para verificar q el puntaje sea el 30% del maximo acumulado, si se demora demasiado en resolver el problema
     tiempo = timedelta(seconds= 300)
     dificultad = 3
     vidas = 2
     calculador = calculador_puntaje(int(tiempo.total_seconds()), vidas, dificultad)
     puntaje = calculador.calcular()
-    assert puntaje == 0
+    assert puntaje == 3300

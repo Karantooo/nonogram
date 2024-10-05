@@ -31,6 +31,9 @@ class calculador_puntaje:
             elif self.vidas == 1:
                 total -= 5000
 
+            if self.tiempo >= 300:
+                return total*0.3
+
             perdida = self.tiempo//15
             perdida = ((total/10)*perdida)
 
