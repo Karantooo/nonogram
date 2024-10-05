@@ -82,4 +82,3 @@ class TestImageToMatrix:
         """
         with pytest.raises(ImagenError):
             matriz = ImageToMatrix(r"fake_path", columns=2)
-
