@@ -10,11 +10,11 @@ class Tablero:
     def __calculo_num_superiores(self) -> list[list[int]]:
         valores = []
 
-        for j in range(4):
+        for j in range(self.numero_botones):
             auxiliar = []
             contador = 0
 
-            for i in range(4):
+            for i in range(self.numero_botones):
                 if self.botones[i][j].get_marcado():
                     contador += 1
                 else:
@@ -32,11 +32,11 @@ class Tablero:
     def __calculo_num_laterales(self) -> list[list[int]]:
         valores = []
 
-        for i in range(4):
+        for i in range(self.numero_botones):
             auxiliar = []
             contador = 0
 
-            for j in range(4):
+            for j in range(self.numero_botones):
                 if self.botones[i][j].get_marcado():
                     contador += 1
                 else:
@@ -51,22 +51,23 @@ class Tablero:
 
         return valores
 
-    def __init__(self):
+    def __init__(self, numero_botones: int=4):
+        self.numero_botones = numero_botones
         self.fuente = pygame.font.SysFont('Arial', 24)
 
-        # Tamaño de los botones
-        self.ancho_boton = 100
-        self.alto_boton = 100
+        # Tamaño de los botones, hacer resize
+        self.ancho_boton = 400//self.numero_botones
+        self.alto_boton = 400//self.numero_botones
         self.espacio = 0
 
         # Crear una matriz 4x4 de None
-        self.botones = [[None for _ in range(4)] for _ in range(4)]
-        valores = np.random.choice([True, False], size=16)
+        self.botones = [[None for _ in range(self.numero_botones)] for _ in range(self.numero_botones)]
+        valores = np.random.choice([True, False], size=self.numero_botones**2)
 
         contador = 0
-        for fila in range(4):
-            for columna in range(4):
-                marcado = valores[fila * 4 + columna].item()
+        for fila in range(self.numero_botones):
+            for columna in range(self.numero_botones):
+                marcado = valores[fila * self.numero_botones + columna].item()
                 self.botones[fila][columna] = Boton(fila=fila, columna=columna,
                 alto=self.alto_boton, ancho=self.ancho_boton, espacio=self.espacio,
                 marcado=marcado, identificador=contador, fuente=self.fuente)
@@ -77,7 +78,7 @@ class Tablero:
 
 
         self.marcados = 0
-        for i in range(16):
+        for i in range(self.numero_botones**2):
             if valores[i] == True:
                 self.marcados += 1
 
