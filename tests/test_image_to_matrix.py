@@ -7,7 +7,10 @@ class TestImageToMatrix:
     """
     Clase para verificar las funcionalidades de la clase ImageToMatrix
     """
-    def setup_method(self):
+
+    carpeta_de_assets: str  # Ruta a la carpeta de assets para las imágenes de prueba
+
+    def setup_method(self) -> None:
         self.carpeta_de_assets = r"../assets/image_to_matrix_test/"
 
     def test_creation_matrix_3x3_black(self):
@@ -24,7 +27,7 @@ class TestImageToMatrix:
         generated = imagen_matrix.show_matrix()
         assert np.array_equal(expected, generated)
 
-    def test_creation_matrix_2x2(self):
+    def test_creation_matrix_2x2(self) -> None:
         """
         Verifica que la creacion de los valores de la matriz sean correctos para una imagen a color
         Returns:

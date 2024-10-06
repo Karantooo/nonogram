@@ -1,11 +1,22 @@
 from boton import Boton
 import numpy as np
 import pygame
-
 from colores import Colores
 
 
 class Tablero:
+    numero_botones: int         # Cantidad de botones en el tablero
+    fuente: pygame.font.Font    # Fuente para el texto
+    ancho_boton: int            # Ancho de los botones
+    alto_boton: int             # Alto de los botones
+    espacio: int                # Espacio entre los botones
+    botones: list[list[Boton]]  # Matriz de botones
+    numeros_superiores: list[list[int]]     # Números en la parte superior
+    numeros_laterales: list[list[int]]      # Números en los laterales
+    marcados: int       # Contador de botones marcados
+    vistos: int         # Contador de botones vistos
+    correctos: int      # Contador de botones correctos
+    vidas: int          # Contador de vidas restantes
 
     def __calculo_num_superiores(self) -> list[list[int]]:
         valores = []
@@ -51,13 +62,13 @@ class Tablero:
 
         return valores
 
-    def __init__(self, numero_botones: int=4):
+    def __init__(self, numero_botones: int = 4) -> None:
         self.numero_botones = numero_botones
         self.fuente = pygame.font.SysFont('Arial', 24)
 
         # Tamaño de los botones, hacer resize
-        self.ancho_boton = 400//self.numero_botones
-        self.alto_boton = 400//self.numero_botones
+        self.ancho_boton = 400 // self.numero_botones
+        self.alto_boton = 400 // self.numero_botones
         self.espacio = 0
 
         # Crear una matriz 4x4 de None
@@ -69,8 +80,9 @@ class Tablero:
             for columna in range(self.numero_botones):
                 marcado = valores[fila * self.numero_botones + columna].item()
                 self.botones[fila][columna] = Boton(fila=fila, columna=columna,
-                alto=self.alto_boton, ancho=self.ancho_boton, espacio=self.espacio,
-                marcado=marcado, identificador=contador, fuente=self.fuente)
+                                                     alto=self.alto_boton, ancho=self.ancho_boton,
+                                                     espacio=self.espacio, marcado=marcado,
+                                                     identificador=contador, fuente=self.fuente)
                 contador += 1
 
         self.numeros_superiores = self.__calculo_num_superiores()
@@ -79,14 +91,14 @@ class Tablero:
 
         self.marcados = 0
         for i in range(self.numero_botones**2):
-            if valores[i] == True:
+            if valores[i]:
                 self.marcados += 1
 
         self.vistos = 0
         self.correctos = 0
         self.vidas = 3
 
-    def imprimir(self, screen: pygame.Surface):
+    def imprimir(self, screen: pygame.Surface) -> None:
         for array_botones in self.botones:
             for botones in array_botones:
                 botones.imprimir(screen)
@@ -109,7 +121,7 @@ class Tablero:
         texto_vidas = self.fuente.render(f'Vidas: {self.vidas}', True, Colores.NEGRO)
         screen.blit(texto_vidas, (screen.get_width() - texto_vidas.get_width() - 20, 20))
 
-    def validar_click(self,mouse_pos: tuple):
+    def validar_click(self,mouse_pos: tuple[int,int]):
         for fila_botones in self.botones:
             for boton in fila_botones:
                 correcto = boton.validar_click(mouse_pos)

@@ -1,6 +1,14 @@
 import time
 from datetime import timedelta
+
 class calculador_puntaje:
+    """
+    Esta clase se encarga de calcular el puntaje basado en el tiempo, las vidas y la dificultad del juego.
+    """
+
+    vidas: int  # Cantidad de vidas restantes
+    dificultad: int  # Nivel de dificultad (1, 2, 3)
+    tiempo: int  # Tiempo transcurrido en segundos
 
     def __init__(self,tiempo: int, vidas: int, dificultad: int):
         self.vidas = vidas

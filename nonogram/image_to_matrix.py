@@ -5,12 +5,20 @@ from .excepciones_imagenes import NoExisteMatrizError, ImagenError
 
 
 class ImageToMatrix:
+    image_path: str  # Ruta de la imagen
+    columns: int  # Cantidad de columnas en la matriz
+    thresh_hold: float  # Umbral para determinar color
+    original_height: int  # Altura original de la imagen
+    original_width: int  # Anchura original de la imagen
+    matrix: np.ndarray  # Matriz de salida (bool)
+    image: np.ndarray  # Imagen cargada en escala de grises
+
     """
     Esta clase contiene gestiona la transformacion de una imagen a una matriz de numpy de true o false
     El objetivo es utilizarla para generar mapas de nuestro nonogram
     """
 
-    def __init__(self, image_path: str, columns: int, thresh_hold: float = 0.5):
+    def __init__(self, image_path: str, columns: int, thresh_hold: float = 0.5) -> None:
         """
         Constructor de la clase que genera una matriz de bool encargandose de gestionar el tamanio de la misma
         Se indica un thresh_hold que vendria siendo el porcentaje de color en gray_scale desde el cual se considera
@@ -68,7 +76,6 @@ class ImageToMatrix:
 
         return matrix
 
-
     def re_generate_matrix(self) -> bool:
         """
         Genera la matriz de bool con la que se representa el nonogram
@@ -86,7 +93,7 @@ class ImageToMatrix:
 
         return True
 
-    def show_matrix(self):
+    def show_matrix(self) -> np.ndarray:
         """
         Muestra la matriz de bool generada
         Returns:

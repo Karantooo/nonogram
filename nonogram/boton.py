@@ -1,23 +1,34 @@
 import pygame
 from colores import Colores
 
-
 class Boton:
+    """
+    Esta clase representa un botón en el tablero del juego.
+    """
 
-    def __init__(self, fila: int, columna: int, alto: int, ancho: int, espacio: int ,marcado: bool, identificador: int, fuente: pygame.font):
+    fila: int           # Fila en la que se encuentra el botón
+    columna: int        # Columna en la que se encuentra el botón
+    alto: int           # Altura del botón
+    ancho: int          # Anchura del botón
+    espacio: int        # Espacio entre botones
+    marcado: bool       # Estado del botón (marcado o no)
+    identificador: int      # Identificador único del botón
+    visibilidad: bool       # Estado de visibilidad del botón
+    fuente: pygame.font.Font    # Fuente utilizada para renderizar texto
+    boton_visual: pygame.Rect   # Rectángulo que define la posición y tamaño del botón
+
+    def __init__(self, fila: int, columna: int, alto: int, ancho: int, espacio: int ,marcado: bool, identificador: int, fuente: pygame.font) -> None:
         self.alto = alto
         self.ancho = ancho
         self.espacio = espacio
 
         # Creacion del boton en pygame
         self.boton_visual = pygame.Rect(
-            300 + columna * (self.ancho + self.espacio),  # X: posición horizontal con espacio
-            200 + fila * (self.alto + self.espacio),  # Y: posición vertical con espacio
-            self.ancho,  # Ancho del botón
-            self.alto  # Alto del botón
+                300 + columna * (self.ancho + self.espacio),  # X: posición horizontal con espacio
+                200 + fila * (self.alto + self.espacio),  # Y: posición vertical con espacio
+                self.ancho,  # Ancho del botón
+                self.alto  # Alto del botón
         )
-
-
 
         self.identificador = identificador
         self.marcado = marcado
@@ -30,7 +41,7 @@ class Boton:
     def get_visibilidad(self) -> bool:
         return self.visibilidad
 
-    def imprimir(self, screen: pygame.Surface):
+    def imprimir(self, screen: pygame.Surface) -> None:
         if self.visibilidad:
             if self.marcado:
                 pygame.draw.rect(screen, Colores.VERDE, self.boton_visual)
@@ -48,7 +59,7 @@ class Boton:
         # Dibujar el texto en el centro del botón
         screen.blit(texto, texto_rect)
 
-    def validar_click(self,mouse_pos: tuple) -> int: # 0: Correcto, 1: Incorrecto, 2: No se marco este
+    def validar_click(self,mouse_pos: tuple[int,int]) -> int: # 0: Correcto, 1: Incorrecto, 2: No se marco este
         if self.boton_visual.collidepoint(mouse_pos):
             self.visibilidad = True
             if self.marcado:
