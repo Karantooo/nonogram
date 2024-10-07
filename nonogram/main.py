@@ -1,7 +1,8 @@
 import sys
 import pygame
 
-from visual import TableroVisual, Colores
+from visual.tablero_visual import TableroVisual
+from visual.colores import Colores
 
 
 def main():

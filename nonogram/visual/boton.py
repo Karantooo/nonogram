@@ -1,5 +1,5 @@
 import pygame
-from colores import Colores
+from nonogram.visual.colores import Colores
 
 class Boton:
     """

@@ -1,5 +1,5 @@
 import numpy as np
-from visual import Boton
+from visual.boton import Boton
 
 
 class Tablero:

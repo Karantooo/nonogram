@@ -1,8 +1,8 @@
 from nonogram.tablero import Tablero
-from boton import Boton
+from nonogram.visual.boton import Boton
 import numpy as np
 import pygame
-from colores import Colores
+from nonogram.visual.colores import Colores
 
 class TableroVisual:
     numero_botones: int         # Cantidad de botones en el tablero
