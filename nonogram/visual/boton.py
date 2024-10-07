@@ -53,17 +53,17 @@ class Boton:
         pygame.draw.rect(screen, Colores.NEGRO, self.boton_visual, 2)  # Borde negro del botón
 
         # Renderizar el texto como "fila, columna"
-        texto = self.fuente.render(f'{self.identificador}', True, Colores.NEGRO)
-        texto_rect = texto.get_rect(center=self.boton_visual.center)
+        #texto = self.fuente.render(f'{self.identificador}', True, Colores.NEGRO)
+        #texto_rect = texto.get_rect(center=self.boton_visual.center)
 
         # Dibujar el texto en el centro del botón
-        screen.blit(texto, texto_rect)
+        #screen.blit(texto, texto_rect)
 
-    def validar_click(self,mouse_pos: tuple[int,int]) -> int: # 0: Correcto, 1: Incorrecto, 2: No se marco este
+    def validar_click(self,mouse_pos: tuple[int,int]) -> int: # 0: Incorrecto, 1: Correcto, 2: No se marco este
         if self.boton_visual.collidepoint(mouse_pos):
             self.visibilidad = True
             if self.marcado:
-                return 0
-            else:
                 return 1
+            else:
+                return 0
         return 2

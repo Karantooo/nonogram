@@ -1,7 +1,5 @@
-import pytest
-from nonogram.scripts_de_prueba import pruebaspygame
 import numpy as np
-from nonogram.scripts_de_prueba.pruebaspygame import get_num_arriba, get_num_lado
+from nonogram import get_num_arriba, get_num_lado
 
 
 def test_num_sup_1():

@@ -1,8 +1,7 @@
 import sys
 import pygame
 
-from colores import Colores
-from tablero import Tablero
+from visual import TableroVisual, Colores
 
 
 def main():
@@ -12,14 +11,14 @@ def main():
     # Configurar la pantalla
     screen = pygame.display.set_mode((1000, 700))
     pygame.display.set_caption("Mi primer juego en Pygame")
-    tablero = Tablero() # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
+    tablero = TableroVisual(numero_botones=10) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
     corriendo = True
     while corriendo:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_pos = event.pos  # Obtener la posición del ratón al hacer clic
                 tablero.validar_click(mouse_pos)
 

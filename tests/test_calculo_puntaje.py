@@ -1,5 +1,5 @@
 import pytest
-from nonogram.calculo_puntaje import calculador_puntaje
+from nonogram import calculador_puntaje
 from datetime import timedelta
 
 def test_puntaje_1():
