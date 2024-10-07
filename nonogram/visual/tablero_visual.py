@@ -1,4 +1,4 @@
-from nonogram.tablero import Tablero
+from nonogram.logica.tablero import Tablero
 from nonogram.visual.boton import Boton
 import numpy as np
 import pygame

@@ -1,5 +1,6 @@
 import pytest
-from nonogram import ImageToMatrix, NoExisteMatrizError, ImagenError
+from nonogram.logica.excepciones_imagenes import NoExisteMatrizError, ImagenError
+from nonogram.logica.image_to_matrix import ImageToMatrix
 import numpy as np
 
 
