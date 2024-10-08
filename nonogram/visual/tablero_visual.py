@@ -104,14 +104,14 @@ class TableroVisual:
         for i, valores in enumerate(self.numeros_superiores):
             for j, valor in enumerate(valores[::-1]):
                 texto = self.fuente.render(str(valor), True, Colores.NEGRO)
-                texto_rect = texto.get_rect(center=(int((self.dimensiones[0] * 0.32))  + i * (self.ancho_boton + self.espacio), int(self.dimensiones[1]*0.21) - j * 24))
+                texto_rect = texto.get_rect(center=(int((self.dimensiones[0] * 0.32))  + i * (self.ancho_boton + self.espacio), int(self.dimensiones[1]*0.25) - j * 24))
                 screen.blit(texto, texto_rect)
 
         # Imprimir los numeros laterales
         for i, valores in enumerate(self.numeros_laterales):
             for j, valor in enumerate(valores[::-1]):
                 texto = self.fuente.render(str(valor), True, Colores.NEGRO)
-                texto_rect = texto.get_rect(center=(int((self.dimensiones[1] * 0.28)) - j * 20, int(self.dimensiones[1]*0.31) + i * (self.alto_boton + self.espacio)))
+                texto_rect = texto.get_rect(center=(int((self.dimensiones[1] * 0.4)) - j * 20, int(self.dimensiones[1]*0.31) + i * (self.alto_boton + self.espacio)))
                 screen.blit(texto, texto_rect)
 
         # Dibujar el contador de vidas en la esquina superior derecha
@@ -119,12 +119,18 @@ class TableroVisual:
         screen.blit(texto_vidas, (screen.get_width() - texto_vidas.get_width() - 20, 20))
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
-        if mouse_pos[0] < int((self.dimensiones[0] * 0.3)) or mouse_pos[1] < int((self.dimensiones[1] * 0.28)) or mouse_pos[0] >= int((self.dimensiones[0] - int((self.dimensiones[0] * 0.3)))) or mouse_pos[1] >= int((self.dimensiones[1] - (self.dimensiones[1] * 0.28))):
+        if mouse_pos[0] < int((self.dimensiones[0] * 0.3)) or mouse_pos[1] < int((self.dimensiones[1] * 0.28)) or mouse_pos[0] >= int((self.dimensiones[0] - int((self.dimensiones[0] * 0.3)))) or mouse_pos[1] >= int((self.dimensiones[1] - int((self.dimensiones[1] * 0.18)))):
+            # print("salio")
             return
 
         array_pos = (mouse_pos[0] - int(self.dimensiones[0] * 0.3), mouse_pos[1] - int(self.dimensiones[1] * 0.28))
         array_pos = (array_pos[0] // self.ancho_boton, array_pos[1] // self.alto_boton)
 
+        print("mouse_pos:", mouse_pos)
+        print("dimensiones:", self.dimensiones)
+        print("ancho_boton:", self.ancho_boton)
+        print("alto_boton:", self.alto_boton)
+        print("Posición ajustada:", array_pos)
         print(array_pos)
 
         self.tablero_logica.validar_click(mouse_pos, self.botones, array_pos)
