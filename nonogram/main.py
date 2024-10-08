@@ -12,7 +12,7 @@ def main(dimensiones: tuple=(1000,700)):
     # Configurar la pantalla
     screen = pygame.display.set_mode(dimensiones)
     pygame.display.set_caption("Mi primer juego en Pygame")
-    tablero = TableroVisual(numero_botones=4, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
+    tablero = TableroVisual(numero_botones=5, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
     corriendo = True
     while corriendo:
         for event in pygame.event.get():
@@ -44,4 +44,4 @@ def main(dimensiones: tuple=(1000,700)):
     pygame.quit()
 
 if __name__ == '__main__':
-    main()
+    main((1000, 1000))

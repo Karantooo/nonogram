@@ -26,8 +26,8 @@ class Boton:
 
         # Creacion del boton en pygame
         self.boton_visual = pygame.Rect(
-                int(self.dimensiones[0] * 0.3) + columna * (self.ancho + self.espacio),  # X: posición horizontal con espacio
-                int(self.dimensiones[1] * 0.28) + fila * (self.alto + self.espacio),  # Y: posición vertical con espacio
+                int(self.dimensiones[0] * 0.2) + columna * (self.ancho + self.espacio),  # X: posición horizontal con espacio
+                int(self.dimensiones[1] * 0.2) + fila * (self.alto + self.espacio),  # Y: posición vertical con espacio
                 self.ancho,  # Ancho del botón
                 self.alto  # Alto del botón
         )
