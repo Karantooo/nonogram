@@ -5,14 +5,14 @@ from visual.tablero_visual import TableroVisual
 from visual.colores import Colores
 
 
-def main():
+def main(dimensiones: tuple=(1000,700)):
     global tablero
     # Inicializar Pygame
     pygame.init()
     # Configurar la pantalla
-    screen = pygame.display.set_mode((1000, 700))
+    screen = pygame.display.set_mode(dimensiones)
     pygame.display.set_caption("Mi primer juego en Pygame")
-    tablero = TableroVisual(numero_botones=10) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
+    tablero = TableroVisual(numero_botones=10, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
     corriendo = True
     while corriendo:
         for event in pygame.event.get():

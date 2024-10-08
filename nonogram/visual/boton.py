@@ -44,11 +44,11 @@ class Boton:
     def imprimir(self, screen: pygame.Surface) -> None:
         if self.visibilidad:
             if self.marcado:
-                pygame.draw.rect(screen, Colores.VERDE, self.boton_visual)
+                pygame.draw.rect(screen, Colores.NEGRO, self.boton_visual)
             else:
                 pygame.draw.rect(screen, Colores.ROJO, self.boton_visual)
         else:
-            pygame.draw.rect(screen, Colores.AZUL, self.boton_visual)
+            pygame.draw.rect(screen, Colores.BLANCO, self.boton_visual)
 
         pygame.draw.rect(screen, Colores.NEGRO, self.boton_visual, 2)  # Borde negro del botón
 
