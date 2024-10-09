@@ -6,10 +6,11 @@ from visual.tablero_visual import TableroVisual
 from visual.colores import Colores
 
 
-def main(dimensiones: tuple=(1000,700)):
+def main(dimensiones: tuple=None):
     global tablero
-    # Inicializar Pygame
     pygame.init()
+    screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
+    dimensiones = (int(screen_width), int(screen_height))
     # Configurar la pantalla
     screen = pygame.display.set_mode(dimensiones)
 
@@ -32,10 +33,12 @@ def main(dimensiones: tuple=(1000,700)):
     clock = pygame.time.Clock()
     current_frame = 0
 
-
+    numero_botones = 4
     pygame.display.set_caption("Mi primer juego en Pygame")
-    tablero = TableroVisual(numero_botones=6, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
+    tablero = TableroVisual(numero_botones=numero_botones, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
     corriendo = True
+
+    numero_botones *= numero_botones
     while corriendo:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -49,7 +52,7 @@ def main(dimensiones: tuple=(1000,700)):
             print("gg")
             corriendo = False
 
-        if tablero.get_vidas() == 0 or tablero.get_vistos() == 16:
+        if tablero.get_vidas() == 0 or tablero.get_vistos() == numero_botones:
             corriendo = False
 
         # Llenar la pantalla de blanco
@@ -67,10 +70,9 @@ def main(dimensiones: tuple=(1000,700)):
 
         clock.tick(10)
 
-
-
     # Salir de Pygame
     pygame.quit()
+    sys.exit()
 
 if __name__ == '__main__':
-    main((800, 600))
+    main()
