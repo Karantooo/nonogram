@@ -103,7 +103,7 @@ def test_puntaje_d3_r2():
 
 def test_puntaje_d3_r3():
     #testea que el puntaje el adecuado para ciertos valores randoms en la dificultad 3
-    tiempo = timedelta(seconds= 500)
+    tiempo = timedelta(seconds= 120)
     dificultad = 3
     vidas = 1
     calculador = calculador_puntaje(int(tiempo.total_seconds()), vidas, dificultad)
@@ -113,7 +113,7 @@ def test_puntaje_d3_r3():
 def test_puntaje_d2_r1():
     #testea que el puntaje el adecuado para ciertos valores randoms en la dificultad 2
     tiempo = timedelta(seconds= 250)
-    dificultad = 3
+    dificultad = 2
     vidas = 3
     calculador = calculador_puntaje(int(tiempo.total_seconds()), vidas, dificultad)
     puntaje  = calculador.calcular()
@@ -122,7 +122,7 @@ def test_puntaje_d2_r1():
 def test_puntaje_d2_r2():
     #testea que el puntaje el adecuado para ciertos valores randoms en la dificultad 2
     tiempo = timedelta(seconds= 400)
-    dificultad = 3
+    dificultad = 2
     vidas = 2
     calculador = calculador_puntaje(int(tiempo.total_seconds()), vidas, dificultad)
     puntaje  = calculador.calcular()
@@ -131,7 +131,7 @@ def test_puntaje_d2_r2():
 def test_puntaje_d2_r3():
     #testea que el puntaje el adecuado para ciertos valores randoms en la dificultad 2
     tiempo = timedelta(seconds= 300)
-    dificultad = 3
+    dificultad = 2
     vidas = 1
     calculador = calculador_puntaje(int(tiempo.total_seconds()), vidas, dificultad)
     puntaje  = calculador.calcular()
@@ -140,7 +140,7 @@ def test_puntaje_d2_r3():
 def test_puntaje_d1_r1():
     #testea que el puntaje el adecuado para ciertos valores randoms en la dificultad 1
     tiempo = timedelta(seconds= 150)
-    dificultad = 3
+    dificultad = 1
     vidas = 3
     calculador = calculador_puntaje(int(tiempo.total_seconds()), vidas, dificultad)
     puntaje  = calculador.calcular()
@@ -149,7 +149,7 @@ def test_puntaje_d1_r1():
 def test_puntaje_d1_r2():
     #testea que el puntaje el adecuado para ciertos valores randoms en la dificultad 1
     tiempo = timedelta(seconds= 100)
-    dificultad = 3
+    dificultad = 1
     vidas = 2
     calculador = calculador_puntaje(int(tiempo.total_seconds()), vidas, dificultad)
     puntaje  = calculador.calcular()
@@ -158,7 +158,7 @@ def test_puntaje_d1_r2():
 def test_puntaje_d1_r3():
     #testea que el puntaje el adecuado para ciertos valores randoms en la dificultad 1
     tiempo = timedelta(seconds= 250)
-    dificultad = 3
+    dificultad = 1
     vidas = 1
     calculador = calculador_puntaje(int(tiempo.total_seconds()), vidas, dificultad)
     puntaje  = calculador.calcular()

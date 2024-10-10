@@ -1,5 +1,3 @@
-import time
-from datetime import timedelta
 
 class calculador_puntaje:
     """
@@ -21,28 +19,48 @@ class calculador_puntaje:
         #puede ser que despues se cambie pero por ahora funcionará así
         #La dificultad del nivel le sumara puntos a una base de 10000,
         #y por cada vida perdida se le descontara cierta cantidad, luego de ese total se le
-        #restara un 10% por cada 15 seg que se demore en completar el nivel
 
+        total = 10000
         if(self.vidas == 0):
             return 0
-        else:
-            total = 10000
 
-            if self.dificultad == 1:
-                total += 1000  # Si dificultad es 1, suma 1000
-            elif self.dificultad == 2:
-                total += 2000  # Si dificultad es 2, suma 2000
-            elif self.dificultad == 3:
-                total += 4000  # Si dificultad es 3, suma 4000
-            if self.vidas == 2:
-                total -= 3000
-            elif self.vidas == 1:
-                total -= 5000
+        if(self.dificultad == 3):
+            if(self.tiempo >= 600):
+                return 0
+            total += 4000
+            if(self.vidas == 3):
+                total -= self.tiempo * 23
+            elif(self.vidas == 2):
+                total -= 2000
+                total -= self.tiempo * 20
+            elif(self.vidas == 1):
+                total -= 4000
+                total -= self.tiempo * 16
 
-            if self.tiempo >= 300:
-                return total*0.3
+        elif (self.dificultad == 2):
+            if(self.tiempo >= 420):
+                return 0
+            total += 2000
+            if(self.vidas == 3):
+                total -= self.tiempo * 28
+            elif (self.vidas == 2):
+                total -= 2000
+                total -= self.tiempo * 23
+            elif (self.vidas == 1):
+                total -= 4000
+                total -= self.tiempo * 19
 
-            perdida = self.tiempo//15
-            perdida = ((total/10)*perdida)
+        elif (self.dificultad == 1):
+            if(self.tiempo >= 300):
+                return 0
+            total += 1000
+            if (self.vidas == 3):
+                total -= self.tiempo * 36
+            elif (self.vidas == 2):
+                total -= 2000
+                total -= self.tiempo * 30
+            elif (self.vidas == 1):
+                total -= 4000
+                total -= self.tiempo * 23
 
-            return total - perdida
+        return total
