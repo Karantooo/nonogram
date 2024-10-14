@@ -6,36 +6,25 @@ from visual.tablero_visual import TableroVisual
 from visual.colores import Colores
 
 
-def main(dimensiones: tuple=(1000,700)):
+def main(dimensiones: tuple=None):
     global tablero
-    # Inicializar Pygame
     pygame.init()
+
+    screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
+    dimensiones = (int(screen_width), int(screen_height))
+
     # Configurar la pantalla
     screen = pygame.display.set_mode(dimensiones)
 
-    # Fondo de pantalla
-    frames = []
-    gif_path = 'assets/martillo.gif'
-    gif = Image.open(gif_path)
-    try:
-        while True:
-            # Convertir cada fotograma a un formato compatible con Pygame
-            frame = gif.copy().convert('RGBA')
-            frame_data = frame.tobytes()
-            surface = pygame.image.fromstring(frame_data, gif.size, 'RGBA')
-            surface = pygame.transform.scale(surface, dimensiones)
-            frames.append(surface)
-            gif.seek(gif.tell() + 1)
-    except EOFError:
-        pass  # Se alcanzó el final del GIF
+    background_image = pygame.image.load("assets/fondo_montaña.jpeg")
+    background_image = pygame.transform.scale(background_image, dimensiones)
 
-    clock = pygame.time.Clock()
-    current_frame = 0
-
-
+    numero_botones = 4
     pygame.display.set_caption("Mi primer juego en Pygame")
-    tablero = TableroVisual(numero_botones=6, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
+    tablero = TableroVisual(numero_botones=numero_botones, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
     corriendo = True
+
+    numero_botones *= numero_botones
     while corriendo:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -49,28 +38,23 @@ def main(dimensiones: tuple=(1000,700)):
             print("gg")
             corriendo = False
 
-        if tablero.get_vidas() == 0 or tablero.get_vistos() == 16:
+        if tablero.get_vidas() == 0 or tablero.get_vistos() == numero_botones:
             corriendo = False
 
-        # Llenar la pantalla de blanco
-        screen.fill(Colores.BLANCO)
+        screen.blit(background_image, (0, 0))
 
-        screen.blit(frames[current_frame], (0, 0))
-
+        # Dibujar el tablero
         tablero.imprimir(screen)
 
+        # Actualizar la pantalla
         pygame.display.flip()
 
-        current_frame = (current_frame + 1) % len(frames)
-
+        # Limitar a 60 fps
         pygame.time.Clock().tick(60)
-
-        clock.tick(10)
-
-
 
     # Salir de Pygame
     pygame.quit()
+    sys.exit()
 
 if __name__ == '__main__':
-    main((800, 600))
+    main()
