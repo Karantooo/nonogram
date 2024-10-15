@@ -71,7 +71,7 @@ class TableroVisual:
         self.alto_boton =  int((self.dimensiones[1] * 0.6) // self.numero_botones)
         self.espacio = 0
 
-        # Crear una matriz 4x4 de None
+        # Crear una matriz nxn de None
         self.botones = [[None for _ in range(self.numero_botones)] for _ in range(self.numero_botones)]
         self.valores = imagen if imagen is not None else np.random.choice([True, False], size=self.numero_botones ** 2)
 
@@ -126,13 +126,6 @@ class TableroVisual:
 
         array_pos = (mouse_pos[0] - int(self.dimensiones[0] * 0.2), mouse_pos[1] - int(self.dimensiones[1] * 0.2))
         array_pos = (array_pos[0] // self.ancho_boton, array_pos[1] // self.alto_boton)
-
-        print("mouse_pos:", mouse_pos)
-        print("dimensiones:", self.dimensiones)
-        print("ancho_boton:", self.ancho_boton)
-        print("alto_boton:", self.alto_boton)
-        print("Posición ajustada:", array_pos)
-        print(array_pos)
 
         self.tablero_logica.validar_click(mouse_pos, self.botones, array_pos)
 
