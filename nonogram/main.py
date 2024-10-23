@@ -19,7 +19,7 @@ def main(dimensiones: tuple=None):
     background_image = pygame.image.load("assets/fondo.png")
     background_image = pygame.transform.scale(background_image, dimensiones)
 
-    numero_botones = 20
+    numero_botones = 10
     pygame.display.set_caption("Mi primer juego en Pygame")
     tablero = TableroVisual(numero_botones=numero_botones, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
     corriendo = True
@@ -31,9 +31,9 @@ def main(dimensiones: tuple=None):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
+                if event.button == 1:   # Click Izquierdo
                     tablero.validar_click(mouse_pos=event.pos)
-                elif event.button == 3:
+                elif event.button == 3:   # Click Derecho
                     tablero.marcar_bandera(mouse_pos=event.pos)
 
             if event.type == pygame.KEYDOWN:

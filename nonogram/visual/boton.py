@@ -34,6 +34,8 @@ class Boton:
                 self.ancho,  # Ancho del botón
                 self.alto  # Alto del botón
         )
+
+        # Inicializacion de variables internas
         self.identificador = identificador
         self.marcado = marcado
         self.visibilidad = False
