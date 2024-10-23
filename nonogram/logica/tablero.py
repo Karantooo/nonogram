@@ -1,4 +1,6 @@
 import numpy as np
+import pygame
+
 from nonogram.visual.boton import Boton
 
 

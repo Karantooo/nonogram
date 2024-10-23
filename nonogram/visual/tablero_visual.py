@@ -16,6 +16,8 @@ class TableroVisual:
     valores: np.ndarray[bool]
     tablero_logica: Tablero
     dimensiones: tuple
+    tiempo_transcurrido: tuple   # Indica el tiempo transcurrido del juego
+    tamaño_fuente: int
 
 
     def __calculo_num_superiores(self) -> list[list[int]]:
@@ -64,7 +66,9 @@ class TableroVisual:
 
     def __init__(self, numero_botones: int = 4, imagen: np.ndarray[bool] = None, dimensiones: tuple=(1000,700)) -> None:
         self.numero_botones = numero_botones
-        self.fuente = pygame.font.SysFont('Arial', 24)
+        self.tamaño_fuente = int(54 - ((3/2) * self.numero_botones))
+        self.tiempo_transcurrido = (0,0)
+        self.fuente = pygame.font.SysFont('Arial', self.tamaño_fuente)
         self.dimensiones = dimensiones
         # Tamaño de los botones, hacer resize
         self.ancho_boton = int((self.dimensiones[0] * 0.6) // self.numero_botones)
@@ -105,19 +109,24 @@ class TableroVisual:
         for i, valores in enumerate(self.numeros_superiores):
             for j, valor in enumerate(valores[::-1]):
                 texto = self.fuente.render(str(valor), True, Colores.NEGRO)
-                texto_rect = texto.get_rect(center=(int((self.dimensiones[0] * 0.2) + self.ancho_boton * 0.5)  + i * (self.ancho_boton + self.espacio), int(self.dimensiones[1]*0.17) - j * 24))
+                texto_rect = texto.get_rect(center=(int((self.dimensiones[0] * 0.2) + self.ancho_boton * 0.5)  + i * (self.ancho_boton + self.espacio), int(self.dimensiones[1]*0.15) - j * self.tamaño_fuente))
                 screen.blit(texto, texto_rect)
 
         # Imprimir los numeros laterales
         for i, valores in enumerate(self.numeros_laterales):
             for j, valor in enumerate(valores[::-1]):
                 texto = self.fuente.render(str(valor), True, Colores.NEGRO)
-                texto_rect = texto.get_rect(center=(int((self.dimensiones[0] * 0.17)) - j * 20, int(self.dimensiones[1]*0.2 + self.alto_boton *0.5) + i * (self.alto_boton + self.espacio)))
+                texto_rect = texto.get_rect(center=(int((self.dimensiones[0] * 0.17)) - j * int(self.tamaño_fuente * 6/5), int(self.dimensiones[1]*0.2 + self.alto_boton *0.5) + i * (self.alto_boton + self.espacio)))
                 screen.blit(texto, texto_rect)
 
         # Dibujar el contador de vidas en la esquina superior derecha
         texto_vidas = self.fuente.render(f'Vidas: {self.tablero_logica.get_vidas()}', True, Colores.NEGRO)
         screen.blit(texto_vidas, (screen.get_width() - texto_vidas.get_width() - 20, 20))
+
+        # Temporizador
+        self.tiempo_ejecucion()
+        texto_temporizador = self.fuente.render(f'Tiempo: {self.tiempo_transcurrido[0]}:{self.tiempo_transcurrido[1]} ', True, Colores.NEGRO)
+        screen.blit(texto_temporizador, (self.dimensiones[0] * 0.5, self.dimensiones[1] * 0.9))
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
         if mouse_pos[0] < int((self.dimensiones[0] * 0.2)) or mouse_pos[1] < int((self.dimensiones[1] * 0.2)) or mouse_pos[0] >= int((self.dimensiones[0] - int((self.dimensiones[0] * 0.2)))) or mouse_pos[1] >= int((self.dimensiones[1] - int((self.dimensiones[1] * 0.2)))):
@@ -137,3 +146,8 @@ class TableroVisual:
 
     def ganado(self) -> bool:
         return self.tablero_logica.ganado()
+
+    # Metodo para
+    def tiempo_ejecucion(self):
+        tiempo = pygame.time.get_ticks() // 1000                # Tiempo de ejecucion en segundos
+        self.tiempo_transcurrido = (tiempo // 60, tiempo % 60)       # Tupla con los segundos y minutos
