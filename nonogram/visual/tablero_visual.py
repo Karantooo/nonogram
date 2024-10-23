@@ -66,7 +66,7 @@ class TableroVisual:
 
     def __init__(self, numero_botones: int = 4, imagen: np.ndarray[bool] = None, dimensiones: tuple=(1000,700)) -> None:
         self.numero_botones = numero_botones
-        self.tamaño_fuente = int(54 - ((3/2) * self.numero_botones))
+        self.tamaño_fuente = int(54 - ((5/4) * self.numero_botones))
         self.tiempo_transcurrido = (0,0)
         self.fuente = pygame.font.SysFont('Arial', self.tamaño_fuente)
         self.dimensiones = dimensiones
@@ -125,8 +125,9 @@ class TableroVisual:
 
         # Temporizador
         self.tiempo_ejecucion()
-        texto_temporizador = self.fuente.render(f'Tiempo: {self.tiempo_transcurrido[0]}:{self.tiempo_transcurrido[1]} ', True, Colores.NEGRO)
-        screen.blit(texto_temporizador, (self.dimensiones[0] * 0.5, self.dimensiones[1] * 0.9))
+        fuente_temporizador = pygame.font.SysFont('Arial', 39)
+        texto_temporizador = fuente_temporizador.render(f'Tiempo: {self.tiempo_transcurrido[0]}:{self.tiempo_transcurrido[1]} ', True, Colores.NEGRO)
+        screen.blit(texto_temporizador, (self.dimensiones[0] * 0.45, self.dimensiones[1] * 0.9))
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
         if mouse_pos[0] < int((self.dimensiones[0] * 0.2)) or mouse_pos[1] < int((self.dimensiones[1] * 0.2)) or mouse_pos[0] >= int((self.dimensiones[0] - int((self.dimensiones[0] * 0.2)))) or mouse_pos[1] >= int((self.dimensiones[1] - int((self.dimensiones[1] * 0.2)))):
