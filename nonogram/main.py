@@ -30,9 +30,12 @@ def main(dimensiones: tuple=None):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                mouse_pos = event.pos  # Obtener la posición del ratón al hacer clic
-                tablero.validar_click(mouse_pos)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    tablero.validar_click(mouse_pos=event.pos)
+                elif event.button == 3:
+                    tablero.marcar_bandera(mouse_pos=event.pos)
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE or event.key == pygame.K_q: #salir con la q o con el esc
                     pygame.quit()

@@ -119,15 +119,31 @@ class TableroVisual:
         texto_vidas = self.fuente.render(f'Vidas: {self.tablero_logica.get_vidas()}', True, Colores.NEGRO)
         screen.blit(texto_vidas, (screen.get_width() - texto_vidas.get_width() - 20, 20))
 
-    def validar_click(self,mouse_pos: tuple[int,int]) -> None:
+    def __mouse_posicion_to_indices_array(self,mouse_pos: tuple[int,int]) -> tuple[int,int]:
         if mouse_pos[0] < int((self.dimensiones[0] * 0.2)) or mouse_pos[1] < int((self.dimensiones[1] * 0.2)) or mouse_pos[0] >= int((self.dimensiones[0] - int((self.dimensiones[0] * 0.2)))) or mouse_pos[1] >= int((self.dimensiones[1] - int((self.dimensiones[1] * 0.2)))):
             # print("salio")
-            return
+            return None
 
         array_pos = (mouse_pos[0] - int(self.dimensiones[0] * 0.2), mouse_pos[1] - int(self.dimensiones[1] * 0.2))
         array_pos = (array_pos[0] // self.ancho_boton, array_pos[1] // self.alto_boton)
 
+        return  array_pos
+
+    def validar_click(self,mouse_pos: tuple[int,int]) -> None:
+        array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
+        if array_pos is None:
+            #print("salio")
+            return
+
         self.tablero_logica.validar_click(mouse_pos, self.botones, array_pos)
+
+    def marcar_bandera(self,mouse_pos: tuple[int,int]) -> None:
+        array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
+        if array_pos is None:
+            #print("salio")
+            return
+
+        self.botones[array_pos[1]][array_pos[0]].alterar_estado_bandera()
 
     def get_vidas(self) -> int:
         return self.tablero_logica.get_vidas()

@@ -14,6 +14,7 @@ class Boton:
     marcado: bool               # Estado del botón (marcado o no)
     identificador: int          # Identificador único del botón
     visibilidad: bool           # Estado de visibilidad del botón
+    bandera: bool               # Estado que indica si el usuario marco la casilla con una bandera o no
     fuente: pygame.font.Font    # Fuente utilizada para renderizar texto
     boton_visual: pygame.Rect   # Rectángulo que define la posición y tamaño del botón
     dimensiones: tuple          # Dimensiones de la ventana
@@ -34,6 +35,7 @@ class Boton:
         self.identificador = identificador
         self.marcado = marcado
         self.visibilidad = False
+        self.bandera = False
         self.fuente = fuente
 
     def get_marcado(self) -> bool:
@@ -63,8 +65,18 @@ class Boton:
     def validar_click(self,mouse_pos: tuple[int,int]) -> int: # 0: Incorrecto, 1: Correcto, 2: No se marco este
         if self.boton_visual.collidepoint(mouse_pos) and self.visibilidad == False:
             self.visibilidad = True
+            self.bandera = False
             if self.marcado:
                 return 1
             else:
                 return 0
         return 2
+
+    def alterar_estado_bandera(self) -> None:
+        if not self.visibilidad:    # Si no se esta mostrando el contenido del boton
+            if self.bandera:
+                print("Desmarca")
+                self.bandera = False
+            else:
+                print("Marca")
+                self.bandera = True
