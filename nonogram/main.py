@@ -1,10 +1,14 @@
 import sys
 import pygame
 from PIL import Image
+from PIL.ImageChops import constant
+from pygame import FULLSCREEN
 
 from visual.tablero_visual import TableroVisual
 from visual.colores import Colores
 
+CLICK_IZQUIERDO = 1
+CLICK_DERECHO = 3
 
 def main(dimensiones: tuple=None):
     global tablero
@@ -31,9 +35,9 @@ def main(dimensiones: tuple=None):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:   # Click Izquierdo
+                if event.button == CLICK_IZQUIERDO:
                     tablero.validar_click(mouse_pos=event.pos)
-                elif event.button == 3:   # Click Derecho
+                elif event.button == CLICK_DERECHO:
                     tablero.marcar_bandera(mouse_pos=event.pos)
 
             if event.type == pygame.KEYDOWN:
