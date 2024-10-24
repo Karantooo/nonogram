@@ -1,3 +1,4 @@
+from nonogram.logica.Excepciones.mouse_fuera_del_tablero import MouseFueraDelTablero
 from nonogram.logica.tablero import Tablero
 from nonogram.visual.boton import Boton
 import numpy as np
@@ -125,7 +126,7 @@ class TableroVisual:
         # Verificar si la posición del mouse está fuera de los márgenes
         if fuera_de_limites(mouse_pos[0], self.dimensiones[0]) or fuera_de_limites(mouse_pos[1], self.dimensiones[1]):
             #print("Fuera de los limites")
-            return None
+            raise MouseFueraDelTablero
 
         # Calcular la posición en el array
         array_pos = (mouse_pos[0] - int(self.dimensiones[0] * 0.2), mouse_pos[1] - int(self.dimensiones[1] * 0.2))
@@ -134,20 +135,20 @@ class TableroVisual:
         return array_pos
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
-        array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
-        if array_pos is None:
-            #print("salio")
-            return
+        try:
+            array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
+            self.tablero_logica.validar_click(mouse_pos, self.botones, array_pos)
+        except MouseFueraDelTablero:
+            pass
 
-        self.tablero_logica.validar_click(mouse_pos, self.botones, array_pos)
 
     def marcar_bandera(self,mouse_pos: tuple[int,int]) -> None:
-        array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
-        if array_pos is None:
-            #print("salio")
-            return
+        try:
+            array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
+            self.botones[array_pos[1]][array_pos[0]].alterar_estado_bandera()
+        except MouseFueraDelTablero:
+            pass
 
-        self.botones[array_pos[1]][array_pos[0]].alterar_estado_bandera()
 
     def get_vidas(self) -> int:
         return self.tablero_logica.get_vidas()
