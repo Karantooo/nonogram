@@ -16,3 +16,8 @@
   </a>
 </p>
 
+## Instrucciones de compilacion
+Para ejecutar el programa haga ``` pip install requirements.txt ``` y ejecute el archivo nonogram/main.py.
+
+Recomendamos el uso de python 3.12.5
+
