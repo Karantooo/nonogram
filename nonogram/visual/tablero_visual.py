@@ -119,15 +119,19 @@ class TableroVisual:
         texto_vidas = self.fuente.render(f'Vidas: {self.tablero_logica.get_vidas()}', True, Colores.NEGRO)
         screen.blit(texto_vidas, (screen.get_width() - texto_vidas.get_width() - 20, 20))
 
-    def __mouse_posicion_to_indices_array(self,mouse_pos: tuple[int,int]) -> tuple[int,int]:
-        if mouse_pos[0] < int((self.dimensiones[0] * 0.2)) or mouse_pos[1] < int((self.dimensiones[1] * 0.2)) or mouse_pos[0] >= int((self.dimensiones[0] - int((self.dimensiones[0] * 0.2)))) or mouse_pos[1] >= int((self.dimensiones[1] - int((self.dimensiones[1] * 0.2)))):
-            # print("salio")
+    def __mouse_posicion_to_indices_array(self, mouse_pos: tuple[int, int]) -> tuple[int, int]:
+        fuera_de_limites = lambda x, dim: x < int(dim * 0.2) or x >= int(dim - int(dim * 0.2))
+
+        # Verificar si la posición del mouse está fuera de los márgenes
+        if fuera_de_limites(mouse_pos[0], self.dimensiones[0]) or fuera_de_limites(mouse_pos[1], self.dimensiones[1]):
+            #print("Fuera de los limites")
             return None
 
+        # Calcular la posición en el array
         array_pos = (mouse_pos[0] - int(self.dimensiones[0] * 0.2), mouse_pos[1] - int(self.dimensiones[1] * 0.2))
         array_pos = (array_pos[0] // self.ancho_boton, array_pos[1] // self.alto_boton)
 
-        return  array_pos
+        return array_pos
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
         array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)

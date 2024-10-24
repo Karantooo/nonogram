@@ -1,11 +1,7 @@
 import sys
 import pygame
-from PIL import Image
-from PIL.ImageChops import constant
-from pygame import FULLSCREEN
 
 from visual.tablero_visual import TableroVisual
-from visual.colores import Colores
 
 CLICK_IZQUIERDO = 1
 CLICK_DERECHO = 3
