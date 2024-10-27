@@ -1,20 +1,17 @@
 import pygame
 from nonogram.visual.colores import Colores
+from nonogram.logica.casilla import Casilla
+
 
 class Boton:
     """
     Esta clase representa un botón en el tablero del juego.
     """
 
-    fila: int                   # Fila en la que se encuentra el botón
-    columna: int                # Columna en la que se encuentra el botón
     alto: int                   # Altura del botón
     ancho: int                  # Anchura del botón
     espacio: int                # Espacio entre botones
-    marcado: bool               # Estado del botón (marcado o no)
     identificador: int          # Identificador único del botón
-    visibilidad: bool           # Estado de visibilidad del botón
-    bandera: bool               # Estado que indica si el usuario marco la casilla con una bandera o no
     fuente: pygame.font.Font    # Fuente utilizada para renderizar texto
     boton_visual: pygame.Rect   # Rectángulo que define la posición y tamaño del botón
     dimensiones: tuple          # Dimensiones de la ventana
@@ -37,9 +34,8 @@ class Boton:
 
         # Inicializacion de variables internas
         self.identificador = identificador
-        self.marcado = marcado
-        self.visibilidad = False
-        self.bandera = False
+
+        self.casilla = Casilla(marcado, False, False)
         self.fuente = fuente
 
         #Inicializacion de la imagen de la bandera
@@ -51,19 +47,19 @@ class Boton:
         self.posicion_bandera = (self.boton_visual.x + dimension_menor/2,self.boton_visual.y )
 
     def get_marcado(self) -> bool:
-        return self.marcado
+        return self.casilla.marcado
 
     def get_visibilidad(self) -> bool:
-        return self.visibilidad
+        return self.casilla.visibilidad
 
     def imprimir(self, screen: pygame.Surface) -> None:
-        if self.visibilidad:
-            if self.marcado:
+        if self.casilla.visibilidad:
+            if self.casilla.marcado:
                 pygame.draw.rect(screen, Colores.NEGRO, self.boton_visual)
             else:
                 pygame.draw.rect(screen, Colores.ROJO, self.boton_visual)
         else:
-            if self.bandera:
+            if self.casilla.bandera:
                 pygame.draw.rect(screen, Colores.AZUL, self.boton_visual)
                 screen.blit(self.bandera_image, self.posicion_bandera)
             else:
@@ -80,20 +76,20 @@ class Boton:
         #screen.blit(texto, texto_rect)
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> int: # 0: Incorrecto, 1: Correcto, 2: No se marco este
-        if self.boton_visual.collidepoint(mouse_pos) and self.visibilidad == False:
-            self.visibilidad = True
-            self.bandera = False
-            if self.marcado:
+        if self.boton_visual.collidepoint(mouse_pos) and self.casilla.visibilidad == False:
+            self.casilla.visibilidad = True
+            self.casilla.bandera = False
+            if self.casilla.marcado:
                 return 1
             else:
                 return 0
         return 2
 
     def alterar_estado_bandera(self) -> None:
-        if not self.visibilidad:    # Si no se esta mostrando el contenido del boton
-            if self.bandera:
+        if not self.casilla.visibilidad:    # Si no se esta mostrando el contenido del boton
+            if self.casilla.bandera:
                 #print("Desmarca")
-                self.bandera = False
+                self.casilla.bandera = False
             else:
                 #print("Marca")
-                self.bandera = True
+                self.casilla.bandera = True

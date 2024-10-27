@@ -5,6 +5,7 @@ import numpy as np
 import pygame
 from nonogram.visual.colores import Colores
 
+
 class TableroVisual:
     numero_botones: int         # Cantidad de botones en el tablero
     fuente: pygame.font.Font    # Fuente para el texto
@@ -17,51 +18,6 @@ class TableroVisual:
     valores: np.ndarray[bool]
     tablero_logica: Tablero
     dimensiones: tuple
-
-
-    def __calculo_num_superiores(self) -> list[list[int]]:
-        valores = []
-
-        for j in range(self.numero_botones):
-            auxiliar = []
-            contador = 0
-
-            for i in range(self.numero_botones):
-                if self.botones[i][j].get_marcado():
-                    contador += 1
-                else:
-                    if contador > 0:
-                        auxiliar.append(contador)
-                        contador = 0
-
-            if contador > 0:
-                auxiliar.append(contador)
-
-            valores.append(auxiliar)
-
-        return valores
-
-    def __calculo_num_laterales(self) -> list[list[int]]:
-        valores = []
-
-        for i in range(self.numero_botones):
-            auxiliar = []
-            contador = 0
-
-            for j in range(self.numero_botones):
-                if self.botones[i][j].get_marcado():
-                    contador += 1
-                else:
-                    if contador > 0:
-                        auxiliar.append(contador)
-                        contador = 0
-
-            if contador > 0:
-                auxiliar.append(contador)
-
-            valores.append(auxiliar)
-
-        return valores
 
     def __init__(self, numero_botones: int = 4, imagen: np.ndarray[bool] = None, dimensiones: tuple=(1000,700)) -> None:
         self.numero_botones = numero_botones
@@ -120,6 +76,23 @@ class TableroVisual:
         texto_vidas = self.fuente.render(f'Vidas: {self.tablero_logica.get_vidas()}', True, Colores.NEGRO)
         screen.blit(texto_vidas, (screen.get_width() - texto_vidas.get_width() - 20, 20))
 
+    def validar_click(self,mouse_pos: tuple[int,int]) -> None:
+        try:
+            array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
+            self.tablero_logica.validar_click(mouse_pos, self.botones, array_pos)
+        except MouseFueraDelTablero:
+            pass
+
+    def marcar_bandera(self,mouse_pos: tuple[int,int]) -> None:
+        try:
+            array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
+            self.botones[array_pos[1]][array_pos[0]].alterar_estado_bandera()
+        except MouseFueraDelTablero:
+            pass
+
+    def get_vidas(self) -> int:
+        return self.tablero_logica.get_vidas()
+
     def __mouse_posicion_to_indices_array(self, mouse_pos: tuple[int, int]) -> tuple[int, int]:
         fuera_de_limites = lambda x, dim: x < int(dim * 0.2) or x >= int(dim - int(dim * 0.2))
 
@@ -134,27 +107,52 @@ class TableroVisual:
 
         return array_pos
 
-    def validar_click(self,mouse_pos: tuple[int,int]) -> None:
-        try:
-            array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
-            self.tablero_logica.validar_click(mouse_pos, self.botones, array_pos)
-        except MouseFueraDelTablero:
-            pass
-
-
-    def marcar_bandera(self,mouse_pos: tuple[int,int]) -> None:
-        try:
-            array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
-            self.botones[array_pos[1]][array_pos[0]].alterar_estado_bandera()
-        except MouseFueraDelTablero:
-            pass
-
-
-    def get_vidas(self) -> int:
-        return self.tablero_logica.get_vidas()
-
     def get_vistos(self) -> int:
         return self.tablero_logica.get_vistos()
 
     def ganado(self) -> bool:
         return self.tablero_logica.ganado()
+
+    def __calculo_num_superiores(self) -> list[list[int]]:
+        valores = []
+
+        for j in range(self.numero_botones):
+            auxiliar = []
+            contador = 0
+
+            for i in range(self.numero_botones):
+                if self.botones[i][j].get_marcado():
+                    contador += 1
+                else:
+                    if contador > 0:
+                        auxiliar.append(contador)
+                        contador = 0
+
+            if contador > 0:
+                auxiliar.append(contador)
+
+            valores.append(auxiliar)
+
+        return valores
+
+    def __calculo_num_laterales(self) -> list[list[int]]:
+        valores = []
+
+        for i in range(self.numero_botones):
+            auxiliar = []
+            contador = 0
+
+            for j in range(self.numero_botones):
+                if self.botones[i][j].get_marcado():
+                    contador += 1
+                else:
+                    if contador > 0:
+                        auxiliar.append(contador)
+                        contador = 0
+
+            if contador > 0:
+                auxiliar.append(contador)
+
+            valores.append(auxiliar)
+
+        return valores
