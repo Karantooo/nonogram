@@ -1,5 +1,6 @@
 import numpy as np
 import pygame
+import pickle
 from nonogram.logica.tablero import Tablero
 from nonogram.visual.boton import Boton
 from nonogram.visual.colores import Colores
@@ -124,6 +125,28 @@ class TableroVisual:
 
     def ganado(self) -> bool:
         return self.tablero_logica.ganado()
+
+    def guardar_estado(self):
+        guardado = self.__obetener_datos_partida__()
+        with open("game_data.bin", "wb") as archivo:
+            pickle.dump(guardado, archivo)
+
+    def cargar_estado(self):
+        with open("game_data.bin", "rb") as archivo:
+            casillas = pickle.load(archivo)
+        print(casillas)
+
+    def __obetener_datos_partida__(self):
+        casillas = []
+        for columna_boton in self.botones:
+            columna_casillas = []
+            for boton in columna_boton:
+                columna_casillas.append(boton.casilla)
+
+            casillas.append(columna_casillas)
+
+        guardado = SistemaGuardado(casillas=casillas, vidas_restantes=self.get_vidas(), tiempo=0)
+        return guardado
 
     def __calculo_num_superiores(self) -> list[list[int]]:
         valores = []
