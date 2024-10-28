@@ -64,7 +64,7 @@ class TableroVisual:
             if self.valores[i]:
                 marcados += 1
 
-        vidas = 3 if SistemaGuardado is None else guardado_previo.vidas_restantes
+        vidas = 3 if guardado_previo is None else guardado_previo.vidas_restantes
 
         self.tablero_logica = Tablero(marcados=marcados, vidas=vidas)
 
