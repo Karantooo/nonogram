@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class Casilla(BaseModel):
-    marcado: int
+    marcado: bool
     visibilidad: bool = False
     bandera: bool = False
 

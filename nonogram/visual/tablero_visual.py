@@ -4,6 +4,7 @@ from nonogram.logica.tablero import Tablero
 from nonogram.visual.boton import Boton
 from nonogram.visual.colores import Colores
 from nonogram.logica.casilla import Casilla
+from nonogram.logica.sistema_guardado import SistemaGuardado
 from nonogram.logica.Excepciones.mouse_fuera_del_tablero import MouseFueraDelTablero
 
 
@@ -20,10 +21,17 @@ class TableroVisual:
     tablero_logica: Tablero
     dimensiones: tuple
 
-    def __init__(self, numero_botones: int = 4, imagen: np.ndarray[bool] = None, dimensiones: tuple=(1000, 700)) -> None:
+    def __init__(
+            self,
+            numero_botones: int = 4,
+            imagen: np.ndarray[bool] = None,
+            dimensiones: tuple = (1000, 700),
+            guardado_previo: SistemaGuardado = None
+    ) -> None:
         self.numero_botones = numero_botones
         self.fuente = pygame.font.SysFont('Arial', 24)
         self.dimensiones = dimensiones
+
         # Tamaño de los botones, hacer resize
         self.ancho_boton = int((self.dimensiones[0] * 0.6) // self.numero_botones)
         self.alto_boton = int((self.dimensiones[1] * 0.6) // self.numero_botones)
@@ -36,13 +44,14 @@ class TableroVisual:
         contador = 0
         for fila in range(self.numero_botones):
             for columna in range(self.numero_botones):
+                casilla_especifica = None if guardado_previo is None else guardado_previo.casillas[fila][columna]
+
                 marcado = self.valores[fila * self.numero_botones + columna].item()
                 self.botones[fila][columna] = Boton(fila=fila, columna=columna,
                                                     alto=self.alto_boton, ancho=self.ancho_boton,
                                                     espacio=self.espacio, marcado=marcado,
                                                     identificador=contador, fuente=self.fuente,
-                                                    dimensiones=self.dimensiones)
-
+                                                    dimensiones=self.dimensiones, casilla=casilla_especifica)
 
                 contador += 1
 

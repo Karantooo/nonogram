@@ -18,7 +18,15 @@ class Boton:
     bandera_image: pygame.Surface   # Imagen de una bandera
     posicion_bandera: tuple     # Reprecenta las coordenadas de la posicion en que se colocara la bandera
 
-    def __init__(self, fila: int, columna: int, alto: int, ancho: int, espacio: int ,marcado: bool, identificador: int, fuente: pygame.font, dimensiones: tuple=(1000, 700)) -> None:
+    def __init__(
+                self,
+                fila: int, columna: int,
+                alto: int, ancho: int,
+                espacio: int, marcado: bool,
+                identificador: int, fuente: pygame.font,
+                dimensiones: tuple = (1000, 700),
+                casilla: Casilla = None
+    ) -> None:
         self.alto = alto
         self.ancho = ancho
         self.espacio = espacio
@@ -34,11 +42,14 @@ class Boton:
 
         # Inicializacion de variables internas
         self.identificador = identificador
-
-        self.casilla = Casilla(marcado=marcado, visibilidad=False, bandera=False)
         self.fuente = fuente
 
-        #Inicializacion de la imagen de la bandera
+        if casilla is None:
+            self.casilla = Casilla(marcado=marcado, visibilidad=False, bandera=False)
+        else:
+            self.casilla = casilla
+
+        # Inicializacion de la imagen de la bandera
         self.bandera_image = pygame.image.load("assets/bandera.png")
         dimension_menor = min(self.alto, self.ancho)
         self.bandera_image = pygame.transform.scale(self.bandera_image, [dimension_menor, dimension_menor])
@@ -67,13 +78,12 @@ class Boton:
 
         pygame.draw.rect(screen, Colores.NEGRO, self.boton_visual, 2)  # Borde negro del botón
 
-
         # Renderizar el texto como "fila, columna"
-        #texto = self.fuente.render(f'{self.identificador}', True, Colores.NEGRO)
-        #texto_rect = texto.get_rect(center=self.boton_visual.center)
+        # texto = self.fuente.render(f'{self.identificador}', True, Colores.NEGRO)
+        # texto_rect = texto.get_rect(center=self.boton_visual.center)
 
         # Dibujar el texto en el centro del botón
-        #screen.blit(texto, texto_rect)
+        # screen.blit(texto, texto_rect)
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> int: # 0: Incorrecto, 1: Correcto, 2: No se marco este
         if self.boton_visual.collidepoint(mouse_pos) and self.casilla.visibilidad == False:
@@ -88,8 +98,6 @@ class Boton:
     def alterar_estado_bandera(self) -> None:
         if not self.casilla.visibilidad:    # Si no se esta mostrando el contenido del boton
             if self.casilla.bandera:
-                #print("Desmarca")
                 self.casilla.bandera = False
             else:
-                #print("Marca")
                 self.casilla.bandera = True
