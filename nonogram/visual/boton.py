@@ -21,6 +21,9 @@ class Boton:
     bandera_image: pygame.Surface   # Imagen de una bandera
     posicion_bandera: tuple     # Reprecenta las coordenadas de la posicion en que se colocara la bandera
 
+    sonido_correcto: pygame.mixer.Sound # Clase que representa un objeto de sonido
+    sonido_incorrecto: pygame.mixer.Sound # Clase que representa un objeto de sonido
+
     def __init__(self, fila: int, columna: int, alto: int, ancho: int, espacio: int ,marcado: bool, identificador: int, fuente: pygame.font, dimensiones: tuple=(1000, 700)) -> None:
         self.alto = alto
         self.ancho = ancho
@@ -49,6 +52,14 @@ class Boton:
 
         # Inicializacion de la posicion de la bandera
         self.posicion_bandera = (self.boton_visual.x + dimension_menor/2,self.boton_visual.y )
+
+        # Carga de archivos de sonido
+        self.sonido_correcto = pygame.mixer.Sound('assets/sonidos/casilla_correcta.wav')
+        self.sonido_incorrecto = pygame.mixer.Sound('assets/sonidos/casilla_incorrecta.wav')
+
+        # Ajuste del volumen de sonidos
+        self.sonido_correcto.set_volume(0.5)
+        self.sonido_incorrecto.set_volume(1)
 
     def get_marcado(self) -> bool:
         return self.marcado
@@ -84,8 +95,10 @@ class Boton:
             self.visibilidad = True
             self.bandera = False
             if self.marcado:
+                self.sonido_correcto.play()
                 return 1
             else:
+                self.sonido_incorrecto.play()
                 return 0
         return 2
 
