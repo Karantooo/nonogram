@@ -64,7 +64,9 @@ class TableroVisual:
             if self.valores[i]:
                 marcados += 1
 
-        self.tablero_logica = Tablero(marcados=marcados)
+        vidas = 3 if SistemaGuardado is None else guardado_previo.vidas_restantes
+
+        self.tablero_logica = Tablero(marcados=marcados, vidas=vidas)
 
     def imprimir(self, screen: pygame.Surface) -> None:
         for array_botones in self.botones:
@@ -126,15 +128,16 @@ class TableroVisual:
     def ganado(self) -> bool:
         return self.tablero_logica.ganado()
 
-    def guardar_estado(self):
+    def guardar_estado(self, ruta: str = r"game_data.bin"):
         guardado = self.__obetener_datos_partida__()
-        with open("game_data.bin", "wb") as archivo:
+        with open(ruta, "wb") as archivo:
             pickle.dump(guardado, archivo)
 
-    def cargar_estado(self):
-        with open("game_data.bin", "rb") as archivo:
+    @staticmethod
+    def cargar_estado(ruta: str = r"game_data.bin") -> SistemaGuardado:
+        with open(ruta, "rb") as archivo:
             casillas = pickle.load(archivo)
-        print(casillas)
+        return casillas
 
     def __obetener_datos_partida__(self):
         casillas = []
