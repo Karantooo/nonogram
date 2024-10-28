@@ -16,10 +16,10 @@ def main(dimensiones: tuple=None):
     # Configurar la pantalla
     screen = pygame.display.set_mode(dimensiones)
 
-    background_image = pygame.image.load("assets/fondo.png")
+    background_image = pygame.image.load("../assets/fondo.png")
     background_image = pygame.transform.scale(background_image, dimensiones)
 
-    numero_botones = 20
+    numero_botones = 8
     pygame.display.set_caption("Mi primer juego en Pygame")
     tablero = TableroVisual(numero_botones=numero_botones, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
     corriendo = True

@@ -1,5 +1,5 @@
 
-class calculador_puntaje:
+class CalculadorPuntaje:
     """
     Esta clase se encarga de calcular el puntaje basado en el tiempo, las vidas y la dificultad del juego.
     """

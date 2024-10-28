@@ -16,6 +16,7 @@ class TableroVisual:
     valores: np.ndarray[bool]
     tablero_logica: Tablero
     dimensiones: tuple
+    pistas = 3
 
 
     def __calculo_num_superiores(self) -> list[list[int]]:
@@ -118,6 +119,9 @@ class TableroVisual:
         # Dibujar el contador de vidas en la esquina superior derecha
         texto_vidas = self.fuente.render(f'Vidas: {self.tablero_logica.get_vidas()}', True, Colores.NEGRO)
         screen.blit(texto_vidas, (screen.get_width() - texto_vidas.get_width() - 20, 20))
+
+        texto_pistas = self.fuente.render(f'Pistas: {self.pistas}', True, Colores.NEGRO)
+        screen.blit(texto_pistas, (screen.get_width() - texto_pistas.get_width() - 20, 40))
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
         if mouse_pos[0] < int((self.dimensiones[0] * 0.2)) or mouse_pos[1] < int((self.dimensiones[1] * 0.2)) or mouse_pos[0] >= int((self.dimensiones[0] - int((self.dimensiones[0] * 0.2)))) or mouse_pos[1] >= int((self.dimensiones[1] - int((self.dimensiones[1] * 0.2)))):
