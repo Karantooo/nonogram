@@ -6,7 +6,8 @@ from visual.tablero_visual import TableroVisual
 CLICK_IZQUIERDO = 1
 CLICK_DERECHO = 3
 
-def main(dimensiones: tuple=None):
+
+def main(dimensiones: tuple = None):
     global tablero
     pygame.init()
 
@@ -62,6 +63,7 @@ def main(dimensiones: tuple=None):
     # Salir de Pygame
     pygame.quit()
     sys.exit()
+
 
 if __name__ == '__main__':
     main()

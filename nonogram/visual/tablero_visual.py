@@ -1,9 +1,10 @@
-from nonogram.logica.Excepciones.mouse_fuera_del_tablero import MouseFueraDelTablero
-from nonogram.logica.tablero import Tablero
-from nonogram.visual.boton import Boton
 import numpy as np
 import pygame
+from nonogram.logica.tablero import Tablero
+from nonogram.visual.boton import Boton
 from nonogram.visual.colores import Colores
+from nonogram.logica.casilla import Casilla
+from nonogram.logica.Excepciones.mouse_fuera_del_tablero import MouseFueraDelTablero
 
 
 class TableroVisual:
@@ -19,13 +20,13 @@ class TableroVisual:
     tablero_logica: Tablero
     dimensiones: tuple
 
-    def __init__(self, numero_botones: int = 4, imagen: np.ndarray[bool] = None, dimensiones: tuple=(1000,700)) -> None:
+    def __init__(self, numero_botones: int = 4, imagen: np.ndarray[bool] = None, dimensiones: tuple=(1000, 700)) -> None:
         self.numero_botones = numero_botones
         self.fuente = pygame.font.SysFont('Arial', 24)
         self.dimensiones = dimensiones
         # Tamaño de los botones, hacer resize
         self.ancho_boton = int((self.dimensiones[0] * 0.6) // self.numero_botones)
-        self.alto_boton =  int((self.dimensiones[1] * 0.6) // self.numero_botones)
+        self.alto_boton = int((self.dimensiones[1] * 0.6) // self.numero_botones)
         self.espacio = 0
 
         # Crear una matriz nxn de None
@@ -41,6 +42,8 @@ class TableroVisual:
                                                     espacio=self.espacio, marcado=marcado,
                                                     identificador=contador, fuente=self.fuente,
                                                     dimensiones=self.dimensiones)
+
+
                 contador += 1
 
         self.numeros_superiores = self.__calculo_num_superiores()

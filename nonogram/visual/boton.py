@@ -35,7 +35,7 @@ class Boton:
         # Inicializacion de variables internas
         self.identificador = identificador
 
-        self.casilla = Casilla(marcado, False, False)
+        self.casilla = Casilla(marcado=marcado, visibilidad=False, bandera=False)
         self.fuente = fuente
 
         #Inicializacion de la imagen de la bandera
