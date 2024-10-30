@@ -1,21 +1,20 @@
-import nonogram.visual.tablero_visual
 import numpy as np
 import pygame
 import random
 from nonogram.logica.pistas_excepción import SinPistasError
-from nonogram.visual import tablero_visual
+from nonogram.visual.boton import Boton
 
 
 class Pistas:
-    tablero_visual_info: nonogram.TableroVisual
+    tablero_botones: list[list[Boton]]
     reales : np.ndarray
     boton : pygame.Rect
     marcados : int
     pistas : int
 
-    def __init__(self, tablero : tablero_visual.TableroVisual, dificultad :int):
+    def __init__(self, tablero : list[list[Boton]], valores : np.ndarray[bool], dificultad :int):
         self.tablero_visual_info = tablero
-        self.reales = tablero.valores
+        self.reales = valores
         if dificultad == 1:
             self.pistas = 2
         if dificultad == 2:
@@ -42,10 +41,10 @@ class Pistas:
         lista_posible_soluiciones = self.encontrar_los_reales()
         posicion_solucionar = random.randint(0, len(lista_posible_soluiciones) - 1)
         if self.pistas > 0:
-            while self.tablero_visual_info.botones[lista_posible_soluiciones[posicion_solucionar][0], lista_posible_soluiciones[posicion_solucionar][1]].visibilidad:
+            while self.tablero_botones[lista_posible_soluiciones[posicion_solucionar][0], lista_posible_soluiciones[posicion_solucionar][1]].visibilidad:
                 lista_posible_soluiciones[posicion_solucionar].pop()
                 posicion_solucionar = (posicion_solucionar + 1)%len(lista_posible_soluiciones)
-            self.tablero_visual_info.botones[lista_posible_soluiciones[posicion_solucionar][0], lista_posible_soluiciones[posicion_solucionar][1]].visibilidad = True
+            self.tablero_botones[lista_posible_soluiciones[posicion_solucionar][0], lista_posible_soluiciones[posicion_solucionar][1]].visibilidad = True
 
             self.pistas -= 1
         else:

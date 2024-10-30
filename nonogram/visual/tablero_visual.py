@@ -1,8 +1,10 @@
-import numpy as np
-import pygame
 import pickle
 from nonogram.logica.tablero import Tablero
 from nonogram.visual.boton import Boton
+import numpy as np
+import pygame
+
+from nonogram.visual.boton_pista import BotonPista
 from nonogram.visual.colores import Colores
 from nonogram.logica.casilla import Casilla
 from nonogram.logica.sistema_guardado import SistemaGuardado
@@ -68,7 +70,7 @@ class TableroVisual:
                                                     dimensiones=self.dimensiones, casilla=casilla_especifica)
 
                 contador += 1
-
+        self.boton_pista = BotonPista(ancho = self.ancho_boton, alto =self.alto_boton, dimensiones = self.dimensiones, tablero = self.botones, valores = self.valores)
         self.numeros_superiores = self.__calculo_num_superiores()
         self.numeros_laterales = self.__calculo_num_laterales()
 
@@ -110,8 +112,12 @@ class TableroVisual:
         texto_temporizador = fuente_temporizador.render(f'Tiempo: {self.tiempo_transcurrido[0]*60 + self.tiempo_transcurrido[1]} segundos', True, Colores.NEGRO)
         screen.blit(texto_temporizador, (self.dimensiones[0] * 0.4, self.dimensiones[1] * 0.9))
 
+        #contador de pistas
         texto_pistas = self.fuente.render(f'Pistas: {self.pistas}', True, Colores.NEGRO)
         screen.blit(texto_pistas, (screen.get_width() - texto_pistas.get_width() - 20, 40))
+        #boton pistas
+        pygame.draw.rect(screen, Colores.VERDE, self.boton_pista.boton_visual)
+
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
         try:
