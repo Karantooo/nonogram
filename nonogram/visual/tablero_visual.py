@@ -126,8 +126,8 @@ class TableroVisual:
         # Temporizador
         self.tiempo_ejecucion()
         fuente_temporizador = pygame.font.SysFont('Arial', 39)
-        texto_temporizador = fuente_temporizador.render(f'Tiempo: {self.tiempo_transcurrido[0]}:{self.tiempo_transcurrido[1]} ', True, Colores.NEGRO)
-        screen.blit(texto_temporizador, (self.dimensiones[0] * 0.45, self.dimensiones[1] * 0.9))
+        texto_temporizador = fuente_temporizador.render(f'Tiempo: {self.tiempo_transcurrido[0]*60 + self.tiempo_transcurrido[1]} segundos', True, Colores.NEGRO)
+        screen.blit(texto_temporizador, (self.dimensiones[0] * 0.4, self.dimensiones[1] * 0.9))
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
         if mouse_pos[0] < int((self.dimensiones[0] * 0.2)) or mouse_pos[1] < int((self.dimensiones[1] * 0.2)) or mouse_pos[0] >= int((self.dimensiones[0] - int((self.dimensiones[0] * 0.2)))) or mouse_pos[1] >= int((self.dimensiones[1] - int((self.dimensiones[1] * 0.2)))):
@@ -150,5 +150,6 @@ class TableroVisual:
 
     # Metodo para
     def tiempo_ejecucion(self):
-        tiempo = pygame.time.get_ticks() // 1000                # Tiempo de ejecucion en segundos
+        tiempo = pygame.time.get_ticks() // 1000                     # Tiempo de ejecucion en segundos
+        
         self.tiempo_transcurrido = (tiempo // 60, tiempo % 60)       # Tupla con los segundos y minutos
