@@ -21,7 +21,7 @@ class TableroVisual:
     valores: np.ndarray[bool]
     tablero_logica: Tablero
     dimensiones: tuple
-    tiempo_transcurrido: tuple   # Indica el tiempo transcurrido del juego
+    tiempo_transcurrido: int   # Indica el tiempo transcurrido del juego
     tamaño_fuente: int
 
     def __init__(
@@ -33,7 +33,7 @@ class TableroVisual:
     ) -> None:
         self.numero_botones = numero_botones
         self.tamaño_fuente = int(54 - ((5/4) * self.numero_botones))
-        self.tiempo_transcurrido = (0,0)
+        self.tiempo_transcurrido = 0
         self.fuente = pygame.font.SysFont('Arial', self.tamaño_fuente)
         self.dimensiones = dimensiones
 
@@ -69,6 +69,7 @@ class TableroVisual:
                 marcados += 1
 
         vidas = 3 if guardado_previo is None else guardado_previo.vidas_restantes
+        self.tiempo_transcurrido = 0 if guardado_previo is None else guardado_previo.tiempo
 
         self.tablero_logica = Tablero(marcados=marcados, vidas=vidas)
 
@@ -98,7 +99,7 @@ class TableroVisual:
         # Temporizador
         self.tiempo_ejecucion()
         fuente_temporizador = pygame.font.SysFont('Arial', 39)
-        texto_temporizador = fuente_temporizador.render(f'Tiempo: {self.tiempo_transcurrido[0]*60 + self.tiempo_transcurrido[1]} segundos', True, Colores.NEGRO)
+        texto_temporizador = fuente_temporizador.render(f'Tiempo: {self.tiempo_transcurrido} segundos', True, Colores.NEGRO)
         screen.blit(texto_temporizador, (self.dimensiones[0] * 0.4, self.dimensiones[1] * 0.9))
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
@@ -118,20 +119,6 @@ class TableroVisual:
     def get_vidas(self) -> int:
         return self.tablero_logica.get_vidas()
 
-    def __mouse_posicion_to_indices_array(self, mouse_pos: tuple[int, int]) -> tuple[int, int]:
-        fuera_de_limites = lambda x, dim: x < int(dim * 0.2) or x >= int(dim - int(dim * 0.2))
-
-        # Verificar si la posición del mouse está fuera de los márgenes
-        if fuera_de_limites(mouse_pos[0], self.dimensiones[0]) or fuera_de_limites(mouse_pos[1], self.dimensiones[1]):
-            #print("Fuera de los limites")
-            raise MouseFueraDelTablero
-
-        # Calcular la posición en el array
-        array_pos = (mouse_pos[0] - int(self.dimensiones[0] * 0.2), mouse_pos[1] - int(self.dimensiones[1] * 0.2))
-        array_pos = (array_pos[0] // self.ancho_boton, array_pos[1] // self.alto_boton)
-
-        return array_pos
-
     def get_vistos(self) -> int:
         return self.tablero_logica.get_vistos()
 
@@ -141,10 +128,10 @@ class TableroVisual:
     # Metodo para
     def tiempo_ejecucion(self):
         tiempo = pygame.time.get_ticks() // 1000                     # Tiempo de ejecucion en segundos
-        
-        self.tiempo_transcurrido = (tiempo // 60, tiempo % 60)       # Tupla con los segundos y minutos
+        self.tiempo_transcurrido = tiempo       # Tupla con los segundos y minutos
+
     def guardar_estado(self, ruta: str = r"game_data.bin"):
-        guardado = self.__obetener_datos_partida__()
+        guardado = self.__obtener_datos_partida__()
         with open(ruta, "wb") as archivo:
             pickle.dump(guardado, archivo)
 
@@ -154,7 +141,7 @@ class TableroVisual:
             casillas = pickle.load(archivo)
         return casillas
 
-    def __obetener_datos_partida__(self):
+    def __obtener_datos_partida__(self):
         casillas = []
         for columna_boton in self.botones:
             columna_casillas = []
@@ -163,7 +150,7 @@ class TableroVisual:
 
             casillas.append(columna_casillas)
 
-        guardado = SistemaGuardado(casillas=casillas, vidas_restantes=self.get_vidas(), tiempo=0)
+        guardado = SistemaGuardado(casillas=casillas, vidas_restantes=self.get_vidas(), tiempo=self.tiempo_transcurrido)
         return guardado
 
     def __calculo_num_superiores(self) -> list[list[int]]:
@@ -209,3 +196,17 @@ class TableroVisual:
             valores.append(auxiliar)
 
         return valores
+
+    def __mouse_posicion_to_indices_array(self, mouse_pos: tuple[int, int]) -> tuple[int, int]:
+        fuera_de_limites = lambda x, dim: x < int(dim * 0.2) or x >= int(dim - int(dim * 0.2))
+
+        # Verificar si la posición del mouse está fuera de los márgenes
+        if fuera_de_limites(mouse_pos[0], self.dimensiones[0]) or fuera_de_limites(mouse_pos[1], self.dimensiones[1]):
+            #print("Fuera de los limites")
+            raise MouseFueraDelTablero
+
+        # Calcular la posición en el array
+        array_pos = (mouse_pos[0] - int(self.dimensiones[0] * 0.2), mouse_pos[1] - int(self.dimensiones[1] * 0.2))
+        array_pos = (array_pos[0] // self.ancho_boton, array_pos[1] // self.alto_boton)
+
+        return array_pos
