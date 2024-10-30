@@ -18,6 +18,11 @@ class Boton:
     bandera_image: pygame.Surface   # Imagen de una bandera
     posicion_bandera: tuple     # Reprecenta las coordenadas de la posicion en que se colocara la bandera
 
+    sonido_correcto: pygame.mixer.Sound         # Clase que representa un objeto de sonido
+    sonido_incorrecto: pygame.mixer.Sound       # Clase que representa un objeto de sonido
+    sonido_bandera_colocar: pygame.mixer.Sound  # Clase que representa un objeto de sonido
+    sonido_bandera_sacar: pygame.mixer.Sound    # Clase que representa un objeto de sonido
+
     def __init__(
                 self,
                 fila: int, columna: int,
@@ -27,6 +32,7 @@ class Boton:
                 dimensiones: tuple = (1000, 700),
                 casilla: Casilla = None
     ) -> None:
+
         self.alto = alto
         self.ancho = ancho
         self.espacio = espacio
@@ -56,6 +62,18 @@ class Boton:
 
         # Inicializacion de la posicion de la bandera
         self.posicion_bandera = (self.boton_visual.x + dimension_menor/2,self.boton_visual.y )
+
+        # Carga de archivos de sonido
+        self.sonido_correcto = pygame.mixer.Sound('assets/sonidos/casilla_correcta.wav')
+        self.sonido_incorrecto = pygame.mixer.Sound('assets/sonidos/casilla_incorrecta.wav')
+        self.sonido_bandera_colocar = pygame.mixer.Sound('assets/sonidos/bandera_colocar.wav')
+        self.sonido_bandera_sacar = pygame.mixer.Sound('assets/sonidos/bandera_sacar.wav')
+
+        # Ajuste del volumen de sonidos [0,1]
+        self.sonido_correcto.set_volume(0.5)
+        self.sonido_incorrecto.set_volume(1)
+        self.sonido_bandera_colocar.set_volume(1)
+        self.sonido_bandera_sacar.set_volume(0.3)
 
     def get_marcado(self) -> bool:
         return self.casilla.marcado
@@ -90,14 +108,18 @@ class Boton:
             self.casilla.visibilidad = True
             self.casilla.bandera = False
             if self.casilla.marcado:
+                self.sonido_correcto.play()
                 return 1
             else:
+                self.sonido_incorrecto.play()
                 return 0
         return 2
 
     def alterar_estado_bandera(self) -> None:
         if not self.casilla.visibilidad:    # Si no se esta mostrando el contenido del boton
             if self.casilla.bandera:
+                self.sonido_bandera_sacar.play()
                 self.casilla.bandera = False
             else:
+                self.sonido_bandera_colocar.play()
                 self.casilla.bandera = True
