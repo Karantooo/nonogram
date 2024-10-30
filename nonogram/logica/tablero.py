@@ -1,4 +1,6 @@
 import numpy as np
+import pygame
+
 from nonogram.visual.boton import Boton
 
 
@@ -9,11 +11,11 @@ class Tablero:
     correctos: int      # Contador de botones correctos
     vidas: int          # Contador de vidas restantes
 
-    def __init__(self, marcados: int) -> None:
+    def __init__(self, marcados: int, vidas: int = 3) -> None:
         self.marcados = marcados
         self.vistos = 0
         self.correctos = 0
-        self.vidas = 3
+        self.vidas = vidas
 
     def validar_click(self,mouse_pos: tuple[int,int], botones: list[list[Boton]], array_pos: tuple[int,int]) -> None:
         correcto = botones[array_pos[1]][array_pos[0]].validar_click(mouse_pos)
