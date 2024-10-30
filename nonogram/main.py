@@ -9,11 +9,12 @@ def main(dimensiones: tuple=None):
     pygame.init()
     pygame.mixer.init()
 
-    screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
-    dimensiones = (int(screen_width), int(screen_height))
 
     # Configurar la pantalla
-    screen = pygame.display.set_mode(dimensiones)
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+
+    screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
+    dimensiones = (int(screen_width), int(screen_height))
 
     # Carga de sonidos
     sonido_victoria = pygame.mixer.Sound("assets/sonidos/victoria.wav")
