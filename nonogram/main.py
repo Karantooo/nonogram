@@ -4,6 +4,7 @@ import pygame
 from visual.tablero_visual import TableroVisual
 
 def main(dimensiones: tuple=None):
+
     global tablero
     pygame.init()
     pygame.mixer.init()
@@ -98,6 +99,7 @@ def main(dimensiones: tuple=None):
     # Salir de Pygame
     pygame.quit()
     sys.exit()
+
 
 if __name__ == '__main__':
     main()
