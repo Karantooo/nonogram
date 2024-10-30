@@ -2,4 +2,5 @@
 /.venv/
 /Nonogram/__pycache__/
 /nonogram/__pycache__/
-*/__pycache__/
+**/__pycache__/
+__pycache__/
