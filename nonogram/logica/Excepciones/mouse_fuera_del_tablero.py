@@ -1,0 +1,2 @@
+class MouseFueraDelTablero(Exception):
+    pass

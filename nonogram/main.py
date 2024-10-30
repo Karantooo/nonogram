@@ -1,12 +1,13 @@
 import sys
 import pygame
-from PIL import Image
 
 from visual.tablero_visual import TableroVisual
-from visual.colores import Colores
+
+CLICK_IZQUIERDO = 1
+CLICK_DERECHO = 3
 
 
-def main(dimensiones: tuple=None):
+def main(dimensiones: tuple = None):
     global tablero
     pygame.init()
 
@@ -19,7 +20,7 @@ def main(dimensiones: tuple=None):
     background_image = pygame.image.load("assets/fondo.png")
     background_image = pygame.transform.scale(background_image, dimensiones)
 
-    numero_botones = 20
+    numero_botones = 10
     pygame.display.set_caption("Mi primer juego en Pygame")
     tablero = TableroVisual(numero_botones=numero_botones, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
     corriendo = True
@@ -30,9 +31,12 @@ def main(dimensiones: tuple=None):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                mouse_pos = event.pos  # Obtener la posición del ratón al hacer clic
-                tablero.validar_click(mouse_pos)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == CLICK_IZQUIERDO:
+                    tablero.validar_click(mouse_pos=event.pos)
+                elif event.button == CLICK_DERECHO:
+                    tablero.marcar_bandera(mouse_pos=event.pos)
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE or event.key == pygame.K_q: #salir con la q o con el esc
                     pygame.quit()
@@ -59,6 +63,7 @@ def main(dimensiones: tuple=None):
     # Salir de Pygame
     pygame.quit()
     sys.exit()
+
 
 if __name__ == '__main__':
     main()
