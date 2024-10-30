@@ -21,8 +21,10 @@ class Boton:
     bandera_image: pygame.Surface   # Imagen de una bandera
     posicion_bandera: tuple     # Reprecenta las coordenadas de la posicion en que se colocara la bandera
 
-    sonido_correcto: pygame.mixer.Sound # Clase que representa un objeto de sonido
-    sonido_incorrecto: pygame.mixer.Sound # Clase que representa un objeto de sonido
+    sonido_correcto: pygame.mixer.Sound         # Clase que representa un objeto de sonido
+    sonido_incorrecto: pygame.mixer.Sound       # Clase que representa un objeto de sonido
+    sonido_bandera_colocar: pygame.mixer.Sound  # Clase que representa un objeto de sonido
+    sonido_bandera_sacar: pygame.mixer.Sound    # Clase que representa un objeto de sonido
 
     def __init__(self, fila: int, columna: int, alto: int, ancho: int, espacio: int ,marcado: bool, identificador: int, fuente: pygame.font, dimensiones: tuple=(1000, 700)) -> None:
         self.alto = alto
@@ -56,10 +58,14 @@ class Boton:
         # Carga de archivos de sonido
         self.sonido_correcto = pygame.mixer.Sound('assets/sonidos/casilla_correcta.wav')
         self.sonido_incorrecto = pygame.mixer.Sound('assets/sonidos/casilla_incorrecta.wav')
+        self.sonido_bandera_colocar = pygame.mixer.Sound('assets/sonidos/bandera_colocar.wav')
+        self.sonido_bandera_sacar = pygame.mixer.Sound('assets/sonidos/bandera_sacar.wav')
 
-        # Ajuste del volumen de sonidos
+        # Ajuste del volumen de sonidos [0,1]
         self.sonido_correcto.set_volume(0.5)
         self.sonido_incorrecto.set_volume(1)
+        self.sonido_bandera_colocar.set_volume(1)
+        self.sonido_bandera_sacar.set_volume(0.3)
 
     def get_marcado(self) -> bool:
         return self.marcado
@@ -105,8 +111,8 @@ class Boton:
     def alterar_estado_bandera(self) -> None:
         if not self.visibilidad:    # Si no se esta mostrando el contenido del boton
             if self.bandera:
-                #print("Desmarca")
+                self.sonido_bandera_sacar.play()
                 self.bandera = False
             else:
-                #print("Marca")
+                self.sonido_bandera_colocar.play()
                 self.bandera = True

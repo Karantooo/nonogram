@@ -29,12 +29,12 @@ def main(dimensiones: tuple=None):
     pygame.mixer.music.play(-1)
 
     # Ajustar volumen de la musica [0, 1]
-    pygame.mixer.music.set_volume(0.6)
+    pygame.mixer.music.set_volume(0.05)
 
     background_image = pygame.image.load("assets/fondo.png")
     background_image = pygame.transform.scale(background_image, dimensiones)
 
-    numero_botones = 2
+    numero_botones = 3
     pygame.display.set_caption("Mi primer juego en Pygame")
     tablero = TableroVisual(numero_botones=numero_botones, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
     corriendo = True
