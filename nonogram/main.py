@@ -79,7 +79,10 @@ def main(dimensiones: tuple=None):
         tablero.imprimir(screen)
 
         # Animacion de particulas desde el baston de Megumin hacia un punto objetivo
-        animacion_particulas.animacion(20)
+        if animacion_particulas is not None:
+            animacion_particulas.animacion(20)
+            animacion_particulas.validar_llegada()
+
 
         # Actualizar la pantalla
         pygame.display.flip()
