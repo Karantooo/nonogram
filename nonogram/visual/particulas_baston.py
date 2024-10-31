@@ -7,20 +7,18 @@ from nonogram.visual.colores import Colores
 class Particula:
     posicion_actual: list[float]
     radio: float
-    tasaReduccionRadio: float
 
     def __init__(self, posicion_actual: list[float]):
         self.posicion_actual = posicion_actual
-        self.radio = random.randint(6, 11)
-        self.tasaReduccionRadio = 0.1
+        self.radio = random.randint(6, 20)
 
 
     def imprimir(self, screen: pygame.Surface):
         color = random.choice([Colores.ROJO,Colores.AMARILLO])
         pygame.draw.circle(screen, color, self.posicion_actual, self.radio)
 
-    def tick_de_vida(self) -> bool:
-        self.radio -= self.tasaReduccionRadio
+    def tick_de_vida(self, velocidad: float) -> bool:
+        self.radio -= velocidad / 16
         if self.radio <= 0:
             return False
         return True
@@ -66,9 +64,9 @@ class AnimacionParticulas:
     def crear_particula(self) -> None:
         self.particulas.append(Particula(self.origen_particulas[:]))
 
-    def vida_particulas(self):
+    def vida_particulas(self, velocidad: float) -> None:
         for particula in self.particulas:
-            if not particula.tick_de_vida():
+            if not particula.tick_de_vida(velocidad):
                 self.particulas.remove(particula)
 
     def animacion(self, velocidad_animacion: float):
@@ -80,7 +78,7 @@ class AnimacionParticulas:
         else:
             self.mover_origen_particulas(velocidad_animacion)
 
-        self.vida_particulas()
+        self.vida_particulas(velocidad_animacion)
 
     def validar_llegada(self):
         if self.llego:
