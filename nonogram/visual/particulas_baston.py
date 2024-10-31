@@ -32,8 +32,8 @@ class AnimacionParticulas:
     screen: pygame.Surface
     particulas: list[Particula]
     tiempo_espera_inicio: int  # Tiempo que se espera a que termine el audio de Megumin antes de mover las particulas
-    tiempo_espera_final: int
-    llego: bool     # Controla si se llego o no
+    tiempo_espera_final: int    # Tiempo que espera a que termine el audio del final
+    llego: bool     # Controla si se llego o no al objetivo
 
     def __init__(self, origen_particulas, objetivo, screen):
         self.origen_particulas = origen_particulas
@@ -49,42 +49,19 @@ class AnimacionParticulas:
         self.tiempo_espera_final = 10
         self.llego = False
 
-    def imprimir(self) -> None:
-        for particula in self.particulas:
-            particula.imprimir(self.screen)
-
-    def mover_origen_particulas(self, desplazamiento: float) -> None:
-        resta_al_cuadrado = lambda indice: (self.objetivo[indice] - self.origen_particulas[indice]) ** 2
-        distancia_al_objetivo = math.sqrt(resta_al_cuadrado(0) + resta_al_cuadrado(1))
-
-        vector_al_objetivo = lambda indice: self.objetivo[indice] - self.origen_particulas[indice]
-        vector_unitario_al_objetivo_x = vector_al_objetivo(0) / distancia_al_objetivo
-        vector_unitario_al_objetivo_y = vector_al_objetivo(1) / distancia_al_objetivo
-
-        self.origen_particulas[0] += vector_unitario_al_objetivo_x * desplazamiento
-        self.origen_particulas[1] += vector_unitario_al_objetivo_y * desplazamiento
-
-
-    def crear_particula(self) -> None:
-        self.particulas.append(Particula(self.origen_particulas[:]))
-
-    def vida_particulas(self, velocidad: float) -> None:
-        for particula in self.particulas:
-            if not particula.tick_de_vida(velocidad):
-                self.particulas.remove(particula)
 
     def animacion(self, velocidad_animacion: float):
-        self.crear_particula()
-        self.imprimir()
+        self.__crear_particula()
+        self.__imprimir()
 
         if self.tiempo_espera_inicio > 0:
             self.tiempo_espera_inicio -= 1
         else:
-            self.mover_origen_particulas(velocidad_animacion)
+            self.__mover_origen_particulas(velocidad_animacion)
 
-        self.vida_particulas(velocidad_animacion)
+        self.__vida_particulas(velocidad_animacion)
 
-    def validar_llegada(self):
+    def validar_llegada(self) -> bool:
         if self.llego:
             if self.tiempo_espera_final > 0:
                 self.tiempo_espera_final -= 1
@@ -101,3 +78,30 @@ class AnimacionParticulas:
             self.llego = True
 
         return False
+
+
+    def __mover_origen_particulas(self, desplazamiento: float) -> None:
+        resta_al_cuadrado = lambda indice: (self.objetivo[indice] - self.origen_particulas[indice]) ** 2
+        distancia_al_objetivo = math.sqrt(resta_al_cuadrado(0) + resta_al_cuadrado(1))
+
+        vector_al_objetivo = lambda indice: self.objetivo[indice] - self.origen_particulas[indice]
+        vector_unitario_al_objetivo_x = vector_al_objetivo(0) / distancia_al_objetivo
+        vector_unitario_al_objetivo_y = vector_al_objetivo(1) / distancia_al_objetivo
+
+        self.origen_particulas[0] += vector_unitario_al_objetivo_x * desplazamiento
+        self.origen_particulas[1] += vector_unitario_al_objetivo_y * desplazamiento
+
+
+    def __crear_particula(self) -> None:
+        self.particulas.append(Particula(self.origen_particulas[:]))
+
+
+    def __vida_particulas(self, velocidad: float) -> None:
+        for particula in self.particulas:
+            if not particula.tick_de_vida(velocidad):
+                self.particulas.remove(particula)
+
+
+    def __imprimir(self) -> None:
+        for particula in self.particulas:
+            particula.imprimir(self.screen)
