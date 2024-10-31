@@ -4,3 +4,4 @@ class Colores:
     NEGRO = (0, 0, 0)
     ROJO = (255, 0, 0)
     VERDE = (0, 255, 0)
+    AMARILLO = (255, 255, 0)
