@@ -31,7 +31,8 @@ class AnimacionParticulas:
     objetivo: tuple[int,int]
     screen: pygame.Surface
     particulas: list[Particula]
-    tiempo_espera: int  # Tiempo que se espera a que termine el audio de Megumin antes de mover las particulas
+    tiempo_espera_inicio: int  # Tiempo que se espera a que termine el audio de Megumin antes de mover las particulas
+    tiempo_espera_final: int
     llego: bool     # Controla si se llego o no
 
     def __init__(self, origen_particulas, objetivo, screen):
@@ -44,7 +45,8 @@ class AnimacionParticulas:
         sonido_megumin_dice_explosion.set_volume(1)
         sonido_megumin_dice_explosion.play()
 
-        self.tiempo_espera = int(sonido_megumin_dice_explosion.get_length()) * 9
+        self.tiempo_espera_inicio = int(sonido_megumin_dice_explosion.get_length()) * 9
+        self.tiempo_espera_final = 10
         self.llego = False
 
     def imprimir(self) -> None:
@@ -75,8 +77,8 @@ class AnimacionParticulas:
         self.crear_particula()
         self.imprimir()
 
-        if self.tiempo_espera > 0:
-            self.tiempo_espera -= 1
+        if self.tiempo_espera_inicio > 0:
+            self.tiempo_espera_inicio -= 1
         else:
             self.mover_origen_particulas(velocidad_animacion)
 
@@ -84,7 +86,11 @@ class AnimacionParticulas:
 
     def validar_llegada(self):
         if self.llego:
-            return True
+            if self.tiempo_espera_final > 0:
+                self.tiempo_espera_final -= 1
+                return False
+            else:
+                return True
         distancia_x = abs(self.origen_particulas[0] - self.objetivo[0])
         distancia_y = abs(self.origen_particulas[1] - self.objetivo[1])
 
@@ -93,6 +99,5 @@ class AnimacionParticulas:
             sonido_explosion.set_volume(1)
             sonido_explosion.play()
             self.llego = True
-            return True
 
         return False
