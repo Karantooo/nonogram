@@ -2,6 +2,7 @@ import sys
 import pygame
 
 from visual.tablero_visual import TableroVisual
+from visual.particulas_baston import AnimacionParticulas
 
 def main(dimensiones: tuple=None):
 
@@ -42,6 +43,11 @@ def main(dimensiones: tuple=None):
     corriendo = True
 
     numero_botones *= numero_botones
+
+    origen_particulas = [int(dimensiones[0] * 0.964), int(dimensiones[1] * 0.207)]
+    animacion_particulas = AnimacionParticulas(origen_particulas,(100,700), screen)
+
+
     while corriendo:
         #####################################################
         # Manejo de Eventos
@@ -71,6 +77,9 @@ def main(dimensiones: tuple=None):
 
         # Dibujar el tablero
         tablero.imprimir(screen)
+
+        # Animacion de particulas desde el baston de Megumin hacia un punto objetivo
+        animacion_particulas.animacion(3)
 
         # Actualizar la pantalla
         pygame.display.flip()
