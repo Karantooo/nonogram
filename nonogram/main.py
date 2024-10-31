@@ -1,6 +1,7 @@
 import sys
 import pygame
 
+from nonogram.visual.colores import Colores
 from visual.tablero_visual import TableroVisual
 from visual.particulas_baston import AnimacionParticulas
 
@@ -45,7 +46,8 @@ def main(dimensiones: tuple=None):
     numero_botones *= numero_botones
 
     origen_particulas = [int(dimensiones[0] * 0.964), int(dimensiones[1] * 0.207)]
-    animacion_particulas = AnimacionParticulas(origen_particulas,(400,650), screen)
+    objetivo = (450,620)
+    animacion_particulas = AnimacionParticulas(origen_particulas,objetivo, screen)
 
 
     while corriendo:
