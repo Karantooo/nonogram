@@ -38,6 +38,10 @@ class AnimacionParticulas:
         self.screen = screen
         self.particulas = []
 
+        sonido_megumin_dice_explosion = pygame.mixer.Sound("assets/sonidos/megumin_dice_explosion.wav")
+        sonido_megumin_dice_explosion.set_volume(1)
+        sonido_megumin_dice_explosion.play()
+
     def imprimir(self) -> None:
         for particula in self.particulas:
             particula.imprimir(self.screen)
