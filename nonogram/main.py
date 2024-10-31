@@ -1,5 +1,6 @@
 import sys
 import pygame
+import pygame_menu
 
 from visual.tablero_visual import TableroVisual
 
@@ -102,5 +103,15 @@ def main(dimensiones: tuple=None):
     sys.exit()
 
 
-if __name__ == '__main__':
-    main()
+#if __name__ == '__main__':
+    #main()
+pygame.init()
+surface = pygame.display.set_mode((600, 400))
+
+menu = pygame_menu.Menu('Welcome', 400, 300, theme=pygame_menu.themes.THEME_BLUE)
+
+menu.add.text_input('Name :', default='John Doe')
+#menu.add.selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange = set_difficulty)
+menu.add.button('Play', main)
+menu.add.button('Quit', pygame_menu.events.EXIT)
+menu.mainloop(surface)
