@@ -45,7 +45,7 @@ def main(dimensiones: tuple=None):
     numero_botones *= numero_botones
 
     origen_particulas = [int(dimensiones[0] * 0.964), int(dimensiones[1] * 0.207)]
-    animacion_particulas = AnimacionParticulas(origen_particulas,(100,700), screen)
+    animacion_particulas = AnimacionParticulas(origen_particulas,(400,650), screen)
 
 
     while corriendo:
@@ -79,7 +79,7 @@ def main(dimensiones: tuple=None):
         tablero.imprimir(screen)
 
         # Animacion de particulas desde el baston de Megumin hacia un punto objetivo
-        animacion_particulas.animacion(3)
+        animacion_particulas.animacion(20)
 
         # Actualizar la pantalla
         pygame.display.flip()

@@ -31,6 +31,7 @@ class AnimacionParticulas:
     objetivo: tuple[int,int]
     screen: pygame.Surface
     particulas: list[Particula]
+    tiempo_espera: int  # Tiempo que se espera a que termine el audio de Megumin antes de mover las particulas
 
     def __init__(self, origen_particulas, objetivo, screen):
         self.origen_particulas = origen_particulas
@@ -41,6 +42,8 @@ class AnimacionParticulas:
         sonido_megumin_dice_explosion = pygame.mixer.Sound("assets/sonidos/megumin_dice_explosion.wav")
         sonido_megumin_dice_explosion.set_volume(1)
         sonido_megumin_dice_explosion.play()
+
+        self.tiempo_espera = int(sonido_megumin_dice_explosion.get_length()) * 9
 
     def imprimir(self) -> None:
         for particula in self.particulas:
@@ -68,5 +71,10 @@ class AnimacionParticulas:
     def animacion(self, velocidad_animacion: float):
         self.crear_particula()
         self.imprimir()
-        self.mover_origen_particulas(velocidad_animacion)
+
+        if self.tiempo_espera > 0:
+            self.tiempo_espera -= 1
+        else:
+            self.mover_origen_particulas(velocidad_animacion)
+
         self.vida_particulas()
