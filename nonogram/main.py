@@ -80,7 +80,7 @@ def main(dimensiones: tuple=None):
 
         # Animacion de particulas desde el baston de Megumin hacia un punto objetivo
         if animacion_particulas is not None:
-            animacion_particulas.animacion(velocidad_animacion=30)
+            animacion_particulas.animacion(velocidad_animacion=60)
             if animacion_particulas.validar_llegada():
                 animacion_particulas = None
 

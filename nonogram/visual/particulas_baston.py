@@ -10,7 +10,7 @@ class Particula:
 
     def __init__(self, posicion_actual: list[float]):
         self.posicion_actual = posicion_actual
-        self.radio = random.randint(6, 20)
+        self.radio = random.randint(8, 15)
 
 
     def imprimir(self, screen: pygame.Surface):
@@ -51,7 +51,8 @@ class AnimacionParticulas:
 
 
     def animacion(self, velocidad_animacion: float):
-        self.__crear_particula()
+        for i in range(3):
+            self.__crear_particula()
         self.__imprimir()
 
         if self.tiempo_espera_inicio > 0:
