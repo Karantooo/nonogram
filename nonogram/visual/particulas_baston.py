@@ -60,6 +60,8 @@ class AnimacionParticulas:
         self.origen_particulas[0] += vector_unitario_al_objetivo_x * desplazamiento
         self.origen_particulas[1] += vector_unitario_al_objetivo_y * desplazamiento
 
+        print(self.origen_particulas)
+
     def crear_particula(self) -> None:
         self.particulas.append(Particula(self.origen_particulas[:]))
 
@@ -78,3 +80,12 @@ class AnimacionParticulas:
             self.mover_origen_particulas(velocidad_animacion)
 
         self.vida_particulas()
+
+    def validar_llegada(self):
+        distancia_x = abs(self.origen_particulas[0] - self.objetivo[0])
+        distancia_y = abs(self.origen_particulas[1] - self.objetivo[1])
+
+        if distancia_x < 50 and distancia_y < 50:
+            return True
+
+        return False
