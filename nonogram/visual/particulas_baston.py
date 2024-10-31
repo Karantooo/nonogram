@@ -15,7 +15,9 @@ class Particula:
 
     def imprimir(self, screen: pygame.Surface):
         color = random.choice([Colores.ROJO,Colores.AMARILLO])
-        pygame.draw.circle(screen, color, self.posicion_actual, self.radio)
+        posicion_impresion_x = self.posicion_actual[0] + random.randint(-20, 20)
+        posicion_impresion_y = self.posicion_actual[1] + random.randint(-20, 20)
+        pygame.draw.circle(screen, color, [posicion_impresion_x,posicion_impresion_y], self.radio)
 
     def tick_de_vida(self, velocidad: float) -> bool:
         self.radio -= velocidad / 16
