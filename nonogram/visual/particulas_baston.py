@@ -18,6 +18,10 @@ class AnimacionParticulas:
     cantidad_particulas_generadas_por_iteracion = 3
     distancia_aceptacion_llegada_al_objetivo = 50
 
+    """
+    Controla la animación de partículas en movimiento hacia un objetivo con un efecto de explosión al llegar.
+    """
+
 
     def __init__(self, origen_particulas, objetivo, screen):
         self.origen_particulas = origen_particulas
@@ -36,7 +40,14 @@ class AnimacionParticulas:
         self.animacion_explosion = AnimacionExplosion()
 
 
-    def animacion(self, velocidad_animacion: float):
+    def animacion(self, velocidad_animacion: float) -> None:
+        """
+        Ejecuta la animacion, creando particulas, imprimiendolas, moviendo el origen de las particulas y
+        controlando la vida de las particulas
+
+        Args:
+            velocidad_animacion (float): Controla el desplazamiento del origen de las particulas en esta iteracion
+        """
         for i in range(self.cantidad_particulas_generadas_por_iteracion):
             self.__crear_particula()
         self.__imprimir()
@@ -50,6 +61,14 @@ class AnimacionParticulas:
 
 
     def validar_llegada(self) -> bool:
+        """
+        Valida si se llego a un rango aceptable de distancia con respecto al objetivo,
+        si este es el caso, ejecuta una animacion de explocion
+
+        Returns:
+            True si se llego y se termino de ejecutar el sonido que acompana a la explosion
+            False en caso contrario
+        """
         if self.llego:
             if self.tiempo_espera_final > 0:
                 self.tiempo_espera_final -= 1
@@ -80,6 +99,12 @@ class AnimacionParticulas:
 
 
     def __mover_origen_particulas(self, desplazamiento: float) -> None:
+        """
+        Mueve el origen de las partículas hacia el objetivo en cada ciclo de animación
+
+        Args:
+            desplazamiento (float): Indica cuantas unidades se va a desplazar el origen
+        """
         resta_al_cuadrado = lambda indice: (self.objetivo[indice] - self.origen_particulas[indice]) ** 2
         distancia_al_objetivo = math.sqrt(resta_al_cuadrado(0) + resta_al_cuadrado(1))
 
@@ -96,6 +121,12 @@ class AnimacionParticulas:
 
 
     def __vida_particulas(self, velocidad: float) -> None:
+        """
+        Ejecuta el ciclo de vida de las particulas, si estas ya no son capoces de existir las elimina
+
+        Args:
+            velocidad (float): Velocidad de desplazamiento del origen
+        """
         for particula in self.particulas:
             if not particula.tick_de_vida(velocidad):
                 self.particulas.remove(particula)
