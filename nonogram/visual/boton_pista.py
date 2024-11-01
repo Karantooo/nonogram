@@ -15,12 +15,14 @@ class BotonPista:
         self.alto = alto
         self.ancho = ancho
         self.dimensiones_pantalla = dimensiones
-        self.pistas = Pistas(tablero = tablero, valores = valores, dificultad = 2);
+        self.pistas = Pistas(tablero = tablero, valores = valores, dificultad = 2)
+
         # Creacion del boton en pygame
+
         self.boton_visual = pygame.Rect(
-            dimensiones[0] - self.ancho - 20,
+            10,
             # X: posición horizontal con espacio
-            dimensiones[1] - self.alto - 20,
+            10,
             # Y: posición vertical con espacio
             self.ancho,  # Ancho del botón
             self.alto  # Alto del botón

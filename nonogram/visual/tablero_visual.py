@@ -108,14 +108,22 @@ class TableroVisual:
         #contador de pistas
         texto_pistas = self.fuente.render(f'Pistas: {self.pistas}', True, Colores.NEGRO)
         screen.blit(texto_pistas, (screen.get_width() - texto_pistas.get_width() - 20, 40))
-        #boton pistas
-        pygame.draw.rect(screen, Colores.VERDE, self.boton_pista.boton_visual)
 
+        # Exportar imagen
+        imagen_boton_pista = pygame.image.load("assets/engranaje.png")
+        imagen_boton_pista = pygame.transform.scale(imagen_boton_pista, (self.ancho_boton, self.alto_boton))
+
+        # Dar imagen a el boton uwu
+        self.boton_pista.boton_visual = imagen_boton_pista.get_rect(topleft=(20,20))
+        screen.blit(imagen_boton_pista, self.boton_pista.boton_visual.topleft)
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
         try:
-            array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
-            self.tablero_logica.validar_click(mouse_pos, self.botones, array_pos)
+            if self.boton_pista.boton_visual.collidepoint(mouse_pos):
+                print("Holaa")
+            else:
+                array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
+                self.tablero_logica.validar_click(mouse_pos, self.botones, array_pos)
         except MouseFueraDelTablero:
             pass
 
