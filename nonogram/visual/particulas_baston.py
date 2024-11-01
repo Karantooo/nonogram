@@ -9,29 +9,56 @@ from nonogram.visual.colores import Colores
 class Particula:
     posicion_actual: list[float]
     radio: float
+    radio_minimo = 8
+    radio_maximo = 15
+    dispercion_maxima = 20
+
+    # Mientras mas alta la taza_de_reduccion_del_radio mas se demora en desaparecer la particula,
+    # esto genera una cola como de cometa en la animacion
+    taza_de_reduccion_del_radio = 16
+
 
     def __init__(self, posicion_actual: list[float]):
         self.posicion_actual = posicion_actual
-        self.radio = random.randint(8, 15)
+        self.radio = random.randint(self.radio_minimo, self.radio_maximo)
 
 
     def imprimir(self, screen: pygame.Surface):
         color = random.choice([Colores.ROJO,Colores.AMARILLO])
-        posicion_impresion_x = self.posicion_actual[0] + random.randint(-20, 20)
-        posicion_impresion_y = self.posicion_actual[1] + random.randint(-20, 20)
+        posicion_impresion_x = self.posicion_actual[0] + random.randint(self.dispercion_maxima * -1, self.dispercion_maxima)
+        posicion_impresion_y = self.posicion_actual[1] + random.randint(self.dispercion_maxima * -1, self.dispercion_maxima)
         pygame.draw.circle(screen, color, [posicion_impresion_x,posicion_impresion_y], self.radio)
 
+
     def tick_de_vida(self, velocidad: float) -> bool:
-        self.radio -= velocidad / 16
+        self.radio -= velocidad / self.taza_de_reduccion_del_radio
         if self.radio <= 0:
             return False
         return True
+
+
+    def set_radio_minimo(self, cambio: int):
+        self.radio_minimo = cambio
+
+
+    def set_radio_maximo(self, cambio: int):
+        self.radio_maximo = cambio
+
+
+    def set_dispercion_maxima(self, cambio: int):
+        self.dispercion_maxima = cambio
+
+
+    def set_taza_de_reduccion_del_radio(self, cambio: float):
+        self.taza_de_reduccion_del_radio = cambio
+
 
 
 class AnimacionExplosion:
     frames: list[pygame.Surface]
     frame_index: int
     gif_size: tuple[int,int]
+
 
     def __init__(self):
         gif = Image.open("assets/EXPLOSION.gif")
@@ -45,12 +72,14 @@ class AnimacionExplosion:
         self.frame_index = 0
         self.gif_size = gif.size
 
+
     def imprimir(self, screen: pygame.Surface, posicion: tuple[int, int]) -> None:
         posicion_impresion = [posicion[0] - self.gif_size[0] / 2, posicion[1] - self.gif_size[1] / 2]
         screen.blit(self.frames[self.frame_index], posicion_impresion)
         pygame.display.flip()
 
         self.frame_index = (self.frame_index + 1) % len(self.frames)
+
 
 class AnimacionParticulas:
     origen_particulas: list[float]  # Indica donde se generan las particulas
@@ -61,6 +90,10 @@ class AnimacionParticulas:
     tiempo_espera_final: int    # Tiempo que espera a que termine el audio del final
     llego: bool     # Controla si se llego o no al objetivo
     animacion_explosion: AnimacionExplosion
+
+    cantidad_particulas_generadas_por_iteracion = 3
+    distancia_aceptacion_llegada_al_objetivo = 50
+
 
     def __init__(self, origen_particulas, objetivo, screen):
         self.origen_particulas = origen_particulas
@@ -80,7 +113,7 @@ class AnimacionParticulas:
 
 
     def animacion(self, velocidad_animacion: float):
-        for i in range(3):
+        for i in range(self.cantidad_particulas_generadas_por_iteracion):
             self.__crear_particula()
         self.__imprimir()
 
@@ -90,6 +123,7 @@ class AnimacionParticulas:
             self.__mover_origen_particulas(velocidad_animacion)
 
         self.__vida_particulas(velocidad_animacion)
+
 
     def validar_llegada(self) -> bool:
         if self.llego:
@@ -102,13 +136,23 @@ class AnimacionParticulas:
         distancia_x = abs(self.origen_particulas[0] - self.objetivo[0])
         distancia_y = abs(self.origen_particulas[1] - self.objetivo[1])
 
-        if distancia_x < 50 and distancia_y < 50:
+        if (
+                distancia_x < self.distancia_aceptacion_llegada_al_objetivo and
+                distancia_y < self.distancia_aceptacion_llegada_al_objetivo
+        ):
             sonido_explosion = pygame.mixer.Sound("assets/sonidos/sonido_explosion.wav")
             sonido_explosion.set_volume(1)
             sonido_explosion.play()
             self.llego = True
 
         return False
+
+
+    def set_cantidad_particulas_generadas_por_iteracion(self, cambio: int) -> None:
+        self.cantidad_particulas_generadas_por_iteracion = cambio
+
+    def set_distancia_aceptacion_llegada_al_objetivo(self, cambio: int) -> None:
+        self.distancia_aceptacion_llegada_al_objetivo = cambio
 
 
     def __mover_origen_particulas(self, desplazamiento: float) -> None:
