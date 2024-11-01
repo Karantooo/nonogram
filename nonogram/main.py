@@ -4,6 +4,23 @@ import pygame_menu
 
 from visual.tablero_visual import TableroVisual
 
+def abrir_menu_opciones():
+    menu_opciones_juego.enable()
+    menu_principal.disable()
+
+def abrir_menu_configuracion():
+    menu_configuracion.enable()
+    menu_principal.disable()
+
+def volver_menu_principal_opciones():
+    menu_principal.enable()
+    menu_opciones_juego.disable()
+
+def volver_menu_principal_configuracion():
+    menu_principal.enable()
+    menu_configuracion.disable()
+
+
 def main(dimensiones: tuple=None):
 
     global tablero
@@ -105,13 +122,54 @@ def main(dimensiones: tuple=None):
 
 #if __name__ == '__main__':
     #main()
+
 pygame.init()
 surface = pygame.display.set_mode((600, 400))
 
-menu = pygame_menu.Menu('Welcome', 400, 300, theme=pygame_menu.themes.THEME_BLUE)
+menu_principal = pygame_menu.Menu('Welcome', 600, 400, theme=pygame_menu.themes.THEME_BLUE)
+menu_opciones_juego = pygame_menu.Menu('Opciones', 600, 400, theme=pygame_menu.themes.THEME_BLUE)
+menu_configuracion = pygame_menu.Menu('COnfiguracion', 600, 400, theme=pygame_menu.themes.THEME_BLUE)
 
-menu.add.text_input('Name :', default='John Doe')
-#menu.add.selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange = set_difficulty)
-menu.add.button('Play', main)
-menu.add.button('Quit', pygame_menu.events.EXIT)
-menu.mainloop(surface)
+
+# ----------------- MENU PRINCIPAL -----------------
+menu_principal.add.text_input('Name :', default='John Doe')
+menu_principal.add.button('Play', abrir_menu_opciones)
+menu_principal.add.button('Configure', abrir_menu_configuracion)
+menu_principal.add.button('Quit', pygame_menu.events.EXIT)
+
+# ----------------- MENU OPCIONES JUEGO -----------------
+menu_opciones_juego.add.selector('Dificultad :', [('Hard', 1), ('Medium', 2), ('Easy', 3)])
+menu_opciones_juego.add.button('Play', main)
+menu_opciones_juego.add.button('Back', volver_menu_principal_opciones)
+
+# ----------------- MENU CONFIGURACIONES -----------------
+menu_configuracion.add.selector('Dimensiones ventana :', [('1920x1080', (1920,1080)), ('1280x720', (1280, 720))])
+menu_configuracion.add.button('Back', volver_menu_principal_configuracion)
+
+# ----------------- MENU HABILITADO -----------------
+menu_principal.enable()
+menu_configuracion.disable()
+menu_opciones_juego.disable()
+screen_menu = pygame.display.set_mode((600, 400))
+
+while True:
+
+    events = pygame.event.get()
+    for event in events:
+        if event.type == pygame.QUIT:
+            exit()
+
+    if menu_principal.is_enabled():
+        menu_principal.draw(screen_menu)
+        menu_principal.update(events)
+    if menu_configuracion.is_enabled():
+        menu_configuracion.draw(screen_menu)
+        menu_configuracion.update(events)
+    if menu_opciones_juego.is_enabled():
+        menu_opciones_juego.draw(screen_menu)
+        menu_opciones_juego.update(events)
+
+    pygame.display.flip()
+
+
+
