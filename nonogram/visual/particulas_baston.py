@@ -1,84 +1,8 @@
 import pygame
 import math
-import random
-from PIL import Image
-from PIL.ImageFile import ImageFile
 
-from nonogram.visual.colores import Colores
-
-class Particula:
-    posicion_actual: list[float]
-    radio: float
-    radio_minimo = 8
-    radio_maximo = 15
-    dispercion_maxima = 20
-
-    # Mientras mas alta la taza_de_reduccion_del_radio mas se demora en desaparecer la particula,
-    # esto genera una cola como de cometa en la animacion
-    taza_de_reduccion_del_radio = 16
-
-
-    def __init__(self, posicion_actual: list[float]):
-        self.posicion_actual = posicion_actual
-        self.radio = random.randint(self.radio_minimo, self.radio_maximo)
-
-
-    def imprimir(self, screen: pygame.Surface):
-        color = random.choice([Colores.ROJO,Colores.AMARILLO])
-        posicion_impresion_x = self.posicion_actual[0] + random.randint(self.dispercion_maxima * -1, self.dispercion_maxima)
-        posicion_impresion_y = self.posicion_actual[1] + random.randint(self.dispercion_maxima * -1, self.dispercion_maxima)
-        pygame.draw.circle(screen, color, [posicion_impresion_x,posicion_impresion_y], self.radio)
-
-
-    def tick_de_vida(self, velocidad: float) -> bool:
-        self.radio -= velocidad / self.taza_de_reduccion_del_radio
-        if self.radio <= 0:
-            return False
-        return True
-
-
-    def set_radio_minimo(self, cambio: int):
-        self.radio_minimo = cambio
-
-
-    def set_radio_maximo(self, cambio: int):
-        self.radio_maximo = cambio
-
-
-    def set_dispercion_maxima(self, cambio: int):
-        self.dispercion_maxima = cambio
-
-
-    def set_taza_de_reduccion_del_radio(self, cambio: float):
-        self.taza_de_reduccion_del_radio = cambio
-
-
-
-class AnimacionExplosion:
-    frames: list[pygame.Surface]
-    frame_index: int
-    gif_size: tuple[int,int]
-
-
-    def __init__(self):
-        gif = Image.open("assets/EXPLOSION.gif")
-        self.frames = []
-        for frame in range(gif.n_frames):
-            gif.seek(frame)
-            frame_image = gif.convert("RGBA")  # Convierte a RGBA para Pygame
-            pygame_image = pygame.image.fromstring(frame_image.tobytes(), frame_image.size, frame_image.mode)
-            self.frames.append(pygame_image)
-
-        self.frame_index = 0
-        self.gif_size = gif.size
-
-
-    def imprimir(self, screen: pygame.Surface, posicion: tuple[int, int]) -> None:
-        posicion_impresion = [posicion[0] - self.gif_size[0] / 2, posicion[1] - self.gif_size[1] / 2]
-        screen.blit(self.frames[self.frame_index], posicion_impresion)
-        pygame.display.flip()
-
-        self.frame_index = (self.frame_index + 1) % len(self.frames)
+from nonogram.visual.animacion_explosion import AnimacionExplosion
+from nonogram.visual.particulas import Particula
 
 
 class AnimacionParticulas:
