@@ -3,7 +3,8 @@ import pygame
 
 from nonogram.visual.colores import Colores
 from visual.tablero_visual import TableroVisual
-from visual.particulas_baston import AnimacionParticulas
+from visual.animacion_particulas import AnimacionParticulas
+from visual.conversor import Conversor
 
 def main(dimensiones: tuple=None):
 
@@ -46,7 +47,8 @@ def main(dimensiones: tuple=None):
     numero_botones *= numero_botones
 
     origen_particulas = [int(dimensiones[0] * 0.964), int(dimensiones[1] * 0.207)]
-    objetivo = (450,620)
+    dimencion_boton = (tablero.get_ancho_boton(), tablero.get_alto_boton())
+    objetivo = Conversor.conversor_matriz_botones_to_coordenadas_pantalla((1,1),dimensiones,dimencion_boton)
     animacion_particulas = AnimacionParticulas(origen_particulas,objetivo, screen)
 
 
