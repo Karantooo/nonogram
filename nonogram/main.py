@@ -2,6 +2,8 @@ import sys
 import pygame
 
 from visual.tablero_visual import TableroVisual
+from visual.animacion_particulas import AnimacionParticulas
+from visual.conversor import Conversor
 
 def main(dimensiones: tuple=None):
 
@@ -36,12 +38,18 @@ def main(dimensiones: tuple=None):
     background_image = pygame.image.load("assets/fondo.png")
     background_image = pygame.transform.scale(background_image, dimensiones)
 
-    numero_botones = 3
+    numero_botones = 4
     pygame.display.set_caption("Mi primer juego en Pygame")
     tablero = TableroVisual(numero_botones=numero_botones, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
     corriendo = True
 
     numero_botones *= numero_botones
+
+    origen_particulas = [int(dimensiones[0] * 0.964), int(dimensiones[1] * 0.207)]
+    dimencion_boton = (tablero.get_ancho_boton(), tablero.get_alto_boton())
+    animacion_particulas = None
+
+
     while corriendo:
         #####################################################
         # Manejo de Eventos
@@ -71,6 +79,13 @@ def main(dimensiones: tuple=None):
 
         # Dibujar el tablero
         tablero.imprimir(screen)
+
+        # Animacion de particulas desde el baston de Megumin hacia un punto objetivo
+        if animacion_particulas is not None:
+            animacion_particulas.animacion(velocidad_animacion=60)
+            if animacion_particulas.validar_llegada():
+                animacion_particulas = None
+
 
         # Actualizar la pantalla
         pygame.display.flip()

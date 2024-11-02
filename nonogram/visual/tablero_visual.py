@@ -24,6 +24,7 @@ class TableroVisual:
     tiempo_transcurrido: int   # Indica el tiempo transcurrido del juego
     tamaño_fuente: int
 
+
     def __init__(
             self,
             numero_botones: int = 4,
@@ -73,6 +74,7 @@ class TableroVisual:
 
         self.tablero_logica = Tablero(marcados=marcados, vidas=vidas)
 
+
     def imprimir(self, screen: pygame.Surface) -> None:
         for array_botones in self.botones:
             for botones in array_botones:
@@ -102,12 +104,14 @@ class TableroVisual:
         texto_temporizador = fuente_temporizador.render(f'Tiempo: {self.tiempo_transcurrido} segundos', True, Colores.NEGRO)
         screen.blit(texto_temporizador, (self.dimensiones[0] * 0.4, self.dimensiones[1] * 0.9))
 
+
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
         try:
             array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
             self.tablero_logica.validar_click(mouse_pos, self.botones, array_pos)
         except MouseFueraDelTablero:
             pass
+
 
     def marcar_bandera(self,mouse_pos: tuple[int,int]) -> None:
         try:
@@ -116,30 +120,45 @@ class TableroVisual:
         except MouseFueraDelTablero:
             pass
 
+
     def get_vidas(self) -> int:
         return self.tablero_logica.get_vidas()
+
 
     def get_vistos(self) -> int:
         return self.tablero_logica.get_vistos()
 
+
     def ganado(self) -> bool:
         return self.tablero_logica.ganado()
-      
+
+
+    def get_ancho_boton(self) -> int:
+        return self.ancho_boton
+
+
+    def get_alto_boton(self) -> int:
+        return self.alto_boton
+
+
     # Metodo para
     def tiempo_ejecucion(self):
         tiempo = pygame.time.get_ticks() // 1000                     # Tiempo de ejecucion en segundos
         self.tiempo_transcurrido = tiempo       # Tupla con los segundos y minutos
+
 
     def guardar_estado(self, ruta: str = r"game_data.bin"):
         guardado = self.__obtener_datos_partida__()
         with open(ruta, "wb") as archivo:
             pickle.dump(guardado, archivo)
 
+
     @staticmethod
     def cargar_estado(ruta: str = r"game_data.bin") -> SistemaGuardado:
         with open(ruta, "rb") as archivo:
             casillas = pickle.load(archivo)
         return casillas
+
 
     def __obtener_datos_partida__(self):
         casillas = []
@@ -152,6 +171,7 @@ class TableroVisual:
 
         guardado = SistemaGuardado(casillas=casillas, vidas_restantes=self.get_vidas(), tiempo=self.tiempo_transcurrido)
         return guardado
+
 
     def __calculo_num_superiores(self) -> list[list[int]]:
         valores = []
@@ -175,6 +195,7 @@ class TableroVisual:
 
         return valores
 
+
     def __calculo_num_laterales(self) -> list[list[int]]:
         valores = []
 
@@ -197,6 +218,7 @@ class TableroVisual:
 
         return valores
 
+
     def __mouse_posicion_to_indices_array(self, mouse_pos: tuple[int, int]) -> tuple[int, int]:
         fuera_de_limites = lambda x, dim: x < int(dim * 0.2) or x >= int(dim - int(dim * 0.2))
 
@@ -210,3 +232,4 @@ class TableroVisual:
         array_pos = (array_pos[0] // self.ancho_boton, array_pos[1] // self.alto_boton)
 
         return array_pos
+
