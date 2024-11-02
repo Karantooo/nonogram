@@ -1,7 +1,6 @@
 import sys
 import pygame
 
-from nonogram.visual.colores import Colores
 from visual.tablero_visual import TableroVisual
 from visual.animacion_particulas import AnimacionParticulas
 from visual.conversor import Conversor
@@ -39,7 +38,7 @@ def main(dimensiones: tuple=None):
     background_image = pygame.image.load("assets/fondo.png")
     background_image = pygame.transform.scale(background_image, dimensiones)
 
-    numero_botones = 3
+    numero_botones = 4
     pygame.display.set_caption("Mi primer juego en Pygame")
     tablero = TableroVisual(numero_botones=numero_botones, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
     corriendo = True
@@ -48,8 +47,7 @@ def main(dimensiones: tuple=None):
 
     origen_particulas = [int(dimensiones[0] * 0.964), int(dimensiones[1] * 0.207)]
     dimencion_boton = (tablero.get_ancho_boton(), tablero.get_alto_boton())
-    objetivo = Conversor.conversor_matriz_botones_to_coordenadas_pantalla((1,1),dimensiones,dimencion_boton)
-    animacion_particulas = AnimacionParticulas(origen_particulas,objetivo, screen)
+    animacion_particulas = None
 
 
     while corriendo:
