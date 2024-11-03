@@ -36,6 +36,7 @@ class TableroVisual:
     animacion_particulas: AnimacionParticulas
     origen_particulas: list[int]
     screen: pygame.display
+    clickeado: bool
 
 
 
@@ -99,6 +100,7 @@ class TableroVisual:
         self.animacion_particulas = None
         self.origen_particulas = [int(dimensiones[0] * 0.964), int(dimensiones[1] * 0.207)]
         self.screen = screen
+        self.clickeado = False
 
 
     def imprimir(self, screen: pygame.Surface) -> None:
@@ -159,7 +161,8 @@ class TableroVisual:
             if self.boton_ajustes_juego.boton_visual.collidepoint(mouse_pos):
                 print("Boton")
                 self.menu_ajustes.enable()
-            elif self.boton_pistas.boton_visual.collidepoint(mouse_pos) and self.animacion_particulas is None:
+            elif self.boton_pistas.boton_visual.collidepoint(mouse_pos) and not self.clickeado:
+                self.clickeado = True
                 if self.pistas > 0:
                     self.pistas -= 1
                     indices_solucion = self.boton_pistas.accionar_pistas()
@@ -221,6 +224,7 @@ class TableroVisual:
 
     def set_animacion_particulas(self):
         self.animacion_particulas = None
+        self.clickeado = False
 
 
     # Metodo para
