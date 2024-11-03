@@ -136,9 +136,11 @@ class TableroVisual:
         texto_pistas = self.fuente.render(f'Pistas: {self.pistas}', True, Colores.NEGRO)
         screen.blit(texto_pistas, (screen.get_width() - texto_pistas.get_width() - 20, 20 + texto_vidas.get_height() + 10))
 
+        tamanio_botones_juego = (70, 70)
+
         # Exportar imagen
         imagen_boton_ajustes_juego = pygame.image.load("assets/engranaje.png")
-        imagen_boton_ajustes_juego = pygame.transform.scale(imagen_boton_ajustes_juego, (self.ancho_boton, self.alto_boton))
+        imagen_boton_ajustes_juego = pygame.transform.scale(imagen_boton_ajustes_juego, tamanio_botones_juego)
 
         # Dar imagen a el boton uwu
         self.boton_ajustes_juego.boton_visual = imagen_boton_ajustes_juego.get_rect(topleft=(20,20))
@@ -146,7 +148,7 @@ class TableroVisual:
 
         #Copiamos imagen
         imagen_boton_pistas = pygame.image.load("assets/bombilla.png")
-        imagen_boton_pistas = pygame.transform.scale(imagen_boton_pistas, (self.ancho_boton, self.alto_boton))
+        imagen_boton_pistas = pygame.transform.scale(imagen_boton_pistas, tamanio_botones_juego)
 
         # Dar imagen a el boton uwu
         self.boton_pistas.boton_visual = imagen_boton_pistas.get_rect(topleft=(50 + self.alto_boton, 20))
