@@ -1,8 +1,14 @@
-import numpy as np
-import pygame
 import pickle
+
+from PIL.ImageChops import screen
+
 from nonogram.logica.tablero import Tablero
 from nonogram.visual.boton import Boton
+import numpy as np
+import pygame
+import pygame_menu
+
+from nonogram.visual.boton_pista import BotonPista
 from nonogram.visual.colores import Colores
 from nonogram.logica.casilla import Casilla
 from nonogram.logica.sistema_guardado import SistemaGuardado
@@ -23,6 +29,10 @@ class TableroVisual:
     dimensiones: tuple
     tiempo_transcurrido: int   # Indica el tiempo transcurrido del juego
     tamaño_fuente: int
+    pistas = 3
+    menu_inicio : pygame_menu.Menu
+    menu_ajustes: pygame_menu.Menu
+
 
 
     def __init__(
@@ -30,14 +40,15 @@ class TableroVisual:
             numero_botones: int = 4,
             imagen: np.ndarray[bool] = None,
             dimensiones: tuple = (1000, 700),
-            guardado_previo: SistemaGuardado = None
+            guardado_previo: SistemaGuardado = None,
+            menu_inicial : pygame_menu.Menu = None,
     ) -> None:
         self.numero_botones = numero_botones
         self.tamaño_fuente = int(54 - ((5/4) * self.numero_botones))
         self.tiempo_transcurrido = 0
         self.fuente = pygame.font.SysFont('Arial', self.tamaño_fuente)
         self.dimensiones = dimensiones
-
+        self.menu_inicio = menu_inicial
         # Tamaño de los botones, hacer resize
         self.ancho_boton = int((self.dimensiones[0] * 0.6) // self.numero_botones)
         self.alto_boton = int((self.dimensiones[1] * 0.6) // self.numero_botones)
@@ -60,7 +71,8 @@ class TableroVisual:
                                                     dimensiones=self.dimensiones, casilla=casilla_especifica)
 
                 contador += 1
-
+        self.boton_ajustes_juego = BotonPista(ancho = self.ancho_boton, alto =self.alto_boton, dimensiones = self.dimensiones, tablero = self.botones, valores = self.valores, cant_botones = numero_botones)
+        self.boton_pistas = BotonPista(ancho = self.ancho_boton, alto = self.alto_boton, dimensiones = self.dimensiones, tablero = self.botones, valores = self.valores, cant_botones = numero_botones)
         self.numeros_superiores = self.__calculo_num_superiores()
         self.numeros_laterales = self.__calculo_num_laterales()
 
@@ -74,7 +86,10 @@ class TableroVisual:
 
         self.tablero_logica = Tablero(marcados=marcados, vidas=vidas)
 
-
+        self.menu_ajustes = pygame_menu.Menu("Ajustes", 500, 400, theme=pygame_menu.themes.THEME_BLUE)
+        self.menu_ajustes.add.button("Pista", None)
+        self.menu_ajustes.add.button("Inicio", volver_menu_inicio)
+        self.menu_ajustes.disable()
     def imprimir(self, screen: pygame.Surface) -> None:
         for array_botones in self.botones:
             for botones in array_botones:
@@ -104,11 +119,43 @@ class TableroVisual:
         texto_temporizador = fuente_temporizador.render(f'Tiempo: {self.tiempo_transcurrido} segundos', True, Colores.NEGRO)
         screen.blit(texto_temporizador, (self.dimensiones[0] * 0.4, self.dimensiones[1] * 0.9))
 
+        #contador de pistas
+        texto_pistas = self.fuente.render(f'Pistas: {self.pistas}', True, Colores.NEGRO)
+        screen.blit(texto_pistas, (screen.get_width() - texto_pistas.get_width() - 20, 20 + texto_vidas.get_height() + 10))
+
+        # Exportar imagen
+        imagen_boton_ajustes_juego = pygame.image.load("assets/engranaje.png")
+        imagen_boton_ajustes_juego = pygame.transform.scale(imagen_boton_ajustes_juego, (self.ancho_boton, self.alto_boton))
+
+        # Dar imagen a el boton uwu
+        self.boton_ajustes_juego.boton_visual = imagen_boton_ajustes_juego.get_rect(topleft=(20,20))
+        screen.blit(imagen_boton_ajustes_juego, self.boton_ajustes_juego.boton_visual.topleft)
+
+        #Copiamos imagen
+        imagen_boton_pistas = pygame.image.load("assets/bombilla.png")
+        imagen_boton_pistas = pygame.transform.scale(imagen_boton_pistas, (self.ancho_boton, self.alto_boton))
+
+        # Dar imagen a el boton uwu
+        self.boton_pistas.boton_visual = imagen_boton_pistas.get_rect(topleft=(50 + self.alto_boton, 20))
+        screen.blit(imagen_boton_pistas, self.boton_pistas.boton_visual.topleft)
+
+        if self.pistas == 0:
+            sin_vidas_texto = self.fuente.render("No te quedan mas pistas", True, (0, 0, 0))
+            screen.blit(sin_vidas_texto,( self.dimensiones[0] * 0.2, self.dimensiones[1] * 0.8))
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
         try:
-            array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
-            self.tablero_logica.validar_click(mouse_pos, self.botones, array_pos)
+            if self.boton_ajustes_juego.boton_visual.collidepoint(mouse_pos):
+                print("Boton")
+                self.menu_ajustes.enable()
+            elif self.boton_pistas.boton_visual.collidepoint(mouse_pos):
+                if self.pistas > 0:
+                    self.pistas -= 1
+                    self.boton_pistas.accionar_pistas()
+
+            else:
+                array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
+                self.tablero_logica.validar_click(mouse_pos, self.botones, array_pos)
         except MouseFueraDelTablero:
             pass
 
@@ -233,3 +280,7 @@ class TableroVisual:
 
         return array_pos
 
+def volver_menu_inicio(self):
+    self.menu_inicio.enable()
+    self.menu_ajustes.disable()
+    self.corriendo = False
