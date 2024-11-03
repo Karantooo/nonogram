@@ -11,17 +11,21 @@ class AnimacionExplosion:
     Controla la animación de una explosión a partir de un GIF, cargando cada fotograma como una superficie de Pygame.
     """
 
-    def __init__(self):
+    def __init__(self, tamaño_botones: tuple[int,int]):
+        dimension_mayor = max(tamaño_botones)
+        proporcion = 5 / 4
+        tamaño = (int(dimension_mayor * proporcion), int(dimension_mayor * proporcion))
         gif = Image.open("assets/EXPLOSION.gif")
         self.frames = []
         for frame in range(gif.n_frames):
             gif.seek(frame)
             frame_image = gif.convert("RGBA")  # Convierte a RGBA para Pygame
+            frame_image = frame_image.resize(tamaño)
             pygame_image = pygame.image.fromstring(frame_image.tobytes(), frame_image.size, frame_image.mode)
             self.frames.append(pygame_image)
 
         self.frame_index = 0
-        self.gif_size = gif.size
+        self.gif_size = tamaño
 
 
     def imprimir(self, screen: pygame.Surface, posicion: tuple[int, int]) -> None:

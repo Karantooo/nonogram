@@ -44,7 +44,7 @@ class AnimacionParticulas:
         self.tiempo_espera_final_faltante = self.tiempo_espera_final
         self.llego = False
 
-        self.animacion_explosion = AnimacionExplosion()
+        self.animacion_explosion = AnimacionExplosion((tablero_botones[0][0].ancho,tablero_botones[0][0].alto))
 
 
     def animacion(self, velocidad_animacion: float) -> None:
