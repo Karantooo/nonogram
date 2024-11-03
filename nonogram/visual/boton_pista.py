@@ -5,17 +5,17 @@ from nonogram.logica.pistas import Pistas
 
 
 class BotonPista:
-
     alto: int
     ancho: int
     dimensiones_pantalla: tuple
-    pista: Pistas
+    pistas: Pistas
 
-    def __init__(self, alto: int, ancho: int, dimensiones: tuple, tablero: list[list[Boton]], valores: np.ndarray[bool]) -> None:
+    def __init__(self, alto: int, ancho: int, dimensiones: tuple, tablero: list[list[Boton]], valores: np.ndarray[bool], cant_botones :int ) -> None:
         self.alto = alto
         self.ancho = ancho
         self.dimensiones_pantalla = dimensiones
-        self.pistas = Pistas(tablero = tablero, valores = valores, dificultad = 2)
+        self.pistas = Pistas(tablero = tablero, valores = valores, dificultad = 2, num_botones = cant_botones)
+
 
         # Creacion del boton en pygame
 
@@ -28,4 +28,6 @@ class BotonPista:
             self.alto  # Alto del botón
         )
 
-   # def get_click(self):
+    def accionar_pistas(self):
+        self.pistas.get_pista()
+
