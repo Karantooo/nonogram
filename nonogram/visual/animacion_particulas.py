@@ -2,18 +2,22 @@ import pygame
 import math
 
 from nonogram.visual.animacion_explosion import AnimacionExplosion
+from nonogram.visual.boton import Boton
 from nonogram.visual.particulas import Particula
 
 
 class AnimacionParticulas:
     origen_particulas: list[float]  # Indica donde se generan las particulas
     objetivo: tuple[int,int]
+    indice_objetivo: tuple[int,int]
     screen: pygame.Surface
     particulas: list[Particula]
     tiempo_espera_inicio: int  # Tiempo que se espera a que termine el audio de Megumin antes de mover las particulas
     tiempo_espera_final: int    # Tiempo que espera a que termine el audio del final
+    tiempo_espera_final_faltante: int    # Tiempo que falta a que termine el audio del final
     llego: bool     # Controla si se llego o no al objetivo
     animacion_explosion: AnimacionExplosion
+    tablero_botones: list[list[Boton]]
 
     cantidad_particulas_generadas_por_iteracion = 3
     distancia_aceptacion_llegada_al_objetivo = 50
@@ -23,10 +27,12 @@ class AnimacionParticulas:
     """
 
 
-    def __init__(self, origen_particulas, objetivo, screen):
+    def __init__(self, origen_particulas, objetivo, indice_objetivo, screen, tablero_botones: list[list[Boton]]):
         self.origen_particulas = origen_particulas
         self.objetivo = objetivo
+        self.indice_objetivo = indice_objetivo
         self.screen = screen
+        self.tablero_botones = tablero_botones
         self.particulas = []
 
         sonido_megumin_dice_explosion = pygame.mixer.Sound("assets/sonidos/megumin_dice_explosion.wav")
@@ -35,6 +41,7 @@ class AnimacionParticulas:
 
         self.tiempo_espera_inicio = int(sonido_megumin_dice_explosion.get_length()) * 9
         self.tiempo_espera_final = 10
+        self.tiempo_espera_final_faltante = self.tiempo_espera_final
         self.llego = False
 
         self.animacion_explosion = AnimacionExplosion()
@@ -70,8 +77,10 @@ class AnimacionParticulas:
             False en caso contrario
         """
         if self.llego:
-            if self.tiempo_espera_final > 0:
-                self.tiempo_espera_final -= 1
+            if self.tiempo_espera_final_faltante > 0:
+                self.tiempo_espera_final_faltante -= 1
+                if self.tiempo_espera_final_faltante <= self.tiempo_espera_final / 2:
+                    self.tablero_botones[self.indice_objetivo[0]][self.indice_objetivo[1]].casilla.visibilidad = True
                 self.animacion_explosion.imprimir(self.screen, self.objetivo)
                 return False
             else:
@@ -131,6 +140,8 @@ class AnimacionParticulas:
             if not particula.tick_de_vida(velocidad):
                 self.particulas.remove(particula)
 
+    def get_indice_objetivo(self):
+        return self.indice_objetivo
 
     def __imprimir(self) -> None:
         for particula in self.particulas:

@@ -175,7 +175,9 @@ class TableroVisual:
                         self.animacion_particulas = AnimacionParticulas(
                             origen_particulas=self.origen_particulas[:],
                             objetivo=coordenadas,
-                            screen=self.screen
+                            indice_objetivo=indices_solucion,
+                            screen=self.screen,
+                            tablero_botones=self.botones
                         )
 
             else:
