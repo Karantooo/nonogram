@@ -212,6 +212,12 @@ class TableroVisual:
     def get_alto_boton(self) -> int:
         return self.alto_boton
 
+    def get_animacion_particulas(self):
+        return self.animacion_particulas
+
+    def set_animacion_particulas(self):
+        return self.animacion_particulas
+
 
     # Metodo para
     def tiempo_ejecucion(self):
