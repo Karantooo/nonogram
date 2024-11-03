@@ -29,5 +29,5 @@ class BotonPista:
         )
 
     def accionar_pistas(self):
-        self.pistas.get_pista()
+        return self.pistas.get_pista()
 

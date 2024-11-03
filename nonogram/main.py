@@ -58,15 +58,14 @@ def main(dimensiones: tuple=None):
 
     numero_botones = 3
     pygame.display.set_caption("Mi primer juego en Pygame")
-    tablero = TableroVisual(numero_botones=numero_botones, dimensiones=dimensiones) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
+    tablero = TableroVisual(
+        numero_botones=numero_botones,
+        dimensiones=dimensiones,
+        screen=screen
+    ) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
     corriendo = True
 
     numero_botones *= numero_botones
-
-    origen_particulas = [int(dimensiones[0] * 0.964), int(dimensiones[1] * 0.207)]
-    dimencion_boton = (tablero.get_ancho_boton(), tablero.get_alto_boton())
-    animacion_particulas = None
-
 
     while corriendo:
         #####################################################
@@ -99,10 +98,10 @@ def main(dimensiones: tuple=None):
         tablero.imprimir(screen)
 
         # Animacion de particulas desde el baston de Megumin hacia un punto objetivo
-        if animacion_particulas is not None:
-            animacion_particulas.animacion(velocidad_animacion=60)
-            if animacion_particulas.validar_llegada():
-                animacion_particulas = None
+        if tablero.get_animacion_particulas() is not None:
+            tablero.get_animacion_particulas().animacion(velocidad_animacion=60)
+            if tablero.get_animacion_particulas().validar_llegada():
+                tablero.set_animacion_particulas()
 
 
         # Actualizar la pantalla

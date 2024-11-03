@@ -53,8 +53,9 @@ class Pistas:
             self.tablero_botones[posicion_solucionar[0]][posicion_solucionar[1]].casilla.visibilidad = True
             self.pistas -= 1
             print(1)
-            return  # Salir después de marcar una casilla válida
+            return  posicion_solucionar
 
         # Eliminar la posición ya revisada de la lista de posibles soluciones
         lista_posible_soluiciones.remove(posicion_solucionar)
         print(f"lsita2 : {lista_posible_soluiciones}")
+        return None

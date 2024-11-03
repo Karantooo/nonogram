@@ -13,7 +13,8 @@ from nonogram.visual.colores import Colores
 from nonogram.logica.casilla import Casilla
 from nonogram.logica.sistema_guardado import SistemaGuardado
 from nonogram.logica.Excepciones.mouse_fuera_del_tablero import MouseFueraDelTablero
-
+from nonogram.visual.animacion_particulas import AnimacionParticulas
+from nonogram.visual.conversor import Conversor
 
 class TableroVisual:
     numero_botones: int         # Cantidad de botones en el tablero
@@ -26,12 +27,15 @@ class TableroVisual:
     numeros_laterales: list[list[int]]      # Números en los laterales
     valores: np.ndarray[bool]
     tablero_logica: Tablero
-    dimensiones: tuple
+    dimensiones: tuple[float,float]
     tiempo_transcurrido: int   # Indica el tiempo transcurrido del juego
     tamaño_fuente: int
     pistas = 3
     menu_inicio : pygame_menu.Menu
     menu_ajustes: pygame_menu.Menu
+    animacion_particulas: AnimacionParticulas
+    origen_particulas: list[int]
+    screen: pygame.display
 
 
 
@@ -42,6 +46,7 @@ class TableroVisual:
             dimensiones: tuple = (1000, 700),
             guardado_previo: SistemaGuardado = None,
             menu_inicial : pygame_menu.Menu = None,
+            screen: pygame.display = None
     ) -> None:
         self.numero_botones = numero_botones
         self.tamaño_fuente = int(54 - ((5/4) * self.numero_botones))
@@ -90,6 +95,12 @@ class TableroVisual:
         self.menu_ajustes.add.button("Pista", None)
         self.menu_ajustes.add.button("Inicio", volver_menu_inicio)
         self.menu_ajustes.disable()
+
+        self.animacion_particulas = None
+        self.origen_particulas = [int(dimensiones[0] * 0.964), int(dimensiones[1] * 0.207)]
+        self.screen = screen
+
+
     def imprimir(self, screen: pygame.Surface) -> None:
         for array_botones in self.botones:
             for botones in array_botones:
@@ -151,7 +162,21 @@ class TableroVisual:
             elif self.boton_pistas.boton_visual.collidepoint(mouse_pos):
                 if self.pistas > 0:
                     self.pistas -= 1
-                    self.boton_pistas.accionar_pistas()
+                    indices_solucion = self.boton_pistas.accionar_pistas()
+
+                    if indices_solucion is not None:
+                        indices_solucion_invertido = (indices_solucion[1],indices_solucion[0])
+                        coordenadas = Conversor.conversor_matriz_botones_to_coordenadas_pantalla(
+                            indices_solucion_invertido,
+                            self.dimensiones,
+                            (self.ancho_boton,self.alto_boton)
+                        )
+
+                        self.animacion_particulas = AnimacionParticulas(
+                            origen_particulas=self.origen_particulas[:],
+                            objetivo=coordenadas,
+                            screen=self.screen
+                        )
 
             else:
                 array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
