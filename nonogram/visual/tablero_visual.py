@@ -165,6 +165,8 @@ class TableroVisual:
                     indices_solucion = self.boton_pistas.accionar_pistas()
 
                     if indices_solucion is not None:
+                        self.tablero_logica.correctos += 1
+                        self.tablero_logica.vistos += 1
                         indices_solucion_invertido = (indices_solucion[1],indices_solucion[0])
                         coordenadas = Conversor.conversor_matriz_botones_to_coordenadas_pantalla(
                             indices_solucion_invertido,

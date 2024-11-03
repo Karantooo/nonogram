@@ -111,7 +111,19 @@ def main(dimensiones: tuple=None):
         # Validacion de condicion de Victoria
         #####################################################
 
-        if tablero.ganado():
+        if tablero.ganado() and tablero.animacion_particulas is None:
+            ########
+            # Se vuelve a imprimir pero sin animaciones ni decoraciones
+            ########
+            # Impresion de la imagen de fondo
+            screen.blit(background_image, (0, 0))
+
+            # Dibujar el tablero
+            tablero.imprimir(screen)
+
+            # Actualizar la pantalla
+            pygame.display.flip()
+
             sonido_victoria.play()
             pygame.time.delay(int(sonido_victoria.get_length() * 1000))  # Delay en milisegundos
             print("gg")
