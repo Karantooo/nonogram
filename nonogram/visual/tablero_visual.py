@@ -216,7 +216,7 @@ class TableroVisual:
         return self.animacion_particulas
 
     def set_animacion_particulas(self):
-        return self.animacion_particulas
+        self.animacion_particulas = None
 
 
     # Metodo para
