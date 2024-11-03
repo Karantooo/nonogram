@@ -159,7 +159,7 @@ class TableroVisual:
             if self.boton_ajustes_juego.boton_visual.collidepoint(mouse_pos):
                 print("Boton")
                 self.menu_ajustes.enable()
-            elif self.boton_pistas.boton_visual.collidepoint(mouse_pos):
+            elif self.boton_pistas.boton_visual.collidepoint(mouse_pos) and self.animacion_particulas is None:
                 if self.pistas > 0:
                     self.pistas -= 1
                     indices_solucion = self.boton_pistas.accionar_pistas()
