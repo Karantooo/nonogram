@@ -6,6 +6,8 @@ from visual.tablero_visual import TableroVisual
 from visual.animacion_particulas import AnimacionParticulas
 from visual.conversor import Conversor
 
+
+dificultad = 1
 def abrir_menu_opciones():
     menu_opciones_juego.enable()
     menu_principal.disable()
@@ -26,6 +28,8 @@ def volver_menu_principal_configuracion():
 def main(dimensiones: tuple=None):
 
     global tablero
+    global cantidad_de_botones
+    num_botones = cantidad_de_botones
     pygame.init()
     pygame.mixer.init()
 
@@ -56,7 +60,8 @@ def main(dimensiones: tuple=None):
     background_image = pygame.image.load("assets/fondo.png")
     background_image = pygame.transform.scale(background_image, dimensiones)
 
-    numero_botones = 3
+    numero_botones = cantidad_de_botones
+
     pygame.display.set_caption("Mi primer juego en Pygame")
     tablero = TableroVisual(
         numero_botones=numero_botones,
@@ -164,7 +169,20 @@ menu_principal.add.button('Configure', abrir_menu_configuracion)
 menu_principal.add.button('Quit', pygame_menu.events.EXIT)
 
 # ----------------- MENU OPCIONES JUEGO -----------------
-menu_opciones_juego.add.selector('Dificultad :', [('Hard', 1), ('Medium', 2), ('Easy', 3)])
+cantidad_de_botones = 3
+
+def cambiar_dificultad(value, dificultad):
+    print(value)
+    global cantidad_de_botones
+    if (value[0][0] == 'Hard'):
+        cantidad_de_botones = 12
+    elif (value[0][0] == 'Medium'):
+        cantidad_de_botones = 8
+    else:
+        cantidad_de_botones = 3
+
+
+menu_opciones_juego.add.selector('Dificultad :', [('Easy', 1), ('Medium', 2), ('Hard', 3)], onchange=cambiar_dificultad)
 menu_opciones_juego.add.button('Play', main)
 menu_opciones_juego.add.button('Back', volver_menu_principal_opciones)
 
