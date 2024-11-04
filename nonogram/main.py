@@ -163,7 +163,7 @@ menu_configuracion = pygame_menu.Menu('COnfiguracion', 600, 400, theme=pygame_me
 
 
 # ----------------- MENU PRINCIPAL -----------------
-menu_principal.add.text_input('Name :', default='John Doe')
+#menu_principal.add.text_input('Name :', default='John Doe')
 menu_principal.add.button('Play', abrir_menu_opciones)
 menu_principal.add.button('Configure', abrir_menu_configuracion)
 menu_principal.add.button('Quit', pygame_menu.events.EXIT)

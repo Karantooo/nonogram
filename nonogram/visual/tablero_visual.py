@@ -37,6 +37,7 @@ class TableroVisual:
     origen_particulas: list[int]
     screen: pygame.display
     clickeado: bool
+    tiempo_inicial: int
 
 
 
@@ -89,6 +90,7 @@ class TableroVisual:
 
         vidas = 3 if guardado_previo is None else guardado_previo.vidas_restantes
         self.tiempo_transcurrido = 0 if guardado_previo is None else guardado_previo.tiempo
+        self.tiempo_inicial = pygame.time.get_ticks() // 1000
 
         self.tablero_logica = Tablero(marcados=marcados, vidas=vidas)
 
@@ -161,11 +163,11 @@ class TableroVisual:
 
         screen.blit(imagen_boton_pistas, self.boton_pistas.boton_visual.topleft)
 
-        text_salida_juego = pygame.font.SysFont('Arial', 30).render("¡Para salir, presione 'Q' o 'Escape'!", True,
+        text_salida_juego = pygame.font.SysFont('Arial', 30).render("Para salir, presione 'Q' o 'Escape'", True,
                                                                     (0, 0, 0))
         screen.blit(text_salida_juego, (20, self.dimensiones[1] * 0.9))
 
-        text_bombilla = pygame.font.SysFont('Arial', 30).render("¡Presione la bombilla para las pistas!", True,
+        text_bombilla = pygame.font.SysFont('Arial', 30).render("Presione la bombilla para las pistas", True,
                                                                 (0, 0, 0))
         screen.blit(text_bombilla, (20, self.dimensiones[1] * 0.94))
 
@@ -246,7 +248,7 @@ class TableroVisual:
 
     # Metodo para
     def tiempo_ejecucion(self):
-        tiempo = pygame.time.get_ticks() // 1000                     # Tiempo de ejecucion en segundos
+        tiempo = (pygame.time.get_ticks() // 1000) - self.tiempo_inicial                     # Tiempo de ejecucion en segundos
         self.tiempo_transcurrido = tiempo       # Tupla con los segundos y minutos
 
 
