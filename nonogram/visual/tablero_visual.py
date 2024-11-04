@@ -161,6 +161,14 @@ class TableroVisual:
 
         screen.blit(imagen_boton_pistas, self.boton_pistas.boton_visual.topleft)
 
+        text_salida_juego = pygame.font.SysFont('Arial', 30).render("¡Para salir, presione 'Q' o 'Escape'!", True,
+                                                                    (0, 0, 0))
+        screen.blit(text_salida_juego, (20, self.dimensiones[1] * 0.9))
+
+        text_bombilla = pygame.font.SysFont('Arial', 30).render("¡Presione la bombilla para las pistas!", True,
+                                                                (0, 0, 0))
+        screen.blit(text_bombilla, (20, self.dimensiones[1] * 0.94))
+
         if self.pistas == 0:
             sin_vidas_texto = self.fuente.render("No te quedan mas pistas", True, (0, 0, 0))
             screen.blit(sin_vidas_texto,( self.dimensiones[0] * 0.2, self.dimensiones[1] * 0.8))
@@ -324,7 +332,7 @@ class TableroVisual:
 
         # Calcular la posición en el array
         array_pos = (mouse_pos[0] - int(self.dimensiones[0] * 0.2), mouse_pos[1] - int(self.dimensiones[1] * 0.2))
-        array_pos = (array_pos[0] // self.ancho_boton, array_pos[1] // self.alto_boton)
+        array_pos = (int(array_pos[0] // self.ancho_boton), int(array_pos[1] // self.alto_boton))
 
         return array_pos
 
