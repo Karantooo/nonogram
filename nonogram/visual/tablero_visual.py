@@ -157,8 +157,6 @@ class TableroVisual:
         pygame.draw.circle(screen, (0, 0, 0), (85 + self.alto_boton, 50), 50, 10)
 
         self.boton_pistas.boton_visual = imagen_boton_pistas.get_rect(topleft=(50 + self.alto_boton, 20))
-
-
         screen.blit(imagen_boton_pistas, self.boton_pistas.boton_visual.topleft)
 
         text_salida_juego = pygame.font.SysFont('Arial', 30).render("¡Para salir, presione 'Q' o 'Escape'!", True,
