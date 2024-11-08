@@ -1,13 +1,14 @@
 import pygame_menu
 import pygame
-from menu_configuracion import MenuConfiguracion
-from menu_opciones_juego import MenuOpcionesJuego
+from .menu_configuracion import MenuConfiguracion
+from .menu_opciones_juego import MenuOpcionesJuego
 
 
 
 class MenuInicio:
-    def __init__(self, screen: pygame.display):
+    def __init__(self, screen: pygame.display, main):
         self.pantalla = screen
+        self.main = main
         self.menu_inicio = pygame_menu.Menu(title="Nonogram", width=700, height=500, theme=pygame_menu.themes.THEME_DARK)
 
     def mostrar_menu_inicio(self):
@@ -23,5 +24,5 @@ class MenuInicio:
         menu_configuracion.mostrar_menu_configuracion()
 
     def activar_menu_opciones_juego(self):
-        menu_opciones_juego = MenuOpcionesJuego(self.pantalla, self)
+        menu_opciones_juego = MenuOpcionesJuego(self.pantalla, self, self.main)
         menu_opciones_juego.mostrar_menu_opciones_juego()

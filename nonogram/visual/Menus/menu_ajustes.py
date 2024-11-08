@@ -1,6 +1,6 @@
 import pygame
 import pygame_menu
-from menu_inicio import MenuInicio
+from .menu_inicio import MenuInicio
 
 
 class MenuAjustes:
