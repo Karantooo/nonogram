@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from nonogram.logica.excepciones_imagenes import NoExisteMatrizError, ImagenError
+from nonogram.logica.Excepciones.excepciones_imagenes import NoExisteMatrizError, ImagenError
 
 
 class ImageToMatrix:

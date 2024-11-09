@@ -3,7 +3,7 @@ from os import remove
 import numpy as np
 import pygame
 import random
-from nonogram.logica.pistas_excepción import SinPistasError
+from nonogram.logica.Excepciones.excepcion_pistas import SinPistasError
 from nonogram.visual.boton import Boton
 
 
