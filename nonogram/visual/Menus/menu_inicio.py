@@ -31,7 +31,7 @@ class MenuInicio:
         self.menu_inicio.mainloop(self.pantalla)
 
     def activar_menu_configuracion(self):
-        menu_configuracion = MenuConfiguracion(self.pantalla, self)
+        menu_configuracion = MenuConfiguracion(self.pantalla, self, self.main)
         menu_configuracion.mostrar_menu_configuracion()
 
     def activar_menu_opciones_juego(self):

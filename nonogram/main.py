@@ -35,6 +35,9 @@ class Main:
         self.cantidad_de_botones = int(value)
         print(self.cantidad_de_botones)
 
+    def cambiar_volumen_musica(self, value):
+        pygame.mixer.music.set_volume(value)
+
     def main(self, dimensiones: tuple=None):
 
         print(self.cantidad_de_botones)
