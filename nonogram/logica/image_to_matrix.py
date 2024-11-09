@@ -17,7 +17,7 @@ class ImageToMatrix:
     El objetivo es utilizarla para generar mapas de nuestro nonogram
     """
 
-    def __init__(self, image_path: str, columns: int, thresh_hold: float = 0.5) -> None:
+    def __init__(self, image_path: str, columns: int, thresh_hold: float = 0.5):
         """
         Constructor de la clase que genera una matriz de bool encargandose de gestionar el tamanio de la misma
         Se indica un thresh_hold que vendria siendo el porcentaje de color en gray_scale desde el cual se considera
