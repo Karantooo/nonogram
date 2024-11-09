@@ -33,7 +33,7 @@ class Particula:
             screen (pygame.Surface): Superficie en la que se renderizará la partícula.
         """
 
-        color = random.choice([Colores.ROJO,Colores.AMARILLO])
+        color = random.choice([Colores.ROJO, Colores.AMARILLO])
         posicion_impresion_x = self.posicion_actual[0] + random.randint(self.dispercion_maxima * -1, self.dispercion_maxima)
         posicion_impresion_y = self.posicion_actual[1] + random.randint(self.dispercion_maxima * -1, self.dispercion_maxima)
         pygame.draw.circle(screen, color, [posicion_impresion_x,posicion_impresion_y], self.radio)

@@ -65,12 +65,6 @@ class Boton:
         # Carga de archivos de sonido
         self.__carga_sonidos_acciones()
 
-    def get_marcado(self) -> bool:
-        return self.casilla.marcado
-
-    def get_visibilidad(self) -> bool:
-        return self.casilla.visibilidad
-
     def imprimir(self, screen: pygame.Surface) -> None:
         if self.casilla.visibilidad:
             if self.casilla.marcado:
@@ -106,6 +100,12 @@ class Boton:
             else:
                 self.sonido_bandera_colocar.play()
                 self.casilla.bandera = True
+
+    def get_marcado(self) -> bool:
+        return self.casilla.marcado
+
+    def get_visibilidad(self) -> bool:
+        return self.casilla.visibilidad
 
     def __carga_sonidos_acciones(self):
         self.sonido_correcto = pygame.mixer.Sound('assets/sonidos/casilla_correcta.wav')
