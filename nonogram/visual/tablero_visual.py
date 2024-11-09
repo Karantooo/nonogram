@@ -58,6 +58,7 @@ class TableroVisual:
         self.fuente = pygame.font.SysFont('Arial', self.tamaño_fuente)
         self.dimensiones = dimensiones
         self.menu_inicio = menu_inicial
+        self.tiempo_inicio = pygame.time.get_ticks() // 1000
         self.screen = screen
 
         # Tamaño de los botones, hacer resize
@@ -248,7 +249,7 @@ class TableroVisual:
 
     # Metodo para
     def tiempo_ejecucion(self):
-        tiempo = pygame.time.get_ticks() // 1000                     # Tiempo de ejecucion en segundos
+        tiempo = (pygame.time.get_ticks() // 1000) - self.tiempo_inicio                    # Tiempo de ejecucion en segundos
         self.tiempo_transcurrido = tiempo       # Tupla con los segundos y minutos
 
 

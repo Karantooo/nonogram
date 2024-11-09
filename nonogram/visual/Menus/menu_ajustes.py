@@ -7,11 +7,11 @@ class MenuAjustes:
     def __init__(self, screen: pygame.display, menu_inicio: MenuInicio):
 
         custom_theme = pygame_menu.Theme(background_color=(17, 84, 143), title_font=pygame_menu.font.FONT_FRANCHISE,
-                                         title_font_size=50,
+                                         title_font_size=100,
                                          title_background_color=(13, 62, 105),
                                          widget_font=pygame_menu.font.FONT_FRANCHISE,
                                          widget_font_color=(255, 255, 255),
-                                         widget_font_size=35,
+                                         widget_font_size=70,
                                          widget_background_color=(13, 62, 105),
                                          selection_color=(25, 122, 207),
                                          widget_padding=(10, 15),

@@ -16,7 +16,17 @@ class Main:
     cantidad_de_botones: int
 
     def __init__(self):
+        # Musica inicio
+        pygame.mixer.music.load("assets/sonidos/musica_ambiental.wav")
+
+        # Reproducir la música en bucle (-1 hace que se reproduzca indefinidamente)
+        pygame.mixer.music.play(-1)
+
+        # Ajustar volumen de la musica [0, 1]
+        pygame.mixer.music.set_volume(0.05)
+
         self.cantidad_de_botones = 3
+
         # Se inicializa el menu incio para trabajar correctamente
         self.menu_inicial = MenuInicio(screen=screen, main=self)
         self.menu_inicial.mostrar_menu_inicio()
@@ -40,15 +50,6 @@ class Main:
         # Ajuste de volumen de sonidos
         sonido_derrota.set_volume(1)
         sonido_victoria.set_volume(1)
-
-        # Carga de musica ambiente del juego
-        pygame.mixer.music.load("assets/sonidos/musica_ambiental.wav")
-
-        # Reproducir la música en bucle (-1 hace que se reproduzca indefinidamente)
-        pygame.mixer.music.play(-1)
-
-        # Ajustar volumen de la musica [0, 1]
-        pygame.mixer.music.set_volume(0.05)
 
         background_image = pygame.image.load("assets/fondo.png")
         background_image = pygame.transform.scale(background_image, dimensiones)
@@ -142,9 +143,8 @@ class Main:
             # Limitar a 60 fps
             pygame.time.Clock().tick(60)
 
-        # Salir de Pygame
-        pygame.quit()
-        sys.exit()
+        self.menu_inicial = MenuInicio(screen=screen, main=self)
+        self.menu_inicial.mostrar_menu_inicio()
 
 
 # ----------------- MENU OPCIONES JUEGO -----------------
