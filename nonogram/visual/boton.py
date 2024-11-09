@@ -1,6 +1,7 @@
 import pygame
 from nonogram.visual.colores import Colores
 from nonogram.logica.casilla import Casilla
+from .resultado_click import ResultadoClick
 
 
 class Boton:
@@ -85,17 +86,17 @@ class Boton:
 
         pygame.draw.rect(screen, Colores.NEGRO, self.boton_visual, 2)  # Borde negro del botón
 
-    def validar_click(self,mouse_pos: tuple[int,int]) -> int: # 0: Incorrecto, 1: Correcto, 2: No se marco este
+    def validar_click(self,mouse_pos: tuple[int,int]) -> ResultadoClick:
         if self.boton_visual.collidepoint(mouse_pos) and self.casilla.visibilidad == False:
             self.casilla.visibilidad = True
             self.casilla.bandera = False
             if self.casilla.marcado:
                 self.sonido_correcto.play()
-                return 1
+                return ResultadoClick.CORRECTO
             else:
                 self.sonido_incorrecto.play()
-                return 0
-        return 2
+                return ResultadoClick.INCORRECTO
+        return ResultadoClick.NO_MARCADO
 
     def alterar_estado_bandera(self) -> None:
         if not self.casilla.visibilidad:    # Si no se esta mostrando el contenido del boton
