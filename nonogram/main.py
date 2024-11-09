@@ -18,8 +18,8 @@ class Main:
     def __init__(self):
         self.cantidad_de_botones = 3
         # Se inicializa el menu incio para trabajar correctamente
-        menu_inicial = MenuInicio(screen=screen, main=self)
-        menu_inicial.mostrar_menu_inicio()
+        self.menu_inicial = MenuInicio(screen=screen, main=self)
+        self.menu_inicial.mostrar_menu_inicio()
 
     def select_cant_botones(self, value):
         self.cantidad_de_botones = int(value)
@@ -61,6 +61,7 @@ class Main:
         tablero = TableroVisual(
             numero_botones=numero_botones,
             dimensiones=dimensiones,
+            menu_inicial=self.menu_inicial,
             screen=screen
         ) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
         corriendo = True

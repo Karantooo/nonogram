@@ -3,6 +3,7 @@ import pickle
 from PIL.ImageChops import screen
 
 from nonogram.logica.tablero import Tablero
+from nonogram.visual.Menus import MenuAjustes
 from nonogram.visual.boton import Boton
 import numpy as np
 import pygame
@@ -15,6 +16,8 @@ from nonogram.logica.sistema_guardado import SistemaGuardado
 from nonogram.logica.Excepciones.mouse_fuera_del_tablero import MouseFueraDelTablero
 from nonogram.visual.animacion_particulas import AnimacionParticulas
 from nonogram.visual.conversor import Conversor
+from visual.Menus import MenuInicio
+
 
 class TableroVisual:
     numero_botones: int         # Cantidad de botones en el tablero
@@ -31,8 +34,8 @@ class TableroVisual:
     tiempo_transcurrido: int   # Indica el tiempo transcurrido del juego
     tamaño_fuente: int
     pistas = 3
-    menu_inicio : pygame_menu.Menu
-    menu_ajustes: pygame_menu.Menu
+    menu_inicio : MenuInicio
+    menu_ajustes: MenuAjustes
     animacion_particulas: AnimacionParticulas
     origen_particulas: list[int]
     screen: pygame.display
@@ -46,7 +49,7 @@ class TableroVisual:
             imagen: np.ndarray[bool] = None,
             dimensiones: tuple = (1000, 700),
             guardado_previo: SistemaGuardado = None,
-            menu_inicial : pygame_menu.Menu = None,
+            menu_inicial : MenuInicio = None,
             screen: pygame.display = None
     ) -> None:
         self.numero_botones = numero_botones
@@ -55,6 +58,8 @@ class TableroVisual:
         self.fuente = pygame.font.SysFont('Arial', self.tamaño_fuente)
         self.dimensiones = dimensiones
         self.menu_inicio = menu_inicial
+        self.screen = screen
+
         # Tamaño de los botones, hacer resize
         self.ancho_boton = int((self.dimensiones[0] * 0.6) // self.numero_botones)
         self.alto_boton = int((self.dimensiones[1] * 0.6) // self.numero_botones)
@@ -82,6 +87,9 @@ class TableroVisual:
         self.numeros_superiores = self.__calculo_num_superiores()
         self.numeros_laterales = self.__calculo_num_laterales()
 
+
+        self.menu_ajustes = MenuAjustes(self.screen, self.menu_inicio)
+
         marcados = 0
         for i in range(self.numero_botones**2):
             if self.valores[i]:
@@ -92,10 +100,6 @@ class TableroVisual:
 
         self.tablero_logica = Tablero(marcados=marcados, vidas=vidas)
 
-        self.menu_ajustes = pygame_menu.Menu("Ajustes", 500, 400, theme=pygame_menu.themes.THEME_BLUE)
-        self.menu_ajustes.add.button("Pista", None)
-        self.menu_ajustes.add.button("Inicio", volver_menu_inicio)
-        self.menu_ajustes.disable()
 
         self.animacion_particulas = None
         self.origen_particulas = [int(dimensiones[0] * 0.964), int(dimensiones[1] * 0.207)]
@@ -174,8 +178,8 @@ class TableroVisual:
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
         try:
             if self.boton_ajustes_juego.boton_visual.collidepoint(mouse_pos):
-                print("Boton")
-                self.menu_ajustes.enable()
+                self.menu_ajustes.activar_menu_ajustes()
+                self.menu_ajustes.mostrar_menu_ajustes()
             elif self.boton_pistas.boton_visual.collidepoint(mouse_pos) and not self.clickeado:
                 self.clickeado = True
                 if self.pistas > 0:
