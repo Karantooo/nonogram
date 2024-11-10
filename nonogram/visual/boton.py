@@ -80,17 +80,17 @@ class Boton:
 
         pygame.draw.rect(screen, Colores.NEGRO, self.boton_visual, 2)  # Borde negro del botón
 
-    def validar_click(self,mouse_pos: tuple[int,int]) -> ResultadoClick:
+    def validar_click(self,mouse_pos: tuple[int,int]) -> int:
         if self.boton_visual.collidepoint(mouse_pos) and self.casilla.visibilidad == False:
             self.casilla.visibilidad = True
             self.casilla.bandera = False
             if self.casilla.marcado:
                 self.sonido_correcto.play()
-                return ResultadoClick.CORRECTO
+                return ResultadoClick.CORRECTO.value
             else:
                 self.sonido_incorrecto.play()
-                return ResultadoClick.INCORRECTO
-        return ResultadoClick.NO_MARCADO
+                return ResultadoClick.INCORRECTO.value
+        return ResultadoClick.NO_MARCADO.value
 
     def alterar_estado_bandera(self) -> None:
         if not self.casilla.visibilidad:    # Si no se esta mostrando el contenido del boton
