@@ -1,6 +1,6 @@
 from enum import Enum
 
 class ResultadoClick(Enum):
-    INCORRECTO = 0
-    CORRECTO = 1
-    NO_MARCADO = 2
+    INCORRECTO: int = 0
+    CORRECTO: int = 1
+    NO_MARCADO: int = 2
