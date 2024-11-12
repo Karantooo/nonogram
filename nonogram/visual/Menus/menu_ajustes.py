@@ -4,7 +4,7 @@ from .menu_inicio import MenuInicio
 
 
 class MenuAjustes:
-    def __init__(self, screen: pygame.display, menu_inicio: MenuInicio):
+    def __init__(self, screen: pygame.display, menu_inicio: MenuInicio, tablero):
 
         custom_theme = pygame_menu.Theme(background_color=(17, 84, 143), title_font=pygame_menu.font.FONT_FRANCHISE,
                                          title_font_size=100,
@@ -18,16 +18,17 @@ class MenuAjustes:
                                          )
 
         self.pantalla = screen
+        self.tablero = tablero
         self.menu_inicio = menu_inicio
-        self.menu_ajustes = pygame_menu.Menu("Opciones de juego", 1920, 1080, theme=custom_theme)
+        self.menu_ajustes = pygame_menu.Menu("Opciones de juego", width=1000, height=700, theme=custom_theme)
 
     def mostrar_menu_ajustes(self):
         self.menu_ajustes.clear()
         self.menu_ajustes.add.button("Continuar", action=self.apagar_menu_ajustes)
+        self.menu_ajustes.add.button("Guardar partida",action=self.tablero.guardar_estado)
         self.menu_ajustes.add.button("Salir", action=self.menu_inicio.mostrar_menu_inicio)
 
         self.menu_ajustes.mainloop(self.pantalla)
-
     def activar_menu_ajustes(self):
         self.menu_ajustes.clear()
         self.menu_ajustes.enable()

@@ -150,20 +150,6 @@ class Main:
         self.menu_inicial.mostrar_menu_inicio()
 
 
-# ----------------- MENU OPCIONES JUEGO -----------------
-cantidad_de_botones = 3
-
-def cambiar_dificultad(value, dificultad):
-    print(value)
-    global cantidad_de_botones
-    if (value[0][0] == 'Hard'):
-        cantidad_de_botones = 12
-    elif (value[0][0] == 'Medium'):
-        cantidad_de_botones = 8
-    else:
-        cantidad_de_botones = 3
-
-
 if __name__ == '__main__':
     pygame.init()
     pygame.mixer.init()

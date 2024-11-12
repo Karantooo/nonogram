@@ -18,7 +18,7 @@ class MenuConfiguracion:
         self.pantalla = screen
         self.main_juego = main
         self.menu_inicio = menu_inicial
-        self.menu_configuracion = pygame_menu.Menu(title="Ajustes", width=1920, height=1080, theme=custom_theme)
+        self.menu_configuracion = pygame_menu.Menu(title="Ajustes", width=1000, height=700, theme=custom_theme)
 
     def mostrar_menu_configuracion(self):
         self.menu_configuracion.clear()

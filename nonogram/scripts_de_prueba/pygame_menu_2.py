@@ -16,49 +16,7 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 
 # Clase del juego
-class Juego:
-    def __init__(self, screen, menu_principal, color_cuadrado):
-        self.screen = screen
-        self.font = pygame.font.Font(None, 36)
-        self.counter = 0
-        self.menu_principal = menu_principal  # Referencia al menú principal
-        self.menu_pausa = MenuPausa(screen, self, menu_principal)  # Crear el menú de pausa
-        self.color_cuadrado = color_cuadrado  # Color seleccionado para el cuadrado
 
-        # Definir los rectángulos de los botones
-        self.pause_button_rect = pygame.Rect(50, 100, 100, 50)  # Botón para pausar
-        self.counter_button_rect = pygame.Rect(250, 100, 100, 50)  # Botón para aumentar el contador
-
-    def run(self):
-        running = True
-        while running:
-            self.screen.fill(WHITE)
-
-            # Dibuja los botones
-            pygame.draw.rect(self.screen, BLUE, self.pause_button_rect)  # Botón de pausa
-            pygame.draw.rect(self.screen, self.color_cuadrado, self.counter_button_rect)  # Botón de contador
-
-            # Renderiza y muestra el contador
-            counter_text = self.font.render(f"Contador: {self.counter}", True, (0, 0, 0))
-            self.screen.blit(counter_text, (150, 50))
-
-            # Eventos
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.pause_button_rect.collidepoint(event.pos):
-                        # Al hacer clic en el botón de pausa, muestra el menú de pausa
-                        self.menu_pausa.activar_menu()
-                        self.menu_pausa.mostrar_menu_pausa()
-                    elif self.counter_button_rect.collidepoint(event.pos):
-                        # Al hacer clic en el botón de contador, aumenta el contador
-                        self.counter += 1
-
-            pygame.display.flip()
-
-        pygame.quit()
-        sys.exit()
 
 
 # Clase para el menú principal
@@ -114,7 +72,7 @@ class MenuTransicion:
         self.screen = screen
         self.menu_principal = menu_principal
         self.color_seleccionado = GREEN  # Color por defecto
-        self.menu = pygame_menu.Menu("Selecciona el Color", 400, 300, theme=pygame_menu.themes.THEME_SOLARIZED)
+        self.menu = pygame_menu.Menu("Selecciona el Color", 400, 300, theme=pygame_menu.themes.THEME_BLUE)
 
     def set_color(self, color, _):
         # Actualizar el color seleccionado

@@ -89,7 +89,7 @@ class TableroVisual:
         self.numeros_laterales = self.__calculo_num_laterales()
 
 
-        self.menu_ajustes = MenuAjustes(self.screen, self.menu_inicio)
+        self.menu_ajustes = MenuAjustes(self.screen, self.menu_inicio, self)
 
         marcados = 0
         for i in range(self.numero_botones**2):
@@ -161,7 +161,7 @@ class TableroVisual:
         pygame.draw.circle(screen, (33, 33, 33), (85 + self.alto_boton, 50), 41)
         pygame.draw.circle(screen, (0, 0, 0), (85 + self.alto_boton, 50), 50, 10)
 
-        self.boton_pistas.boton_visual = imagen_boton_pistas.get_rect(topleft=(50 + self.alto_boton, 20))
+        self.boton_pistas.boton_visual = imagen_boton_pistas.get_rect(topleft=(50 + self.alto_boton + 10, 20))
         screen.blit(imagen_boton_pistas, self.boton_pistas.boton_visual.topleft)
 
         text_salida_juego = pygame.font.SysFont('Arial', 30).render("¡Para salir, presione 'Q' o 'Escape'!", True,

@@ -6,7 +6,7 @@ from pygame_menu.examples.other.image_background import background_image
 
 
 class MenuOpcionesJuego:
-    def __init__(self, screen: pygame.display, menu_inicio, main):
+    def __init__(self, screen: pygame.display, menu_partida, main):
 
         custom_theme = pygame_menu.Theme(background_color= (17, 84, 143), title_font= pygame_menu.font.FONT_FRANCHISE, title_font_size=100,
                                          title_background_color=(13, 62, 105),
@@ -24,17 +24,17 @@ class MenuOpcionesJuego:
         self.pantalla = screen
         self.num_botones = 3
         self.main_juego = main
-        self.menu_inicio = menu_inicio
-        self.menu_opciones_juego = pygame_menu.Menu(title="Seteo del nivel", width=1920, height=1080, theme=custom_theme)
+        self.menu_partida = menu_partida
+        self.menu_opciones_juego = pygame_menu.Menu(title="Seteo del nivel", width=1000, height=700, theme=custom_theme)
 
 
 
     def mostrar_menu_opciones_juego(self):
         self.menu_opciones_juego.clear()
-        self.menu_opciones_juego.add.label(f'Cantidad de botones: {self.main_juego.cantidad_de_botones}')
+        self.menu_opciones_juego.add.label(f'Cantidad de botones')
         self.menu_opciones_juego.add.range_slider('Botones', default=3, range_values=(3,20), increment=1, onchange=self.selecionar_cant_botones)
         self.menu_opciones_juego.add.button("Jugar", action=self.main_juego.main)
-        self.menu_opciones_juego.add.button("Volver", action=self.menu_inicio.mostrar_menu_inicio)
+        self.menu_opciones_juego.add.button("Volver", action=self.menu_partida.mostrar_menu_partida)
 
         self.menu_opciones_juego.mainloop(self.pantalla)
 

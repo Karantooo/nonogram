@@ -2,6 +2,7 @@ import pygame_menu
 import pygame
 from .menu_configuracion import MenuConfiguracion
 from .menu_opciones_juego import MenuOpcionesJuego
+from .menu_partida import MenuPartida
 
 
 
@@ -20,11 +21,11 @@ class MenuInicio:
 
         self.pantalla = screen
         self.main = main
-        self.menu_inicio = pygame_menu.Menu(title="Nonogram", width=1920, height=1080, theme=custom_theme)
+        self.menu_inicio = pygame_menu.Menu(title="Nonogram", width=1000, height=700, theme=custom_theme)
 
     def mostrar_menu_inicio(self):
         self.menu_inicio.clear()
-        self.menu_inicio.add.button('Jugar', self.activar_menu_opciones_juego)
+        self.menu_inicio.add.button('Jugar', self.activar_menu_partida)
         self.menu_inicio.add.button('Configuracion', self.activar_menu_configuracion)
         self.menu_inicio.add.button('Salir', pygame_menu.events.EXIT)
 
@@ -34,6 +35,6 @@ class MenuInicio:
         menu_configuracion = MenuConfiguracion(self.pantalla, self, self.main)
         menu_configuracion.mostrar_menu_configuracion()
 
-    def activar_menu_opciones_juego(self):
-        menu_opciones_juego = MenuOpcionesJuego(self.pantalla, self, self.main)
-        menu_opciones_juego.mostrar_menu_opciones_juego()
+    def activar_menu_partida(self):
+        menu_partida = MenuPartida(self.pantalla, self, self.main)
+        menu_partida.mostrar_menu_partida()
