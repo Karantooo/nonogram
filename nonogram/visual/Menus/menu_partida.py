@@ -1,10 +1,11 @@
 import pygame_menu
 import pygame
+import pickle
 
+from nonogram.logica.sistema_guardado import SistemaGuardado
 from .menu_niveles import MenuNiveles
 from .menu_opciones_juego import MenuOpcionesJuego
-
-
+from .menu_partida_perso import MenuPartidaPerso
 class MenuPartida:
     def __init__(self, screen: pygame.display, menu_inicial, main):
         custom_theme = pygame_menu.Theme(background_color=(17, 84, 143), title_font=pygame_menu.font.FONT_FRANCHISE,
@@ -25,8 +26,9 @@ class MenuPartida:
 
     def mostrar_menu_partida(self):
         self.menu_partida.clear()
-        self.menu_partida.add.button(title="Partida Guardada", )
+        self.menu_partida.add.button(title="Partida Guardada", action=self.cargar_partida)
         self.menu_partida.add.button(title="Nueva Partida", action=self.activar_menu_opciones_juego)
+        self.menu_partida.add.button(title="Partid personalizada", action=self.activar_menu_partida_perso)
         self.menu_partida.add.button(title="Niveles", action=self.activar_menu_niveles)
         self.menu_partida.add.button(title="Volver", action=self.menu_inicio.mostrar_menu_inicio)
 
@@ -39,3 +41,17 @@ class MenuPartida:
     def activar_menu_niveles(self):
         menu_niveles = MenuNiveles(self.pantalla, self, self.main_juego)
         menu_niveles.mostrar_menu_niveles()
+
+    def activar_menu_partida_perso(self):
+        menu_partida_perso = MenuPartidaPerso(self.pantalla, self, self.main_juego)
+        menu_partida_perso.mostrar_menu_partida_perso()
+
+    def cargar_partida(self):
+        partida = self.cargar_estado()
+        self.main_juego.main(partida_guardada=partida)
+
+    @staticmethod
+    def cargar_estado(ruta: str = r"game_data.bin") -> SistemaGuardado:
+        with open(ruta, "rb") as archivo:
+            casillas = pickle.load(archivo)
+        return casillas
