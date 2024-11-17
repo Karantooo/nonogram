@@ -25,7 +25,7 @@ class MenuAjustes:
     def mostrar_menu_ajustes(self):
         self.menu_ajustes.clear()
         self.menu_ajustes.add.button("Continuar", action=self.apagar_menu_ajustes)
-        self.menu_ajustes.add.button("Guardar partida",action=self.tablero.guardar_estado)
+        self.menu_ajustes.add.button("Guardar partida",action=self.guardar_partida)
         self.menu_ajustes.add.button("Salir", action=self.menu_inicio.mostrar_menu_inicio)
 
         self.menu_ajustes.mainloop(self.pantalla)
@@ -35,3 +35,6 @@ class MenuAjustes:
 
     def apagar_menu_ajustes(self):
         self.menu_ajustes.disable()
+
+    def guardar_partida(self):
+        self.tablero.guardar_estado()
