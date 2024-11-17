@@ -16,7 +16,7 @@ from nonogram.logica.sistema_guardado import SistemaGuardado
 from nonogram.logica.Excepciones.mouse_fuera_del_tablero import MouseFueraDelTablero
 from nonogram.visual.animacion_particulas import AnimacionParticulas
 from nonogram.visual.conversor import Conversor
-from visual.Menus import MenuInicio
+from nonogram.visual.Menus import MenuInicio
 
 
 class TableroVisual:
@@ -33,7 +33,7 @@ class TableroVisual:
     dimensiones: tuple[float,float]
     tiempo_transcurrido: int   # Indica el tiempo transcurrido del juego
     tamaño_fuente: int
-    pistas = 3
+    pistas: int = 3
     menu_inicio : MenuInicio
     menu_ajustes: MenuAjustes
     animacion_particulas: AnimacionParticulas
@@ -65,6 +65,14 @@ class TableroVisual:
         self.ancho_boton = int((self.dimensiones[0] * 0.6) // self.numero_botones)
         self.alto_boton = int((self.dimensiones[1] * 0.6) // self.numero_botones)
         self.espacio = 0
+
+        #cantidad de pistas
+        if self.numero_botones <= 8 :
+            self.pistas = 3
+        if self.numero_botones <= 15:
+            self.pistas = 4
+        else:
+            self.pistas = 5
 
         # Crear una matriz nxn de None
         self.botones = [[None for _ in range(self.numero_botones)] for _ in range(self.numero_botones)]
@@ -259,14 +267,7 @@ class TableroVisual:
             pickle.dump(guardado, archivo)
 
 
-    @staticmethod
-    def cargar_estado(ruta: str = r"game_data.bin") -> SistemaGuardado:
-        with open(ruta, "rb") as archivo:
-            casillas = pickle.load(archivo)
-        return casillas
-
-
-    def __obtener_datos_partida__(self):
+    def __obtener_datos_partida__(self) -> SistemaGuardado:
         casillas = []
         for columna_boton in self.botones:
             columna_casillas = []

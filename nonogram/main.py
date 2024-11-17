@@ -1,6 +1,6 @@
 import sys
 import pygame
-import pygame_menu
+from logica.sistema_guardado import SistemaGuardado
 
 
 from visual.tablero_visual import TableroVisual
@@ -38,7 +38,7 @@ class Main:
     def cambiar_volumen_musica(self, value):
         pygame.mixer.music.set_volume(value)
 
-    def main(self, dimensiones: tuple=None):
+    def main(self, dimensiones: tuple=None, partida_guardada: SistemaGuardado = None):
 
         print(self.cantidad_de_botones)
         num_botones = self.cantidad_de_botones
@@ -61,17 +61,22 @@ class Main:
 
         pygame.display.set_caption("Mi primer juego en Pygame")
 
-
-        tablero = TableroVisual(
-            numero_botones=numero_botones,
-            dimensiones=dimensiones,
-            menu_inicial=self.menu_inicial,
-            screen=screen
-        ) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
+        if partida_guardada == None:
+            tablero = TableroVisual(
+                numero_botones=numero_botones,
+                dimensiones=dimensiones,
+                menu_inicial=self.menu_inicial,
+                screen=screen
+            ) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
+        else:
+            tablero = TableroVisual(
+                numero_botones=numero_botones,
+                guardado_previo=partida_guardada,
+                menu_inicial=self.menu_inicial,
+                screen=screen
+            )
         corriendo = True
-
         numero_botones *= numero_botones
-
         while corriendo:
             #####################################################
             # Manejo de Eventos
@@ -155,7 +160,6 @@ if __name__ == '__main__':
     pygame.mixer.init()
     # Configurar la pantalla
     screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-
     main = Main()
 
 
