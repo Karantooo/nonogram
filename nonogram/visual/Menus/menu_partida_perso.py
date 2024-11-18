@@ -4,7 +4,8 @@ import pygame
 from .menu_opciones_juego import MenuOpcionesJuego
 from nonogram.logica.image_to_matrix import ImageToMatrix
 from nonogram.logica.excepciones_imagenes import NoExisteMatrizError, ImagenError
-
+from nonogram.logica.casilla import Casilla
+from nonogram.logica.sistema_guardado import SistemaGuardado
 
 
 class MenuPartidaPerso():
@@ -20,6 +21,7 @@ class MenuPartidaPerso():
                                          widget_padding=(10, 15),
                                          )
         self.URL = ""
+        self.botones = 10
         self.pantalla = screen
         self.main_juego = main
         self.menu_partida = menu_partida
@@ -27,7 +29,8 @@ class MenuPartidaPerso():
 
     def mostrar_menu_partida_perso(self):
         self.menu_partida_perso.clear()
-        self.menu_partida_perso.add.text_input(title="URL",onchange= self.guardar_URL)
+        self.menu_partida_perso.add.text_input(title="URL: ",onchange= self.guardar_URL)
+        self.menu_partida_perso.add.text_input(title="Cantidad de botones: ", onchange= self.cant_botones, default="10")
         self.menu_partida_perso.add.button(title="Aceptar", action=self.jugar_partida_guardada)
         self.menu_partida_perso.add.button(title="Volver", action=self.menu_partida.mostrar_menu_partida)
 
@@ -45,14 +48,12 @@ class MenuPartidaPerso():
                     raise ValueError("No se ha proporcionado una URL.")
 
                 # Intentar cargar la imagen usando ImageToMatrix
-                columns = 10  # Puedes ajustar este valor según sea necesario
                 thresh_hold = 0.5
-                image_processor = ImageToMatrix(self.URL, columns, thresh_hold)
-                matrix = image_processor.show_matrix()
+                image_processor = ImageToMatrix(self.URL, self.botones, thresh_hold)
+                self.matrix = image_processor.show_matrix()
 
                 # Mostrar éxito y romper el bucle
                 print("Matriz generada con éxito:")
-                print(matrix)
                 break
 
             except ImagenError:
@@ -77,7 +78,35 @@ class MenuPartidaPerso():
                 print(f"Error inesperado: {e}")
                 return self.mostrar_menu_partida_perso()
 
+        self.main_juego.main(partida_guardada=self.matriz_a_SistemaGuardado())
 
     def guardar_URL(self, url):
         self.URL = url
 
+    def cant_botones(self, cant: str):
+
+        try:
+            cant = int(cant) if cant.strip() else 10
+        except ValueError:
+            cant = 10
+
+        if cant >= 20:
+            self.botones = 20
+        else:
+            self.botones = cant
+
+    def matriz_a_SistemaGuardado(self):
+        if self.matrix is None:
+            raise ValueError("No se ha generado una matriz. Ejecute jugar_partida_guardada primero.")
+
+        casillas = [
+            [Casilla(marcado=bool(valor)) for valor in fila]
+            for fila in self.matrix
+        ]
+
+        partida_imagen = SistemaGuardado(
+            casillas=casillas,
+            vidas_restantes=3,
+            tiempo=0
+        )
+        return partida_imagen

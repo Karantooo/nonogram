@@ -47,11 +47,11 @@ class MenuPartida:
         menu_partida_perso.mostrar_menu_partida_perso()
 
     def cargar_partida(self):
-        partida = self.cargar_estado()
+        partida = self.cargar_estado(r"nonogram/partidas_guardadas/partidaG.bin")
         self.main_juego.main(partida_guardada=partida)
 
     @staticmethod
-    def cargar_estado(ruta: str = r"game_data.bin") -> SistemaGuardado:
+    def cargar_estado(ruta: str = r"nonogram/partidas_guardadas/partidaG.bin") -> SistemaGuardado:
         with open(ruta, "rb") as archivo:
             casillas = pickle.load(archivo)
         return casillas

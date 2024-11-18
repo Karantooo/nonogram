@@ -261,7 +261,7 @@ class TableroVisual:
         self.tiempo_transcurrido = tiempo       # Tupla con los segundos y minutos
 
 
-    def guardar_estado(self, ruta: str = r"game_data.bin"):
+    def guardar_estado(self, ruta: str = r"nonogram/partidas_guardadas/partidaG.bin"):
         guardado = self.__obtener_datos_partida__()
         with open(ruta, "wb") as archivo:
             pickle.dump(guardado, archivo)
