@@ -52,7 +52,7 @@ class TableroVisual:
             menu_inicial : MenuInicio = None,
             screen: pygame.display = None
     ) -> None:
-        self.numero_botones = numero_botones
+        self.numero_botones = numero_botones if guardado_previo is None else len(guardado_previo.casillas)
         self.tamaño_fuente = int(54 - ((5/4) * self.numero_botones))
         self.tiempo_transcurrido = 0
         self.fuente = pygame.font.SysFont('Arial', self.tamaño_fuente)
@@ -74,9 +74,20 @@ class TableroVisual:
         else:
             self.pistas = 5
 
+        if guardado_previo is not None:
+            self.pistas = guardado_previo.pistas
+
         # Crear una matriz nxn de None
         self.botones = [[None for _ in range(self.numero_botones)] for _ in range(self.numero_botones)]
-        self.valores = imagen if imagen is not None else np.random.choice([True, False], size=self.numero_botones ** 2)
+        if guardado_previo is not None:
+            self.valores = np.zeros((len(guardado_previo.casillas) * len(guardado_previo.casillas[0])), dtype=bool)
+            contador = 0
+            for i in range(len(guardado_previo.casillas)):
+                for j in range(len(guardado_previo.casillas[0])):
+                    self.valores[contador] = guardado_previo.casillas[i][j].marcado
+                    contador += 1
+        else:
+            self.valores = imagen if imagen is not None else np.random.choice([True, False], size=self.numero_botones ** 2)
 
         contador = 0
         for fila in range(self.numero_botones):
@@ -107,7 +118,10 @@ class TableroVisual:
         vidas = 3 if guardado_previo is None else guardado_previo.vidas_restantes
         self.tiempo_transcurrido = 0 if guardado_previo is None else guardado_previo.tiempo
 
-        self.tablero_logica = Tablero(marcados=marcados, vidas=vidas)
+        vistos = 0 if guardado_previo is None else guardado_previo.vistos
+        correctos = 0 if guardado_previo is None else guardado_previo.casillas_correctas
+
+        self.tablero_logica = Tablero(marcados=marcados, vidas=vidas, vistos= vistos, correctos=correctos)
 
 
         self.animacion_particulas = None
@@ -116,7 +130,7 @@ class TableroVisual:
         self.clickeado = False
 
 
-    def imprimir(self, screen: pygame.Surface) -> None:
+    def imprimir(self, screen: pygame.Surface):
         for array_botones in self.botones:
             for botones in array_botones:
                 botones.imprimir(screen)
@@ -276,7 +290,14 @@ class TableroVisual:
 
             casillas.append(columna_casillas)
 
-        guardado = SistemaGuardado(casillas=casillas, vidas_restantes=self.get_vidas(), tiempo=self.tiempo_transcurrido)
+        guardado = SistemaGuardado(
+            casillas = casillas,
+            vidas_restantes = self.get_vidas(),
+            tiempo = self.tiempo_transcurrido,
+            casillas_correctas = self.tablero_logica.correctos,
+            vistos= self.tablero_logica.vistos,
+            pistas= self.pistas
+        )
         return guardado
 
 
