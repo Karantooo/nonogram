@@ -4,6 +4,8 @@ import pygame
 import pygame_menu
 from pygame_menu.examples.other.image_background import background_image
 
+def slider_format(value):
+    return f'{int(value)}'
 
 class MenuOpcionesJuego:
     def __init__(self, screen: pygame.display, menu_partida, main):
@@ -32,7 +34,7 @@ class MenuOpcionesJuego:
     def mostrar_menu_opciones_juego(self):
         self.menu_opciones_juego.clear()
         self.menu_opciones_juego.add.label(f'Cantidad de botones')
-        self.menu_opciones_juego.add.range_slider('Botones', default=3, range_values=(3,20), increment=1, onchange=self.selecionar_cant_botones)
+        self.menu_opciones_juego.add.range_slider('Botones', default=3, range_values=(3,20), increment=1, onchange=self.selecionar_cant_botones, value_format=slider_format)
         self.menu_opciones_juego.add.button("Jugar", action=self.main_juego.main)
         self.menu_opciones_juego.add.button("Volver", action=self.menu_partida.mostrar_menu_partida)
 
