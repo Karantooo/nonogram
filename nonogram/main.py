@@ -73,7 +73,8 @@ class Main:
                 numero_botones=numero_botones,
                 guardado_previo=partida_guardada,
                 menu_inicial=self.menu_inicial,
-                screen=screen
+                screen=screen,
+                dimensiones=dimensiones
             )
         corriendo = True
         numero_botones *= numero_botones

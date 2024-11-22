@@ -81,11 +81,11 @@ class TableroVisual:
         self.botones = [[None for _ in range(self.numero_botones)] for _ in range(self.numero_botones)]
         if guardado_previo is not None:
             self.valores = np.zeros((len(guardado_previo.casillas) * len(guardado_previo.casillas[0])), dtype=bool)
-            contador = 0
+            identificador = 0
             for i in range(len(guardado_previo.casillas)):
                 for j in range(len(guardado_previo.casillas[0])):
-                    self.valores[contador] = guardado_previo.casillas[i][j].marcado
-                    contador += 1
+                    self.valores[identificador] = guardado_previo.casillas[i][j].marcado
+                    identificador += 1
         else:
             self.valores = imagen if imagen is not None else np.random.choice([True, False], size=self.numero_botones ** 2)
 
