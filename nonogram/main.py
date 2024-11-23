@@ -4,6 +4,8 @@ from logica.sistema_guardado import SistemaGuardado
 
 from visual.tablero_visual import TableroVisual
 from visual.animacion_victoria import AnimacionVictoria
+from visual.animacion_derrota import AnimacionDerrota
+from visual.interfaz_v_d import InterfazAnimacionVD
 from visual.Menus import MenuInicio
 
 
@@ -76,7 +78,7 @@ class Main:
             )
 
         numero_botones *= numero_botones
-        animacion_victoria = None
+        animacion_v_d: InterfazAnimacionVD = None
 
         corriendo = True
         interacciones_activadas = True
@@ -132,8 +134,8 @@ class Main:
                 if tablero.get_animacion_particulas().validar_llegada():
                     tablero.set_animacion_particulas()
 
-            if animacion_victoria is not None:
-                animacion_victoria.imprimir()
+            if animacion_v_d is not None:
+                animacion_v_d.imprimir()
 
 
             # Actualizar la pantalla
@@ -159,7 +161,7 @@ class Main:
                 sonido_victoria_activado = True
 
                 if veces_reproduccion_victoria == 0:
-                    animacion_victoria = AnimacionVictoria(screen)
+                    animacion_v_d = AnimacionVictoria(screen=screen)
 
                 print("gg")
 
@@ -173,6 +175,8 @@ class Main:
                 pygame.time.set_timer(evento_sonido_terminado, duracion_sonido)
 
                 sonido_derrota_activado = True
+
+                animacion_v_d = AnimacionDerrota(screen=screen)
 
             # Limitar a 60 fps
             pygame.time.Clock().tick(60)

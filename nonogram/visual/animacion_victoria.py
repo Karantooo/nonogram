@@ -1,7 +1,8 @@
 import pygame
 from PIL import Image
+from nonogram.visual.interfaz_v_d import InterfazAnimacionVD
 
-class AnimacionVictoria:
+class AnimacionVictoria(InterfazAnimacionVD):
     screen: pygame.Surface
     posicion_izquirda: tuple[int, int]
     posicion_derecha: tuple[int, int]
@@ -39,9 +40,6 @@ class AnimacionVictoria:
     def imprimir(self) -> None:
         self.screen.blit(self.frames_izquierda[self.frame_index], self.posicion_izquierda)
         self.screen.blit(self.frames_derecha[self.frame_index], self.posicion_derecha)
-
-
-
 
         pygame.display.flip()
         self.frame_index = (self.frame_index + 1) % len(self.frames_derecha)
