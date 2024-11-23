@@ -3,6 +3,7 @@ import pygame
 from logica.sistema_guardado import SistemaGuardado
 
 from visual.tablero_visual import TableroVisual
+from visual.animacion_victoria import AnimacionVictoria
 from visual.Menus import MenuInicio
 
 
@@ -75,11 +76,14 @@ class Main:
             )
 
         numero_botones *= numero_botones
+        animacion_victoria = None
 
         corriendo = True
         interacciones_activadas = True
         sonido_derrota_activado = False
         sonido_victoria_activado = False
+
+        veces_reproduccion_victoria = 0
 
         while corriendo:
             #####################################################
@@ -102,7 +106,15 @@ class Main:
                         tablero.marcar_bandera(mouse_pos=event.pos)
 
                 if event.type == evento_sonido_terminado:
-                    corriendo = False
+                    if sonido_derrota_activado:
+                        corriendo = False
+
+                    if sonido_victoria_activado:
+                        if veces_reproduccion_victoria < 1: # Se reproducira 2 veces la animacion
+                            veces_reproduccion_victoria = veces_reproduccion_victoria + 1
+                            sonido_victoria_activado = False
+                        else:
+                            corriendo = False
 
             #####################################################
             # Seccion de Impresion
@@ -119,6 +131,9 @@ class Main:
                 tablero.get_animacion_particulas().animacion(velocidad_animacion=60)
                 if tablero.get_animacion_particulas().validar_llegada():
                     tablero.set_animacion_particulas()
+
+            if animacion_victoria is not None:
+                animacion_victoria.imprimir()
 
 
             # Actualizar la pantalla
@@ -142,6 +157,10 @@ class Main:
                 pygame.time.set_timer(evento_sonido_terminado, duracion_sonido)
 
                 sonido_victoria_activado = True
+
+                if veces_reproduccion_victoria == 0:
+                    animacion_victoria = AnimacionVictoria(screen)
+
                 print("gg")
 
             #####################################################
