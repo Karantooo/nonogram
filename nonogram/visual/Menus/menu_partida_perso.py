@@ -1,6 +1,10 @@
+import os
+
 import pygame_menu
 import pygame
-
+import tkinter as tk
+from tkinter import filedialog
+import threading
 from .menu_opciones_juego import MenuOpcionesJuego
 from nonogram.logica.image_to_matrix import ImageToMatrix
 from nonogram.logica.excepciones_imagenes import NoExisteMatrizError, ImagenError
@@ -20,7 +24,7 @@ class MenuPartidaPerso():
                                          selection_color=(25, 122, 207),
                                          widget_padding=(10, 15),
                                          )
-        self.URL = ""
+        self.URL = None
         self.botones = 10
         self.pantalla = screen
         self.main_juego = main
@@ -29,7 +33,7 @@ class MenuPartidaPerso():
 
     def mostrar_menu_partida_perso(self):
         self.menu_partida_perso.clear()
-        self.menu_partida_perso.add.text_input(title="URL: ",onchange= self.guardar_URL)
+        self.menu_partida_perso.add.button(title="URL",action=self.guardar_url)
         self.menu_partida_perso.add.text_input(title="Cantidad de botones: ", onchange= self.cant_botones, default="10")
         self.menu_partida_perso.add.button(title="Aceptar", action=self.jugar_partida_guardada)
         self.menu_partida_perso.add.button(title="Volver", action=self.menu_partida.mostrar_menu_partida)
@@ -78,10 +82,13 @@ class MenuPartidaPerso():
                 print(f"Error inesperado: {e}")
                 return self.mostrar_menu_partida_perso()
 
-        self.main_juego.main(partida_guardada=self.matriz_a_SistemaGuardado())
+        self.main_juego.main(imagen=self.matrix, cant_botones=self.botones)
 
-    def guardar_URL(self, url):
-        self.URL = url
+    def guardar_url(self):
+        hilo = threading.Thread(target=self.seleccionar_imagen)
+        hilo.start()
+        while self.URL is None:
+            pass
 
     def cant_botones(self, cant: str):
 
@@ -95,18 +102,16 @@ class MenuPartidaPerso():
         else:
             self.botones = cant
 
-    def matriz_a_SistemaGuardado(self):
-        if self.matrix is None:
-            raise ValueError("No se ha generado una matriz. Ejecute jugar_partida_guardada primero.")
 
-        casillas = [
-            [Casilla(marcado=bool(valor)) for valor in fila]
-            for fila in self.matrix
-        ]
-
-        partida_imagen = SistemaGuardado(
-            casillas=casillas,
-            vidas_restantes=3,
-            tiempo=0
-        )
-        return partida_imagen
+    def seleccionar_imagen(self):
+        root = tk.Tk()
+        root.withdraw()  # Oculta la ventana principal de Tkinter
+        ruta_assets = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../assets"))
+        archivo_seleccionado = None
+        while not archivo_seleccionado:  # Sigue preguntando hasta que se seleccione un archivo
+            archivo_seleccionado = filedialog.askopenfilename(
+                title="Selecciona un archivo",
+                initialdir=ruta_assets,
+            )
+        root.destroy()
+        self.URL = archivo_seleccionado

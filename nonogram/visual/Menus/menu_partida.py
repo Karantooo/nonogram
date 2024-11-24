@@ -1,7 +1,10 @@
 import pygame_menu
 import pygame
 import pickle
-
+import threading
+import os
+import tkinter as tk
+from tkinter import filedialog
 from nonogram.logica.sistema_guardado import SistemaGuardado
 from .menu_niveles import MenuNiveles
 from .menu_opciones_juego import MenuOpcionesJuego
@@ -18,7 +21,7 @@ class MenuPartida:
                                          selection_color=(25, 122, 207),
                                          widget_padding=(10, 15),
                                          )
-
+        self.ruta = None
         self.pantalla = screen
         self.main_juego = main
         self.menu_inicio = menu_inicial
@@ -26,9 +29,10 @@ class MenuPartida:
 
     def mostrar_menu_partida(self):
         self.menu_partida.clear()
-        self.menu_partida.add.button(title="Partida Guardada", action=self.cargar_partida)
+        if os.path.exists(r"nonogram/partidas_guardadas/partidaG.bin") and len(os.listdir(r"nonogram/partidas_guardadas")) > 0:
+            self.menu_partida.add.button(title="Partida Guardada", action=self.cargar_partida)
         self.menu_partida.add.button(title="Nueva Partida", action=self.activar_menu_opciones_juego)
-        self.menu_partida.add.button(title="Partid personalizada", action=self.activar_menu_partida_perso)
+        self.menu_partida.add.button(title="Partida personalizada", action=self.activar_menu_partida_perso)
         self.menu_partida.add.button(title="Niveles", action=self.activar_menu_niveles)
         self.menu_partida.add.button(title="Volver", action=self.menu_inicio.mostrar_menu_inicio)
 
@@ -47,11 +51,28 @@ class MenuPartida:
         menu_partida_perso.mostrar_menu_partida_perso()
 
     def cargar_partida(self):
-        partida = self.cargar_estado(r"nonogram/partidas_guardadas/partidaG.bin")
+        hilo = threading.Thread(target=self.seleccionar_archivo)
+        hilo.start()
+        while self.ruta is None:
+            pass
+        partida = self.cargar_estado(ruta = self.ruta)
         self.main_juego.main(partida_guardada=partida)
 
     @staticmethod
-    def cargar_estado(ruta: str = r"nonogram/partidas_guardadas/partidaG.bin") -> SistemaGuardado:
+    def cargar_estado(ruta: str = r"C:/Users/pablo/PycharmProjects/nonogram/nonogram/partidas_guardadas/partidaG.bin") -> SistemaGuardado:
         with open(ruta, "rb") as archivo:
             casillas = pickle.load(archivo)
         return casillas
+
+    def seleccionar_archivo(self):
+        root = tk.Tk()
+        root.withdraw()  # Oculta la ventana principal de Tkinter
+        ruta_partidas_guardadas = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../partidas_guardada"))
+        archivo_seleccionado = None
+        while not archivo_seleccionado:  # Sigue preguntando hasta que se seleccione un archivo
+            archivo_seleccionado = filedialog.askopenfilename(
+                title="Selecciona un archivo",
+                initialdir=ruta_partidas_guardadas,
+            )
+        root.destroy()
+        self.ruta = archivo_seleccionado
