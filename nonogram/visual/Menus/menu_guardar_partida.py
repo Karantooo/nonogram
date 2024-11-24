@@ -1,3 +1,4 @@
+import os.path
 from tkinter.ttk import Treeview
 
 import pygame
@@ -42,6 +43,8 @@ class MenuGuardarPartida:
         self.menu_guardar_partida.disable()
 
     def guardar_partida(self):
+        if not os.path.exists("nonogram/partidas_guardadas"):
+            os.mkdir("nonogram/partidas_guardadas")
         ruta = "nonogram/partidas_guardadas/" + self.nombre_guardado + ".bin"
         self.tablero.guardar_estado(ruta)
 

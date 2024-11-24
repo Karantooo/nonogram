@@ -29,7 +29,7 @@ class MenuPartida:
 
     def mostrar_menu_partida(self):
         self.menu_partida.clear()
-        if os.path.exists(r"nonogram/partidas_guardadas/partidaG.bin") and len(os.listdir(r"nonogram/partidas_guardadas")) > 0:
+        if os.path.exists(r"nonogram/partidas_guardadas") and len(os.listdir(r"nonogram/partidas_guardadas")) > 0:
             self.menu_partida.add.button(title="Partida Guardada", action=self.cargar_partida)
         self.menu_partida.add.button(title="Nueva Partida", action=self.activar_menu_opciones_juego)
         self.menu_partida.add.button(title="Partida personalizada", action=self.activar_menu_partida_perso)
