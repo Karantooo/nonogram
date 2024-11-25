@@ -4,42 +4,54 @@ from nonogram.visual.interfaz_v_d import InterfazAnimacionVD
 
 class AnimacionVictoria(InterfazAnimacionVD):
     screen: pygame.Surface
-    posicion_izquirda: tuple[int, int]
-    posicion_derecha: tuple[int, int]
+    posicion_potato_gg: tuple[int, int]
+    frames_potato_gg: list[pygame.Surface]
+    frame_potato_gg_index: int
+    gif_potato_gg_size: tuple[int,int]
 
-    frames_derecha: list[pygame.Surface]
-    frame_index: int
-    gif_size: tuple[int,int]
+    alpha: int
+    alpha_incremento: int
 
     def __init__(self, screen: pygame.Surface):
         self.screen = screen
-        self.posicion_izquierda = (0,0)
 
-        self.gif_size = ( pygame.display.Info().current_h,  pygame.display.Info().current_h)
+        screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
+        self.posicion_potato_gg = (int(screen_width / 2), int(screen_height / 2))
 
-        self.posicion_derecha = ( pygame.display.Info().current_w -  pygame.display.Info().current_h,0)
+        lado_que_manda = int(min(screen_width, screen_height))
+        self.gif_potato_gg_size = (lado_que_manda, lado_que_manda)
 
-        gif = Image.open("assets/gif_victoria.gif")
+        gif_potato_gg = Image.open("assets/gif_potato_gg.gif")
 
-        self.frames_izquierda = []
-        self.frames_derecha = []
-
-        for frame in range(gif.n_frames):
-            gif.seek(frame)
-            frame_image = gif.convert("RGBA")  # Convierte a RGBA para Pygame
-            frame_image = frame_image.resize(self.gif_size)
+        self.frames_potato_gg = []
+        for frame in range(gif_potato_gg.n_frames):
+            gif_potato_gg.seek(frame)
+            frame_image = gif_potato_gg.convert("RGBA")  # Convierte a RGBA para Pygame
+            frame_image = frame_image.resize(self.gif_potato_gg_size)
             pygame_image = pygame.image.fromstring(frame_image.tobytes(), frame_image.size, frame_image.mode)
-            self.frames_derecha.append(pygame_image)
+            self.frames_potato_gg.append(pygame_image)
 
-            # Reflejar el frame en el eje Y
-            pygame_image = pygame.transform.flip(pygame_image, True, False)
-            self.frames_izquierda.append(pygame_image)
-
-        self.frame_index = 0
+        self.frame_potato_gg_index = 0
+        self.alpha = 0
+        self.alpha_incremento = 8
 
     def imprimir(self) -> None:
-        self.screen.blit(self.frames_izquierda[self.frame_index], self.posicion_izquierda)
-        self.screen.blit(self.frames_derecha[self.frame_index], self.posicion_derecha)
+        posicion_impresion_potato_gg = (
+            int(self.posicion_potato_gg[0] - self.gif_potato_gg_size[0] / 2),
+            int(self.posicion_potato_gg[1] - self.gif_potato_gg_size[1] / 2)
+        )
+
+
+        # Incrementar el alpha hasta el máximo (255)
+        if self.alpha < 255:
+            self.alpha += self.alpha_incremento
+        if self.alpha > 255:
+            self.alpha = 255  # Limitar el valor máximo
+
+        frame = self.frames_potato_gg[self.frame_potato_gg_index].copy()  # Copia para aplicar transparencia
+        frame.set_alpha(self.alpha)
+        self.screen.blit(frame, posicion_impresion_potato_gg)
 
         pygame.display.flip()
-        self.frame_index = (self.frame_index + 1) % len(self.frames_derecha)
+
+        self.frame_potato_gg_index = (self.frame_potato_gg_index + 1) % len(self.frames_potato_gg)
