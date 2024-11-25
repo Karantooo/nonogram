@@ -8,8 +8,6 @@ import threading
 from .menu_opciones_juego import MenuOpcionesJuego
 from nonogram.logica.image_to_matrix import ImageToMatrix
 from nonogram.logica.Excepciones.excepciones_imagenes import NoExisteMatrizError, ImagenError
-from nonogram.logica.casilla import Casilla
-from nonogram.logica.sistema_guardado import SistemaGuardado
 
 def slider_format(value):
     return f'{int(value)}'

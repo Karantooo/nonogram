@@ -59,7 +59,7 @@ class MenuPartida:
         self.main_juego.main(partida_guardada=partida)
 
     @staticmethod
-    def cargar_estado(ruta: str = r"C:/Users/pablo/PycharmProjects/nonogram/nonogram/partidas_guardadas/partidaG.bin") -> SistemaGuardado:
+    def cargar_estado(ruta: str = r"../../partidas_guardadas/partidaG.bin") -> SistemaGuardado:
         with open(ruta, "rb") as archivo:
             casillas = pickle.load(archivo)
         return casillas
