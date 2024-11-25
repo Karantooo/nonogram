@@ -87,8 +87,15 @@ class TableroVisual:
                     self.valores[identificador] = guardado_previo.casillas[i][j].marcado
                     identificador += 1
         else:
-            self.valores = imagen if imagen is not None else np.random.choice([True, False], size=self.numero_botones ** 2)
-
+            if imagen is not None:
+                self.valores = np.ndarray(self.numero_botones*self.numero_botones, dtype=bool)
+                indice = 0
+                for i in range(len(imagen)):
+                    for j in range(len(imagen[i])):
+                        self.valores[indice] = imagen[i][j]
+                        indice += 1
+            else:
+                self.valores = np.random.choice([True, False], size=self.numero_botones ** 2)
         contador = 0
         for fila in range(self.numero_botones):
             for columna in range(self.numero_botones):

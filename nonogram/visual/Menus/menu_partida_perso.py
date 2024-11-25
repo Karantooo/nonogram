@@ -11,6 +11,8 @@ from nonogram.logica.excepciones_imagenes import NoExisteMatrizError, ImagenErro
 from nonogram.logica.casilla import Casilla
 from nonogram.logica.sistema_guardado import SistemaGuardado
 
+def slider_format(value):
+    return f'{int(value)}'
 
 class MenuPartidaPerso():
     def __init__(self, screen: pygame.display, menu_partida, main):
@@ -34,7 +36,14 @@ class MenuPartidaPerso():
     def mostrar_menu_partida_perso(self):
         self.menu_partida_perso.clear()
         self.menu_partida_perso.add.button(title="URL",action=self.guardar_url)
-        self.menu_partida_perso.add.text_input(title="Cantidad de botones: ", onchange= self.cant_botones, default="10")
+        self.menu_partida_perso.add.label(f'Cantidad de botones')
+        self.menu_partida_perso.add.range_slider(
+            'Botones', default=3,
+            range_values=(3,20),
+            increment=1,
+            onchange=self.cant_botones,
+            value_format=slider_format
+        )
         self.menu_partida_perso.add.button(title="Aceptar", action=self.jugar_partida_guardada)
         self.menu_partida_perso.add.button(title="Volver", action=self.menu_partida.mostrar_menu_partida)
 
@@ -57,7 +66,6 @@ class MenuPartidaPerso():
                 self.matrix = image_processor.show_matrix()
 
                 # Mostrar éxito y romper el bucle
-                print("Matriz generada con éxito:")
                 break
 
             except ImagenError:
@@ -81,8 +89,7 @@ class MenuPartidaPerso():
             except Exception as e:
                 print(f"Error inesperado: {e}")
                 return self.mostrar_menu_partida_perso()
-
-        self.main_juego.main(imagen=self.matrix, cant_botones=self.botones)
+        self.main_juego.main(imagen=self.matrix)
 
     def guardar_url(self):
         hilo = threading.Thread(target=self.seleccionar_imagen)
@@ -91,16 +98,7 @@ class MenuPartidaPerso():
             pass
 
     def cant_botones(self, cant: str):
-
-        try:
-            cant = int(cant) if cant.strip() else 10
-        except ValueError:
-            cant = 10
-
-        if cant >= 20:
-            self.botones = 20
-        else:
-            self.botones = cant
+        self.main_juego.select_cant_botones(cant)
 
 
     def seleccionar_imagen(self):
