@@ -3,6 +3,7 @@ import pickle
 from PIL.ImageChops import screen
 
 from nonogram.logica.tablero import Tablero
+from nonogram.visual.Menus import MenuAjustes
 from nonogram.visual.boton import Boton
 import numpy as np
 import pygame
@@ -15,6 +16,8 @@ from nonogram.logica.sistema_guardado import SistemaGuardado
 from nonogram.logica.Excepciones.mouse_fuera_del_tablero import MouseFueraDelTablero
 from nonogram.visual.animacion_particulas import AnimacionParticulas
 from nonogram.visual.conversor import Conversor
+from nonogram.visual.Menus import MenuInicio
+
 
 class TableroVisual:
     numero_botones: int         # Cantidad de botones en el tablero
@@ -30,14 +33,13 @@ class TableroVisual:
     dimensiones: tuple[float,float]
     tiempo_transcurrido: int   # Indica el tiempo transcurrido del juego
     tamaño_fuente: int
-    pistas = 3
-    menu_inicio : pygame_menu.Menu
-    menu_ajustes: pygame_menu.Menu
+    pistas: int = 3
+    menu_inicio : MenuInicio
+    menu_ajustes: MenuAjustes
     animacion_particulas: AnimacionParticulas
     origen_particulas: list[int]
     screen: pygame.display
     clickeado: bool
-    tiempo_inicial: int
 
 
 
@@ -47,24 +49,53 @@ class TableroVisual:
             imagen: np.ndarray[bool] = None,
             dimensiones: tuple = (1000, 700),
             guardado_previo: SistemaGuardado = None,
-            menu_inicial : pygame_menu.Menu = None,
+            menu_inicial : MenuInicio = None,
             screen: pygame.display = None
     ) -> None:
-        self.numero_botones = numero_botones
+        self.numero_botones = numero_botones if guardado_previo is None else len(guardado_previo.casillas)
         self.tamaño_fuente = int(54 - ((5/4) * self.numero_botones))
         self.tiempo_transcurrido = 0
         self.fuente = pygame.font.SysFont('Arial', self.tamaño_fuente)
         self.dimensiones = dimensiones
         self.menu_inicio = menu_inicial
+        self.tiempo_inicio = pygame.time.get_ticks() // 1000
+        self.screen = screen
+
         # Tamaño de los botones, hacer resize
         self.ancho_boton = int((self.dimensiones[0] * 0.6) // self.numero_botones)
         self.alto_boton = int((self.dimensiones[1] * 0.6) // self.numero_botones)
         self.espacio = 0
 
+        #cantidad de pistas
+        if self.numero_botones <= 8 :
+            self.pistas = 3
+        if self.numero_botones <= 15:
+            self.pistas = 4
+        else:
+            self.pistas = 5
+
+        if guardado_previo is not None:
+            self.pistas = guardado_previo.pistas
+
         # Crear una matriz nxn de None
         self.botones = [[None for _ in range(self.numero_botones)] for _ in range(self.numero_botones)]
-        self.valores = imagen if imagen is not None else np.random.choice([True, False], size=self.numero_botones ** 2)
-
+        if guardado_previo is not None:
+            self.valores = np.zeros((len(guardado_previo.casillas) * len(guardado_previo.casillas[0])), dtype=bool)
+            identificador = 0
+            for i in range(len(guardado_previo.casillas)):
+                for j in range(len(guardado_previo.casillas[0])):
+                    self.valores[identificador] = guardado_previo.casillas[i][j].marcado
+                    identificador += 1
+        else:
+            if imagen is not None:
+                self.valores = np.ndarray(self.numero_botones*self.numero_botones, dtype=bool)
+                indice = 0
+                for i in range(len(imagen)):
+                    for j in range(len(imagen[i])):
+                        self.valores[indice] = imagen[i][j]
+                        indice += 1
+            else:
+                self.valores = np.random.choice([True, False], size=self.numero_botones ** 2)
         contador = 0
         for fila in range(self.numero_botones):
             for columna in range(self.numero_botones):
@@ -83,6 +114,9 @@ class TableroVisual:
         self.numeros_superiores = self.__calculo_num_superiores()
         self.numeros_laterales = self.__calculo_num_laterales()
 
+
+        self.menu_ajustes = MenuAjustes(self.screen, self.menu_inicio, self)
+
         marcados = 0
         for i in range(self.numero_botones**2):
             if self.valores[i]:
@@ -92,12 +126,11 @@ class TableroVisual:
         self.tiempo_transcurrido = 0 if guardado_previo is None else guardado_previo.tiempo
         self.tiempo_inicial = pygame.time.get_ticks() // 1000
 
-        self.tablero_logica = Tablero(marcados=marcados, vidas=vidas)
+        vistos = 0 if guardado_previo is None else guardado_previo.vistos
+        correctos = 0 if guardado_previo is None else guardado_previo.casillas_correctas
 
-        self.menu_ajustes = pygame_menu.Menu("Ajustes", 500, 400, theme=pygame_menu.themes.THEME_BLUE)
-        self.menu_ajustes.add.button("Pista", None)
-        self.menu_ajustes.add.button("Inicio", volver_menu_inicio)
-        self.menu_ajustes.disable()
+        self.tablero_logica = Tablero(marcados=marcados, vidas=vidas, vistos= vistos, correctos=correctos)
+
 
         self.animacion_particulas = None
         self.origen_particulas = [int(dimensiones[0] * 0.964), int(dimensiones[1] * 0.207)]
@@ -105,7 +138,7 @@ class TableroVisual:
         self.clickeado = False
 
 
-    def imprimir(self, screen: pygame.Surface) -> None:
+    def imprimir(self, screen: pygame.Surface):
         for array_botones in self.botones:
             for botones in array_botones:
                 botones.imprimir(screen)
@@ -158,9 +191,7 @@ class TableroVisual:
         pygame.draw.circle(screen, (33, 33, 33), (85 + self.alto_boton, 50), 41)
         pygame.draw.circle(screen, (0, 0, 0), (85 + self.alto_boton, 50), 50, 10)
 
-        self.boton_pistas.boton_visual = imagen_boton_pistas.get_rect(topleft=(50 + self.alto_boton, 20))
-
-
+        self.boton_pistas.boton_visual = imagen_boton_pistas.get_rect(topleft=(50 + self.alto_boton + 10, 20))
         screen.blit(imagen_boton_pistas, self.boton_pistas.boton_visual.topleft)
 
         text_salida_juego = pygame.font.SysFont('Arial', 30).render("Para salir, presione 'Q' o 'Escape'", True,
@@ -178,8 +209,8 @@ class TableroVisual:
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
         try:
             if self.boton_ajustes_juego.boton_visual.collidepoint(mouse_pos):
-                print("Boton")
-                self.menu_ajustes.enable()
+                self.menu_ajustes.activar_menu_ajustes()
+                self.menu_ajustes.mostrar_menu_ajustes()
             elif self.boton_pistas.boton_visual.collidepoint(mouse_pos) and not self.clickeado:
                 self.clickeado = True
                 if self.pistas > 0:
@@ -247,25 +278,18 @@ class TableroVisual:
 
 
     # Metodo para
-    def tiempo_ejecucion(self):
+    def tiempo_ejecucion(self):                   # Tiempo de ejecucion en segundos
         tiempo = (pygame.time.get_ticks() // 1000) - self.tiempo_inicial                     # Tiempo de ejecucion en segundos
         self.tiempo_transcurrido = tiempo       # Tupla con los segundos y minutos
 
 
-    def guardar_estado(self, ruta: str = r"game_data.bin"):
+    def guardar_estado(self, ruta: str = r"nonogram/partidas_guardadas/partidaG.bin"):
         guardado = self.__obtener_datos_partida__()
         with open(ruta, "wb") as archivo:
             pickle.dump(guardado, archivo)
 
 
-    @staticmethod
-    def cargar_estado(ruta: str = r"game_data.bin") -> SistemaGuardado:
-        with open(ruta, "rb") as archivo:
-            casillas = pickle.load(archivo)
-        return casillas
-
-
-    def __obtener_datos_partida__(self):
+    def __obtener_datos_partida__(self) -> SistemaGuardado:
         casillas = []
         for columna_boton in self.botones:
             columna_casillas = []
@@ -274,7 +298,14 @@ class TableroVisual:
 
             casillas.append(columna_casillas)
 
-        guardado = SistemaGuardado(casillas=casillas, vidas_restantes=self.get_vidas(), tiempo=self.tiempo_transcurrido)
+        guardado = SistemaGuardado(
+            casillas = casillas,
+            vidas_restantes = self.get_vidas(),
+            tiempo = self.tiempo_transcurrido,
+            casillas_correctas = self.tablero_logica.correctos,
+            vistos= self.tablero_logica.vistos,
+            pistas= self.pistas
+        )
         return guardado
 
 

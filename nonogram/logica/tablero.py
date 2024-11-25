@@ -11,10 +11,10 @@ class Tablero:
     correctos: int      # Contador de botones correctos
     vidas: int          # Contador de vidas restantes
 
-    def __init__(self, marcados: int, vidas: int = 3):
+    def __init__(self, marcados: int, vidas: int = 3, vistos: int = 0, correctos: int = 0):
         self.marcados = marcados
-        self.vistos = 0
-        self.correctos = 0
+        self.vistos = vistos
+        self.correctos = correctos
         self.vidas = vidas
 
     def validar_click(self,mouse_pos: tuple[int,int], botones: list[list[Boton]], array_pos: tuple[int,int]):
