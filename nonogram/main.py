@@ -3,13 +3,11 @@ import pygame
 import numpy as np
 from logica.sistema_guardado import SistemaGuardado
 
-
 from visual.tablero_visual import TableroVisual
-from visual.animacion_particulas import AnimacionParticulas
-from visual.conversor import Conversor
-
+from visual.animacion_victoria import AnimacionVictoria
+from visual.animacion_derrota import AnimacionDerrota
+from visual.interfaz_v_d import InterfazAnimacionVD
 from visual.Menus import MenuInicio
-
 
 
 class Main:
@@ -39,6 +37,7 @@ class Main:
     def cambiar_volumen_musica(self, value):
         pygame.mixer.music.set_volume(value)
 
+
     def main(self, dimensiones: tuple=None, partida_guardada: SistemaGuardado = None, imagen: np.ndarray[bool] = None):
 
         screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
@@ -51,6 +50,9 @@ class Main:
         # Ajuste de volumen de sonidos
         sonido_derrota.set_volume(1)
         sonido_victoria.set_volume(1)
+
+        # Configurar un evento para detectar cuando el sonido termina
+        evento_sonido_terminado = pygame.USEREVENT + 1
 
         background_image = pygame.image.load("assets/fondo.png")
         background_image = pygame.transform.scale(background_image, dimensiones)
@@ -73,6 +75,7 @@ class Main:
                 screen=screen,
                 dimensiones=dimensiones
             )
+
         else:
             tablero = TableroVisual(
                 numero_botones=numero_botones,
@@ -81,26 +84,47 @@ class Main:
                 screen=screen
             )
         corriendo = True
+
         numero_botones *= numero_botones
+        animacion_v_d: InterfazAnimacionVD = None
+
+        corriendo = True
+        interacciones_activadas = True
+        sonido_derrota_activado = False
+        sonido_victoria_activado = False
+
+        veces_reproduccion_victoria = 0
+
         while corriendo:
             #####################################################
             # Manejo de Eventos
             #####################################################
 
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if (event.type == pygame.QUIT or
+                        (event.type == pygame.KEYDOWN and
+                            (event.key == pygame.K_ESCAPE or event.key == pygame.K_q)
+                        )
+                    ):
                     pygame.quit()
                     sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
+
+                if event.type == pygame.MOUSEBUTTONDOWN and interacciones_activadas:
                     if event.button == pygame.BUTTON_LEFT:
                         tablero.validar_click(mouse_pos=event.pos)
                     elif event.button == pygame.BUTTON_RIGHT:
                         tablero.marcar_bandera(mouse_pos=event.pos)
 
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE or event.key == pygame.K_q: #salir con la q o con el esc
-                        pygame.quit()
-                        sys.exit()
+                if event.type == evento_sonido_terminado:
+                    if sonido_derrota_activado:
+                        corriendo = False
+
+                    if sonido_victoria_activado:
+                        if veces_reproduccion_victoria < 1: # Se reproducira 2 veces la animacion
+                            veces_reproduccion_victoria = veces_reproduccion_victoria + 1
+                            sonido_victoria_activado = False
+                        else:
+                            corriendo = False
 
             #####################################################
             # Seccion de Impresion
@@ -118,6 +142,9 @@ class Main:
                 if tablero.get_animacion_particulas().validar_llegada():
                     tablero.set_animacion_particulas()
 
+            if animacion_v_d is not None:
+                animacion_v_d.imprimir()
+
 
             # Actualizar la pantalla
             pygame.display.flip()
@@ -126,32 +153,38 @@ class Main:
             # Validacion de condicion de Victoria
             #####################################################
 
-            if tablero.ganado() and tablero.animacion_particulas is None:
-                ########
-                # Se vuelve a imprimir pero sin animaciones ni decoraciones
-                ########
-                # Impresion de la imagen de fondo
-                screen.blit(background_image, (0, 0))
+            # Se desactivan las acciones del mouse sobre el tablero
+            if ((tablero.ganado() or
+                 tablero.get_vidas() == 0 or
+                 tablero.get_vistos() == numero_botones
+                ) and interacciones_activadas
+            ):
+                interacciones_activadas = False
 
-                # Dibujar el tablero
-                tablero.imprimir(screen)
-
-                # Actualizar la pantalla
-                pygame.display.flip()
-
+            if tablero.ganado() and tablero.animacion_particulas is None and not sonido_victoria_activado:
                 sonido_victoria.play()
-                pygame.time.delay(int(sonido_victoria.get_length() * 1000))  # Delay en milisegundos
+                duracion_sonido = int(sonido_victoria.get_length() * 1000)
+                pygame.time.set_timer(evento_sonido_terminado, duracion_sonido)
+
+                sonido_victoria_activado = True
+
+                if veces_reproduccion_victoria == 0:
+                    animacion_v_d = AnimacionVictoria(screen=screen)
+
                 print("gg")
-                corriendo = False
 
             #####################################################
             # Validacion de condicion de Derrota
             #####################################################
 
-            elif tablero.get_vidas() == 0 or tablero.get_vistos() == numero_botones:
+            elif (tablero.get_vidas() == 0 or tablero.get_vistos() == numero_botones) and not sonido_derrota_activado:
                 sonido_derrota.play()
-                pygame.time.delay(int(sonido_derrota.get_length() * 1000))  # Delay en milisegundos
-                corriendo = False
+                duracion_sonido = int(sonido_derrota.get_length() * 1000)
+                pygame.time.set_timer(evento_sonido_terminado, duracion_sonido)
+
+                sonido_derrota_activado = True
+
+                animacion_v_d = AnimacionDerrota(screen=screen)
 
             # Limitar a 60 fps
             pygame.time.Clock().tick(60)
@@ -166,6 +199,3 @@ if __name__ == '__main__':
     # Configurar la pantalla
     screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
     main = Main()
-
-
-
