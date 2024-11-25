@@ -1,7 +1,7 @@
 import pygame
 import pygame_menu
 from .menu_inicio import MenuInicio
-
+from .menu_guardar_partida import MenuGuardarPartida
 
 class MenuAjustes:
     def __init__(self, screen: pygame.display, menu_inicio: MenuInicio, tablero):
@@ -37,4 +37,7 @@ class MenuAjustes:
         self.menu_ajustes.disable()
 
     def guardar_partida(self):
-        self.tablero.guardar_estado()
+        menu_guardado = MenuGuardarPartida(screen=self.pantalla, menu_inicio=self.menu_inicio, tablero=self.tablero)
+        menu_guardado.activar_menu_guardado()
+        menu_guardado.mostrar_menu_guardado()
+        self.apagar_menu_ajustes()

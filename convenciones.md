@@ -25,3 +25,4 @@
 
 - En general dejar una clase por archivo pero puede tener excepciones.
 
+- Si la funcion no retorna nada no se le va añadir un ``` -> None ``` para indicar esto. La omision de informacion de dato de retorno se toma como que no devuelve nada.

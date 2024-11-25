@@ -35,6 +35,7 @@ class AnimacionParticulas:
         self.tablero_botones = tablero_botones
         self.particulas = []
 
+        # Inicializacion sonido
         sonido_megumin_dice_explosion = pygame.mixer.Sound("assets/sonidos/megumin_dice_explosion.wav")
         sonido_megumin_dice_explosion.set_volume(1)
         sonido_megumin_dice_explosion.play()
@@ -100,14 +101,14 @@ class AnimacionParticulas:
         return False
 
 
-    def set_cantidad_particulas_generadas_por_iteracion(self, cambio: int) -> None:
+    def set_cantidad_particulas_generadas_por_iteracion(self, cambio: int):
         self.cantidad_particulas_generadas_por_iteracion = cambio
 
-    def set_distancia_aceptacion_llegada_al_objetivo(self, cambio: int) -> None:
+    def set_distancia_aceptacion_llegada_al_objetivo(self, cambio: int):
         self.distancia_aceptacion_llegada_al_objetivo = cambio
 
 
-    def __mover_origen_particulas(self, desplazamiento: float) -> None:
+    def __mover_origen_particulas(self, desplazamiento: float):
         """
         Mueve el origen de las partículas hacia el objetivo en cada ciclo de animación
 

@@ -87,8 +87,15 @@ class TableroVisual:
                     self.valores[identificador] = guardado_previo.casillas[i][j].marcado
                     identificador += 1
         else:
-            self.valores = imagen if imagen is not None else np.random.choice([True, False], size=self.numero_botones ** 2)
-
+            if imagen is not None:
+                self.valores = np.ndarray(self.numero_botones*self.numero_botones, dtype=bool)
+                indice = 0
+                for i in range(len(imagen)):
+                    for j in range(len(imagen[i])):
+                        self.valores[indice] = imagen[i][j]
+                        indice += 1
+            else:
+                self.valores = np.random.choice([True, False], size=self.numero_botones ** 2)
         contador = 0
         for fila in range(self.numero_botones):
             for columna in range(self.numero_botones):
@@ -117,6 +124,7 @@ class TableroVisual:
 
         vidas = 3 if guardado_previo is None else guardado_previo.vidas_restantes
         self.tiempo_transcurrido = 0 if guardado_previo is None else guardado_previo.tiempo
+        self.tiempo_inicial = pygame.time.get_ticks() // 1000
 
         vistos = 0 if guardado_previo is None else guardado_previo.vistos
         correctos = 0 if guardado_previo is None else guardado_previo.casillas_correctas
@@ -186,11 +194,11 @@ class TableroVisual:
         self.boton_pistas.boton_visual = imagen_boton_pistas.get_rect(topleft=(50 + self.alto_boton + 10, 20))
         screen.blit(imagen_boton_pistas, self.boton_pistas.boton_visual.topleft)
 
-        text_salida_juego = pygame.font.SysFont('Arial', 30).render("¡Para salir, presione 'Q' o 'Escape'!", True,
+        text_salida_juego = pygame.font.SysFont('Arial', 30).render("Para salir, presione 'Q' o 'Escape'", True,
                                                                     (0, 0, 0))
         screen.blit(text_salida_juego, (20, self.dimensiones[1] * 0.9))
 
-        text_bombilla = pygame.font.SysFont('Arial', 30).render("¡Presione la bombilla para las pistas!", True,
+        text_bombilla = pygame.font.SysFont('Arial', 30).render("Presione la bombilla para las pistas", True,
                                                                 (0, 0, 0))
         screen.blit(text_bombilla, (20, self.dimensiones[1] * 0.94))
 
@@ -270,8 +278,8 @@ class TableroVisual:
 
 
     # Metodo para
-    def tiempo_ejecucion(self):
-        tiempo = (pygame.time.get_ticks() // 1000) - self.tiempo_inicio                    # Tiempo de ejecucion en segundos
+    def tiempo_ejecucion(self):                   # Tiempo de ejecucion en segundos
+        tiempo = (pygame.time.get_ticks() // 1000) - self.tiempo_inicial                     # Tiempo de ejecucion en segundos
         self.tiempo_transcurrido = tiempo       # Tupla con los segundos y minutos
 
 

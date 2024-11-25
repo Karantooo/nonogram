@@ -1,6 +1,7 @@
 import pygame
 from nonogram.visual.colores import Colores
 from nonogram.logica.casilla import Casilla
+from .resultado_click import ResultadoClick
 
 
 class Boton:
@@ -31,7 +32,7 @@ class Boton:
                 identificador: int, fuente: pygame.font,
                 dimensiones: tuple = (1000, 700),
                 casilla: Casilla = None
-    ) -> None:
+    ):
 
         self.alto = alto
         self.ancho = ancho
@@ -56,30 +57,13 @@ class Boton:
             self.casilla = casilla
 
         # Inicializacion de la imagen de la bandera
-        self.bandera_image = pygame.image.load("assets/bandera.png")
-        dimension_menor = min(self.alto, self.ancho)
-        self.bandera_image = pygame.transform.scale(self.bandera_image, [dimension_menor, dimension_menor])
+        dimension_menor = self.__bandera_asset_init()
 
         # Inicializacion de la posicion de la bandera
         self.posicion_bandera = (self.boton_visual.x + dimension_menor/2,self.boton_visual.y )
 
         # Carga de archivos de sonido
-        self.sonido_correcto = pygame.mixer.Sound('assets/sonidos/casilla_correcta.wav')
-        self.sonido_incorrecto = pygame.mixer.Sound('assets/sonidos/casilla_incorrecta.wav')
-        self.sonido_bandera_colocar = pygame.mixer.Sound('assets/sonidos/bandera_colocar.wav')
-        self.sonido_bandera_sacar = pygame.mixer.Sound('assets/sonidos/bandera_sacar.wav')
-
-        # Ajuste del volumen de sonidos [0,1]
-        self.sonido_correcto.set_volume(0.5)
-        self.sonido_incorrecto.set_volume(1)
-        self.sonido_bandera_colocar.set_volume(1)
-        self.sonido_bandera_sacar.set_volume(0.3)
-
-    def get_marcado(self) -> bool:
-        return self.casilla.marcado
-
-    def get_visibilidad(self) -> bool:
-        return self.casilla.visibilidad
+        self.__carga_sonidos_acciones()
 
     def imprimir(self, screen: pygame.Surface) -> None:
         if self.casilla.visibilidad:
@@ -96,24 +80,17 @@ class Boton:
 
         pygame.draw.rect(screen, Colores.NEGRO, self.boton_visual, 2)  # Borde negro del botón
 
-        # Renderizar el texto como "fila, columna"
-        # texto = self.fuente.render(f'{self.identificador}', True, Colores.NEGRO)
-        # texto_rect = texto.get_rect(center=self.boton_visual.center)
-
-        # Dibujar el texto en el centro del botón
-        # screen.blit(texto, texto_rect)
-
-    def validar_click(self,mouse_pos: tuple[int,int]) -> int: # 0: Incorrecto, 1: Correcto, 2: No se marco este
+    def validar_click(self,mouse_pos: tuple[int,int]) -> int:
         if self.boton_visual.collidepoint(mouse_pos) and self.casilla.visibilidad == False:
             self.casilla.visibilidad = True
             self.casilla.bandera = False
             if self.casilla.marcado:
                 self.sonido_correcto.play()
-                return 1
+                return ResultadoClick.CORRECTO.value
             else:
                 self.sonido_incorrecto.play()
-                return 0
-        return 2
+                return ResultadoClick.INCORRECTO.value
+        return ResultadoClick.NO_MARCADO.value
 
     def alterar_estado_bandera(self) -> None:
         if not self.casilla.visibilidad:    # Si no se esta mostrando el contenido del boton
@@ -123,3 +100,26 @@ class Boton:
             else:
                 self.sonido_bandera_colocar.play()
                 self.casilla.bandera = True
+
+    def get_marcado(self) -> bool:
+        return self.casilla.marcado
+
+    def get_visibilidad(self) -> bool:
+        return self.casilla.visibilidad
+
+    def __carga_sonidos_acciones(self):
+        self.sonido_correcto = pygame.mixer.Sound('assets/sonidos/casilla_correcta.wav')
+        self.sonido_incorrecto = pygame.mixer.Sound('assets/sonidos/casilla_incorrecta.wav')
+        self.sonido_bandera_colocar = pygame.mixer.Sound('assets/sonidos/bandera_colocar.wav')
+        self.sonido_bandera_sacar = pygame.mixer.Sound('assets/sonidos/bandera_sacar.wav')
+        # Ajuste del volumen de sonidos [0,1]
+        self.sonido_correcto.set_volume(0.5)
+        self.sonido_incorrecto.set_volume(1)
+        self.sonido_bandera_colocar.set_volume(1)
+        self.sonido_bandera_sacar.set_volume(0.3)
+
+    def __bandera_asset_init(self):
+        self.bandera_image = pygame.image.load("assets/bandera.png")
+        dimension_menor = min(self.alto, self.ancho)
+        self.bandera_image = pygame.transform.scale(self.bandera_image, [dimension_menor, dimension_menor])
+        return dimension_menor

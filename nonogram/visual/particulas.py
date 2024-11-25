@@ -19,12 +19,12 @@ class Particula:
     Representa una partícula en una animación, que disminuye de tamaño con el tiempo simulando una estela o cola.
     """
 
-    def __init__(self, posicion_actual: list[float]) -> None:
+    def __init__(self, posicion_actual: list[float]):
         self.posicion_actual = posicion_actual
         self.radio = random.randint(self.radio_minimo, self.radio_maximo)
 
 
-    def imprimir(self, screen: pygame.Surface) -> None:
+    def imprimir(self, screen: pygame.Surface):
         """
         Renderiza la partícula en la pantalla con un color aleatorio entre rojo y amarillo,
         y una posición desplazada aleatoriamente para simular dispersión.
@@ -33,7 +33,7 @@ class Particula:
             screen (pygame.Surface): Superficie en la que se renderizará la partícula.
         """
 
-        color = random.choice([Colores.ROJO,Colores.AMARILLO])
+        color = random.choice([Colores.ROJO, Colores.AMARILLO])
         posicion_impresion_x = self.posicion_actual[0] + random.randint(self.dispercion_maxima * -1, self.dispercion_maxima)
         posicion_impresion_y = self.posicion_actual[1] + random.randint(self.dispercion_maxima * -1, self.dispercion_maxima)
         pygame.draw.circle(screen, color, [posicion_impresion_x,posicion_impresion_y], self.radio)
@@ -58,17 +58,17 @@ class Particula:
         return True
 
 
-    def set_radio_minimo(self, cambio: int) -> None:
+    def set_radio_minimo(self, cambio: int):
         self.radio_minimo = cambio
 
 
-    def set_radio_maximo(self, cambio: int) -> None:
+    def set_radio_maximo(self, cambio: int):
         self.radio_maximo = cambio
 
 
-    def set_dispercion_maxima(self, cambio: int) -> None:
+    def set_dispercion_maxima(self, cambio: int):
         self.dispercion_maxima = cambio
 
 
-    def set_taza_de_reduccion_del_radio(self, cambio: float) -> None:
+    def set_taza_de_reduccion_del_radio(self, cambio: float):
         self.taza_de_reduccion_del_radio = cambio

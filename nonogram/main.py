@@ -1,5 +1,6 @@
 import sys
 import pygame
+import numpy as np
 from logica.sistema_guardado import SistemaGuardado
 
 from visual.tablero_visual import TableroVisual
@@ -36,9 +37,8 @@ class Main:
     def cambiar_volumen_musica(self, value):
         pygame.mixer.music.set_volume(value)
 
-    def main(self, dimensiones: tuple=None, partida_guardada: SistemaGuardado = None):
 
-        print(self.cantidad_de_botones)
+    def main(self, dimensiones: tuple=None, partida_guardada: SistemaGuardado = None, imagen: np.ndarray[bool] = None):
 
         screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
         dimensiones = (int(screen_width), int(screen_height))
@@ -58,17 +58,8 @@ class Main:
         background_image = pygame.transform.scale(background_image, dimensiones)
 
         numero_botones = self.cantidad_de_botones
-
         pygame.display.set_caption("Mi primer juego en Pygame")
-
-        if partida_guardada == None:
-            tablero = TableroVisual(
-                numero_botones=numero_botones,
-                dimensiones=dimensiones,
-                menu_inicial=self.menu_inicial,
-                screen=screen
-            ) # Podemos elegir el tamaño que deseamos agregando un argumento al constructor
-        else:
+        if partida_guardada is not None:
             tablero = TableroVisual(
                 numero_botones=numero_botones,
                 guardado_previo=partida_guardada,
@@ -76,6 +67,23 @@ class Main:
                 screen=screen,
                 dimensiones=dimensiones
             )
+        elif imagen is not None:
+            tablero = TableroVisual(
+                numero_botones=numero_botones,
+                imagen=imagen,
+                menu_inicial=self.menu_inicial,
+                screen=screen,
+                dimensiones=dimensiones
+            )
+
+        else:
+            tablero = TableroVisual(
+                numero_botones=numero_botones,
+                dimensiones=dimensiones,
+                menu_inicial=self.menu_inicial,
+                screen=screen
+            )
+        corriendo = True
 
         numero_botones *= numero_botones
         animacion_v_d: InterfazAnimacionVD = None

@@ -16,9 +16,7 @@ class BotonPista:
         self.dimensiones_pantalla = dimensiones
         self.pistas = Pistas(tablero = tablero, valores = valores, dificultad = 2, num_botones = cant_botones)
 
-
         # Creacion del boton en pygame
-
         self.boton_visual = pygame.Rect(
             10,
             # X: posición horizontal con espacio
