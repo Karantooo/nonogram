@@ -5,6 +5,7 @@ import pygame_menu
 
 from .menu_inicio import MenuInicio
 from nonogram.visual.popup import Popup
+from nonogram.visual.colores import Colores
 
 
 class MenuGuardarPartida:
@@ -27,7 +28,14 @@ class MenuGuardarPartida:
         self.menu_inicio = menu_inicio
         self.menu_guardar_partida = pygame_menu.Menu("Opciones de guardado", width=1000, height=700, theme=custom_theme)
 
-        self.popup = Popup(400, 50, "¡Se guardó correctamente!")
+        self.popup = Popup(
+            width= 400,
+            height= 100,
+            mensaje= "¡Se guardó correctamente!",
+            font_size= 30,
+            bg_color= Colores.AZUL,
+            text_color= Colores.BLANCO
+        )
 
     def mostrar_menu_guardado(self):
         self.menu_guardar_partida.clear()
