@@ -125,6 +125,7 @@ class TableroVisual:
         vidas = 3 if guardado_previo is None else guardado_previo.vidas_restantes
         self.tiempo_transcurrido = 0 if guardado_previo is None else guardado_previo.tiempo
         self.tiempo_inicial = pygame.time.get_ticks() // 1000
+        self.tiempo_inicial -= self.tiempo_transcurrido
 
         vistos = 0 if guardado_previo is None else guardado_previo.vistos
         correctos = 0 if guardado_previo is None else guardado_previo.casillas_correctas
