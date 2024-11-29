@@ -1,8 +1,8 @@
 import os.path
-from tkinter.ttk import Treeview
 
 import pygame
 import pygame_menu
+
 from .menu_inicio import MenuInicio
 from nonogram.visual.popup import Popup
 
@@ -37,7 +37,9 @@ class MenuGuardarPartida:
         self.boton_guardar._visible = False
         self.menu_guardar_partida.add.button("Salir", action=self.menu_inicio.mostrar_menu_inicio)
 
-        self.menu_guardar_partida.mainloop(self.pantalla)
+        self.running = True
+        self.__loop()
+
 
     def activar_menu_guardado(self):
         self.menu_guardar_partida.clear()
@@ -45,6 +47,7 @@ class MenuGuardarPartida:
 
     def apagar_menu_guardado(self):
         self.menu_guardar_partida.disable()
+        self.running = False
 
     def actualizar_popup(self, eventos, menu):
         if self.popup.active:
@@ -68,3 +71,29 @@ class MenuGuardarPartida:
         print("Nombre de archivo guardado: " + self.nombre_guardado)
         if self.nombre_guardado != "":
             self.boton_guardar._visible = True
+
+    def __loop(self):
+        while self.running:
+            eventos = pygame.event.get()
+            for evento in eventos:
+                if evento.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+
+                if self.popup.active:
+                    self.popup.handle_event(evento)
+
+            # Dibujar el menú
+            self.pantalla.fill((0, 0, 0))
+            self.menu_guardar_partida.update(eventos)
+
+            if not self.running:
+                break
+
+            self.menu_guardar_partida.draw(self.pantalla)
+
+            # Dibujar el popup si está activo
+            if self.popup.active:
+                self.popup.imprimir(self.pantalla)
+
+            pygame.display.flip()
