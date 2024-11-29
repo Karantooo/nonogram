@@ -4,6 +4,7 @@ from tkinter.ttk import Treeview
 import pygame
 import pygame_menu
 from .menu_inicio import MenuInicio
+from nonogram.visual.popup import Popup
 
 
 class MenuGuardarPartida:
@@ -26,6 +27,8 @@ class MenuGuardarPartida:
         self.menu_inicio = menu_inicio
         self.menu_guardar_partida = pygame_menu.Menu("Opciones de guardado", width=1000, height=700, theme=custom_theme)
 
+        self.popup = Popup(400, 50, "¡Se guardó correctamente!")
+
     def mostrar_menu_guardado(self):
         self.menu_guardar_partida.clear()
         self.menu_guardar_partida.add.text_input(title="Nombre archivo: ", default="",onchange=self.set_nombre_archivo)
@@ -35,6 +38,7 @@ class MenuGuardarPartida:
         self.menu_guardar_partida.add.button("Salir", action=self.menu_inicio.mostrar_menu_inicio)
 
         self.menu_guardar_partida.mainloop(self.pantalla)
+
     def activar_menu_guardado(self):
         self.menu_guardar_partida.clear()
         self.menu_guardar_partida.enable()
@@ -42,14 +46,25 @@ class MenuGuardarPartida:
     def apagar_menu_guardado(self):
         self.menu_guardar_partida.disable()
 
+    def actualizar_popup(self, eventos, menu):
+        if self.popup.active:
+            for evento in eventos:
+                self.popup.handle_event(evento)
+
+    def imprimir_popup(self, screen):
+        if self.popup.active:
+            self.popup.imprimir(screen)
+
     def guardar_partida(self):
         if not os.path.exists("nonogram/partidas_guardadas"):
             os.mkdir("nonogram/partidas_guardadas")
         ruta = "nonogram/partidas_guardadas/" + self.nombre_guardado + ".bin"
         self.tablero.guardar_estado(ruta)
 
+        self.popup.mostrar()
+
     def set_nombre_archivo(self, nombre_archivo):
         self.nombre_guardado = nombre_archivo
-        print(self.nombre_guardado)
+        print("Nombre de archivo guardado: " + self.nombre_guardado)
         if self.nombre_guardado != "":
             self.boton_guardar._visible = True

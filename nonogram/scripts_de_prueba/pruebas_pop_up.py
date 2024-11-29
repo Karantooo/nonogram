@@ -106,7 +106,7 @@ def main():
 
     # Crear menú principal
     menu = pygame_menu.Menu("Ejemplo de Popup", 600, 400, theme=pygame_menu.themes.THEME_DARK)
-    popup = PopUp(
+    popup = Popup(
         400, 200,
         "Este es un mensaje de ejemplo que es muy largo y debe ser dividido en varias líneas dentro del popup. "
         "asdasd adadaaaaa aaaaaaaaa aaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaaa aaaaaaaaa aaaaaaa aaaaa "
