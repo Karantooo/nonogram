@@ -37,6 +37,9 @@ class MenuGuardarPartida:
             text_color= Colores.BLANCO
         )
 
+        self.sonido_guardado = pygame.mixer.Sound("assets/sonidos/sonido_guardado.wav")
+        self.sonido_guardado.set_volume(1)
+
     def mostrar_menu_guardado(self):
         self.menu_guardar_partida.clear()
         self.menu_guardar_partida.add.text_input(title="Nombre archivo: ", default="",onchange=self.set_nombre_archivo)
@@ -47,7 +50,6 @@ class MenuGuardarPartida:
 
         self.running = True
         self.__loop()
-
 
     def activar_menu_guardado(self):
         self.menu_guardar_partida.clear()
@@ -73,6 +75,7 @@ class MenuGuardarPartida:
         self.tablero.guardar_estado(ruta)
 
         self.popup.mostrar()
+        self.sonido_guardado.play()
 
     def set_nombre_archivo(self, nombre_archivo):
         self.nombre_guardado = nombre_archivo
