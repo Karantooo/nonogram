@@ -25,7 +25,7 @@ class MenuPartidaPerso():
                                          widget_padding=(10, 15),
                                          )
         self.URL = None
-        self.botones = 10
+        self.botones = 3
         self.pantalla = screen
         self.main_juego = main
         self.menu_partida = menu_partida
