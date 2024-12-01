@@ -92,8 +92,7 @@ class MenuPartidaPerso():
     def guardar_url(self):
         hilo = threading.Thread(target=self.seleccionar_imagen)
         hilo.start()
-        while self.URL is None:
-            pass
+        hilo.join()
 
     def cant_botones(self, cant: str):
         self.main_juego.select_cant_botones(cant)
@@ -104,10 +103,9 @@ class MenuPartidaPerso():
         root.withdraw()  # Oculta la ventana principal de Tkinter
         ruta_assets = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../assets"))
         archivo_seleccionado = None
-        while not archivo_seleccionado:  # Sigue preguntando hasta que se seleccione un archivo
-            archivo_seleccionado = filedialog.askopenfilename(
-                title="Selecciona un archivo",
-                initialdir=ruta_assets,
-            )
+        archivo_seleccionado = filedialog.askopenfilename(
+            title="Selecciona un archivo",
+            initialdir=ruta_assets,
+        )
         root.destroy()
         self.URL = archivo_seleccionado
