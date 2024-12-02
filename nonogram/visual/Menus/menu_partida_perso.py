@@ -5,6 +5,9 @@ import pygame
 import tkinter as tk
 from tkinter import filedialog
 import threading
+
+from Tools.scripts.findlinksto import visit
+
 from .menu_opciones_juego import MenuOpcionesJuego
 from nonogram.logica.image_to_matrix import ImageToMatrix
 from nonogram.logica.Excepciones.excepciones_imagenes import NoExisteMatrizError, ImagenError
@@ -13,7 +16,7 @@ def slider_format(value):
     return f'{int(value)}'
 
 class MenuPartidaPerso():
-    def __init__(self, screen: pygame.display, menu_partida, main):
+    def __init__(self, screen: pygame.display, menu_partida, main,):
         custom_theme = pygame_menu.Theme(background_color=(17, 84, 143), title_font=pygame_menu.font.FONT_FRANCHISE,
                                          title_font_size=100,
                                          title_background_color=(13, 62, 105),
@@ -33,7 +36,7 @@ class MenuPartidaPerso():
 
     def mostrar_menu_partida_perso(self):
         self.menu_partida_perso.clear()
-        self.menu_partida_perso.add.button(title="URL",action=self.guardar_url)
+        self.boton_url = self.menu_partida_perso.add.button(title="Seleccionar archivo" ,action=self.guardar_url)
         self.menu_partida_perso.add.label(f'Cantidad de botones')
         self.menu_partida_perso.add.range_slider(
             'Botones', default=3,
@@ -42,7 +45,8 @@ class MenuPartidaPerso():
             onchange=self.cant_botones,
             value_format=slider_format
         )
-        self.menu_partida_perso.add.button(title="Aceptar", action=self.jugar_partida_guardada)
+        self.boton_aceptar = self.menu_partida_perso.add.button(title="Jugar", action=self.jugar_partida_guardada)
+        self.boton_aceptar.hide()
         self.menu_partida_perso.add.button(title="Volver", action=self.menu_partida.mostrar_menu_partida)
 
         self.menu_partida_perso.mainloop(self.pantalla)
@@ -56,8 +60,7 @@ class MenuPartidaPerso():
             try:
                 # Verificar si la URL ha sido proporcionada
                 if not self.URL:
-                    raise ValueError("No se ha proporcionado una URL.")
-
+                    return
                 # Intentar cargar la imagen usando ImageToMatrix
                 thresh_hold = 0.5
                 image_processor = ImageToMatrix(self.URL, self.botones, thresh_hold)
@@ -93,6 +96,9 @@ class MenuPartidaPerso():
         hilo = threading.Thread(target=self.seleccionar_imagen)
         hilo.start()
         hilo.join()
+        if os.path.exists(self.URL):
+            self.boton_url.set_title("Archivo seleccionado")
+            self.boton_aceptar.show()
 
     def cant_botones(self, cant: str):
         self.main_juego.select_cant_botones(cant)

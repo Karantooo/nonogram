@@ -40,7 +40,7 @@ class TableroVisual:
     origen_particulas: list[int]
     screen: pygame.display
     clickeado: bool
-
+    dificultad : int
 
 
     def __init__(
@@ -69,10 +69,13 @@ class TableroVisual:
         #cantidad de pistas
         if self.numero_botones <= 8 :
             self.pistas = 3
+            self.dificultad = 1
         if self.numero_botones <= 15:
             self.pistas = 4
+            self.dificultad = 2
         else:
             self.pistas = 5
+            self.dificultad = 3
 
         if guardado_previo is not None:
             self.pistas = guardado_previo.pistas
@@ -189,10 +192,10 @@ class TableroVisual:
         # Dar imagen a el boton uwu
 
 
-        pygame.draw.circle(screen, (33, 33, 33), (85 + self.alto_boton, 50), 41)
-        pygame.draw.circle(screen, (0, 0, 0), (85 + self.alto_boton, 50), 50, 10)
+        pygame.draw.circle(screen, (33, 33, 33), (200 , 50), 41)
+        pygame.draw.circle(screen, (0, 0, 0), (200 , 50), 50, 10)
 
-        self.boton_pistas.boton_visual = imagen_boton_pistas.get_rect(topleft=(50 + self.alto_boton + 10, 20))
+        self.boton_pistas.boton_visual = imagen_boton_pistas.get_rect(topleft=(165, 15))
         screen.blit(imagen_boton_pistas, self.boton_pistas.boton_visual.topleft)
 
         text_salida_juego = pygame.font.SysFont('Arial', 30).render("Para salir, presione 'Q' o 'Escape'", True,
