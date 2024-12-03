@@ -248,6 +248,8 @@ class TableroVisual:
 
             else:
                 array_pos = self.__mouse_posicion_to_indices_array(mouse_pos)
+                if array_pos[0] >= len(self.botones) or array_pos[1] >= len(self.botones):
+                    raise MouseFueraDelTablero
                 self.tablero_logica.validar_click(mouse_pos, self.botones, array_pos)
         except MouseFueraDelTablero:
             pass
