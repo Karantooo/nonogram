@@ -70,7 +70,7 @@ class TableroVisual:
         if self.numero_botones <= 8 :
             self.pistas = 3
             self.dificultad = 1
-        if self.numero_botones <= 15:
+        elif self.numero_botones <= 15:
             self.pistas = 4
             self.dificultad = 2
         else:

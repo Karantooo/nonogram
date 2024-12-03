@@ -5,7 +5,7 @@ from .menu_guardar_partida import MenuGuardarPartida
 
 class MenuAjustes:
     def __init__(self, screen: pygame.display, menu_inicio: MenuInicio, tablero):
-
+        screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
         custom_theme = pygame_menu.Theme(background_color=(17, 84, 143), title_font=pygame_menu.font.FONT_FRANCHISE,
                                          title_font_size=100,
                                          title_background_color=(13, 62, 105),
@@ -20,7 +20,7 @@ class MenuAjustes:
         self.pantalla = screen
         self.tablero = tablero
         self.menu_inicio = menu_inicio
-        self.menu_ajustes = pygame_menu.Menu("Opciones de juego", width=1000, height=700, theme=custom_theme)
+        self.menu_ajustes = pygame_menu.Menu("Opciones de juego", width=screen_width, height=screen_height, theme=custom_theme)
 
     def mostrar_menu_ajustes(self):
         self.menu_ajustes.clear()

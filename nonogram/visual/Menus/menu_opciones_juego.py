@@ -9,7 +9,7 @@ def slider_format(value):
 
 class MenuOpcionesJuego:
     def __init__(self, screen: pygame.display, menu_partida, main):
-
+        screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
         custom_theme = pygame_menu.Theme(background_color= (17, 84, 143), title_font= pygame_menu.font.FONT_FRANCHISE, title_font_size=100,
                                          title_background_color=(13, 62, 105),
                                          widget_font=pygame_menu.font.FONT_FRANCHISE,
@@ -27,7 +27,7 @@ class MenuOpcionesJuego:
         self.num_botones = 3
         self.main_juego = main
         self.menu_partida = menu_partida
-        self.menu_opciones_juego = pygame_menu.Menu(title="Seteo del nivel", width=1000, height=700, theme=custom_theme)
+        self.menu_opciones_juego = pygame_menu.Menu(title="Seteo del nivel", width=screen_width, height=screen_height, theme=custom_theme)
 
 
 
