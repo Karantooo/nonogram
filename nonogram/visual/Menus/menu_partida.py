@@ -69,7 +69,7 @@ class MenuPartida:
     def seleccionar_archivo(self):
         root = tk.Tk()
         root.withdraw()  # Oculta la ventana principal de Tkinter
-        ruta_partidas_guardadas = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../partidas_guardada"))
+        ruta_partidas_guardadas = os.path.abspath(os.path.join(os.path.dirname(__file__), "../partidas_guardada"))
         archivo_seleccionado = None
         archivo_seleccionado = filedialog.askopenfilename(
             title="Selecciona un archivo",

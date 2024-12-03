@@ -106,7 +106,7 @@ class MenuPartidaPerso():
     def seleccionar_imagen(self):
         root = tk.Tk()
         root.withdraw()  # Oculta la ventana principal de Tkinter
-        ruta_assets = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../assets"))
+        ruta_assets = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../assets"))
         archivo_seleccionado = None
         archivo_seleccionado = filedialog.askopenfilename(
             title="Selecciona un archivo",
