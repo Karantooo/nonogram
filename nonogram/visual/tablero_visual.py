@@ -11,6 +11,7 @@ import pygame_menu
 
 from nonogram.visual.boton_pista import BotonPista
 from nonogram.visual.colores import Colores
+from nonogram.logica.calculo_puntaje import CalculadorPuntaje
 from nonogram.logica.casilla import Casilla
 from nonogram.logica.sistema_guardado import SistemaGuardado
 from nonogram.logica.Excepciones.mouse_fuera_del_tablero import MouseFueraDelTablero
@@ -170,6 +171,12 @@ class TableroVisual:
         fuente_temporizador = pygame.font.SysFont('Arial', 39)
         texto_temporizador = fuente_temporizador.render(f'Tiempo: {self.tiempo_transcurrido} segundos', True, Colores.NEGRO)
         screen.blit(texto_temporizador, (self.dimensiones[0] * 0.4, self.dimensiones[1] * 0.9))
+
+        #puntuación
+        fuente_puntuacion = pygame.font.SysFont('Arial', 39)
+        self.calculador = CalculadorPuntaje(vidas=self.get_vidas(), tiempo=self.tiempo_transcurrido, dificultad=self.dificultad)
+        texto_puntuacion = fuente_puntuacion.render(f'Puntuación actual: {self.calculador.calcular()} puntos', True,Colores.NEGRO)
+        screen.blit(texto_puntuacion, (self.dimensiones[0] * 0.4, self.dimensiones[1] * 0.8))
 
         #contador de pistas
         texto_pistas = self.fuente.render(f'Pistas: {self.pistas}', True, Colores.NEGRO)

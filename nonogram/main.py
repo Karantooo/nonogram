@@ -196,7 +196,7 @@ class Main:
         puntaje_final = calc_puntaje.calcular()
 
         # Mostrar puntaje en pantalla
-        screen.fill((0, 0, 255))  # Fondo negro
+        screen.fill((23, 88, 150, 255))  # Fondo negro
         self.mostrar_puntaje(screen, puntaje_final)
         pygame.display.flip()
 
@@ -207,7 +207,7 @@ class Main:
 
     def mostrar_puntaje(self, screen, puntaje):
         font = pygame.font.Font(None, 74)  # Fuente y tamaño
-        texto = font.render(f"Puntaje obtenido: {puntaje}", True, (0, 0, 0))  # Color blanco
+        texto = font.render(f"Puntaje obtenido: {puntaje}", True, (255, 255, 255))  # Color blanco
         text_rect = texto.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
         screen.blit(texto, text_rect)
 

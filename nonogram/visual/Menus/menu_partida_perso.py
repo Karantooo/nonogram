@@ -6,8 +6,6 @@ import tkinter as tk
 from tkinter import filedialog
 import threading
 
-from Tools.scripts.findlinksto import visit
-
 from .menu_opciones_juego import MenuOpcionesJuego
 from nonogram.logica.image_to_matrix import ImageToMatrix
 from nonogram.logica.Excepciones.excepciones_imagenes import NoExisteMatrizError, ImagenError
