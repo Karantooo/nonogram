@@ -2,7 +2,7 @@ import sys
 import pygame
 import numpy as np
 from logica.sistema_guardado import SistemaGuardado
-
+from logica.calculo_puntaje import CalculadorPuntaje
 from visual.tablero_visual import TableroVisual
 from visual.animacion_victoria import AnimacionVictoria
 from visual.animacion_derrota import AnimacionDerrota
@@ -171,7 +171,6 @@ class Main:
                 if veces_reproduccion_victoria == 0:
                     animacion_v_d = AnimacionVictoria(screen=screen)
 
-                print("gg")
 
             #####################################################
             # Validacion de condicion de Derrota
@@ -188,10 +187,29 @@ class Main:
 
             # Limitar a 60 fps
             pygame.time.Clock().tick(60)
+        # Calcular puntaje final
+        calc_puntaje = CalculadorPuntaje(
+            tiempo=tablero.tiempo_transcurrido,
+            vidas=tablero.get_vidas(),
+            dificultad=tablero.dificultad
+        )
+        puntaje_final = calc_puntaje.calcular()
+
+        # Mostrar puntaje en pantalla
+        screen.fill((23, 88, 150, 255))  # Fondo negro
+        self.mostrar_puntaje(screen, puntaje_final)
+        pygame.display.flip()
+
+        pygame.time.wait(4000)
 
         self.menu_inicial = MenuInicio(screen=screen, main=self)
         self.menu_inicial.mostrar_menu_inicio()
 
+    def mostrar_puntaje(self, screen, puntaje):
+        font = pygame.font.Font(None, 74)  # Fuente y tamaño
+        texto = font.render(f"Puntaje obtenido: {puntaje}", True, (255, 255, 255))  # Color blanco
+        text_rect = texto.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+        screen.blit(texto, text_rect)
 
 if __name__ == '__main__':
     pygame.init()

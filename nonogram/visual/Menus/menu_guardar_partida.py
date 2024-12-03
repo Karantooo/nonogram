@@ -10,7 +10,7 @@ from nonogram.visual.colores import Colores
 
 class MenuGuardarPartida:
     def __init__(self, screen: pygame.display, menu_inicio: MenuInicio, tablero):
-
+        screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
         custom_theme = pygame_menu.Theme(background_color=(17, 84, 143), title_font=pygame_menu.font.FONT_FRANCHISE,
                                          title_font_size=100,
                                          title_background_color=(13, 62, 105),
@@ -26,7 +26,7 @@ class MenuGuardarPartida:
         self.tablero = tablero
         self.nombre_guardado = None
         self.menu_inicio = menu_inicio
-        self.menu_guardar_partida = pygame_menu.Menu("Opciones de guardado", width=1000, height=700, theme=custom_theme)
+        self.menu_guardar_partida = pygame_menu.Menu("Opciones de guardado", width=screen_width, height=screen_height, theme=custom_theme)
 
         self.popup = Popup(
             width= 400,

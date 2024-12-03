@@ -6,8 +6,6 @@ import tkinter as tk
 from tkinter import filedialog
 import threading
 
-from Tools.scripts.findlinksto import visit
-
 from .menu_opciones_juego import MenuOpcionesJuego
 from nonogram.logica.image_to_matrix import ImageToMatrix
 from nonogram.logica.Excepciones.excepciones_imagenes import NoExisteMatrizError, ImagenError
@@ -17,6 +15,7 @@ def slider_format(value):
 
 class MenuPartidaPerso():
     def __init__(self, screen: pygame.display, menu_partida, main,):
+        screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
         custom_theme = pygame_menu.Theme(background_color=(17, 84, 143), title_font=pygame_menu.font.FONT_FRANCHISE,
                                          title_font_size=100,
                                          title_background_color=(13, 62, 105),
@@ -32,7 +31,7 @@ class MenuPartidaPerso():
         self.pantalla = screen
         self.main_juego = main
         self.menu_partida = menu_partida
-        self.menu_partida_perso = pygame_menu.Menu(title="Seleccione partida", width=1000, height=700, theme=custom_theme)
+        self.menu_partida_perso = pygame_menu.Menu(title="Seleccione partida", width=screen_width, height=screen_height, theme=custom_theme)
 
     def mostrar_menu_partida_perso(self):
         self.menu_partida_perso.clear()

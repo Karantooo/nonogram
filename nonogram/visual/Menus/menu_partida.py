@@ -11,6 +11,7 @@ from .menu_opciones_juego import MenuOpcionesJuego
 from .menu_partida_perso import MenuPartidaPerso
 class MenuPartida:
     def __init__(self, screen: pygame.display, menu_inicial, main):
+        screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
         custom_theme = pygame_menu.Theme(background_color=(17, 84, 143), title_font=pygame_menu.font.FONT_FRANCHISE,
                                          title_font_size=100,
                                          title_background_color=(13, 62, 105),
@@ -25,7 +26,7 @@ class MenuPartida:
         self.pantalla = screen
         self.main_juego = main
         self.menu_inicio = menu_inicial
-        self.menu_partida = pygame_menu.Menu(title="Seleccione partida", width=1000, height=700, theme=custom_theme)
+        self.menu_partida = pygame_menu.Menu(title="Seleccione partida", width=screen_width, height=screen_height, theme=custom_theme)
 
     def mostrar_menu_partida(self):
         self.menu_partida.clear()
