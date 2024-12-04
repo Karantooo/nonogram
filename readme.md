@@ -27,7 +27,7 @@
 
 ### Setup inicial
 Clone el repositorio en un directorio de su elección. Abra la carpeta con PyCharm.  
-Recomendamos crear un nuevo entorno virtual de Python con la versión 3.12.15.
+Recomendamos crear un nuevo entorno virtual de Python con la versión 3.12.15. Consulte la [Configuración del intérprete de Python en PyCharm](#configuración-del-intérprete-de-python-en-pycharm) para más detalles.
 
 Para instalar las dependencias, ejecute:  
 ```pip install -r requirements.txt```
@@ -35,17 +35,48 @@ Para instalar las dependencias, ejecute:
 Finalmente, **hay que cambiar el directorio de trabajo desde el que se ejecuta el proyecto**, de otra forma no se ejecutará.  
 Para esto, vaya al menú de la esquina superior derecha de PyCharm (ver imagen).
 
-![imagen menú principal](imagenes_readme/imagen_proyecto.png)
+![imagen Menú en PyCharm](imagenes_readme/imagen_proyecto.png)
 
 Haga clic en "Editar configuraciones". Cree una nueva configuración de Python. Debería ver el siguiente menú:
 
-![imagen menú principal](imagenes_readme/Menu_pycharm.png)
+![imagen menú principal](imagenes_readme/menu_pycharm.png)
 
 Los campos que hay que completar sí o sí son los marcados con las flechas:
 
 - **Name:** Nombre que desea para la configuración (libre elección).  
-- **Python interpreter:** Seleccione el entorno virtual con el que desea ejecutar el proyecto.  
-- **Script path:** La ubicación de `./nonogram/main.py` en su computador.  
-- **Working directory:** Este debe apuntar al directorio base donde se clonó el repositorio. Ejemplo: si el repositorio se clonó en `pythonProject`, este debe ser el directorio de trabajo. Cualquier otro resultará en que el código no se ejecute.
+- **Python interpreter:** Seleccione el entorno virtual con el que desea ejecutar el proyecto. (Consulte la [Configuración del intérprete de Python en PyCharm](#configuración-del-intérprete-de-python-en-pycharm) para mayor detalle).
+- **Script path:** La ubicación de `./nonogram/nonogram/main.py` en su computador.  
+- **Working directory:** Este debe apuntar al directorio del repositorio clonado. Debe ser la ruta absoluta de dicho directorio (`../nonogram`). Cualquier otro directorio resultará en que el código no se ejecute.
 
 Una vez realizada esta configuración, debería ser posible ejecutar el proyecto.
+
+![Imagen de Boton **Run** para correr el Proyecto](imagenes_readme/run_proyect.png)
+
+## Configuración del intérprete de Python en PyCharm
+
+1. Diríjase al menú de configuraciones de PyCharm.
+![Settings de PyCharm](imagenes_readme/settings_pycharm.png)
+
+2. Diríjase al Menú de configuración de **Python Interpreter**.
+![Ubicación del Menú de **Python Interpreter**](imagenes_readme/ubicacion_python_interpreter.png)
+
+3. Seleccione la opcion de agregar un **nuevo Interprete local**.
+![Opcion de Interprete Local](imagenes_readme/local_interpreter.png)
+
+4. Seleccione las siguientes opciones:
+    - **New Environment**.
+    - La opción predeterminada en **Location**.
+    - El intérprete base de Python instalado en su sistema. Si no lo tiene, consulte cómo instalarlo.
+    - Presione **OK**.
+
+![Creacion de un nuevo interprete](imagenes_readme/new_interpreter.png)
+
+5. Aplique los cambios. El intérprete que creó estará ya seleccionado.
+![Interprete listo](imagenes_readme/ready_interpreter.png)
+
+6. Seleccione este intérprete en la configuración de `Run/Debug Configurations` mencionada en la  [seccion anterior](#setup-inicial).
+![Configuración terminada](imagenes_readme/configuracion_terminada.png)
+
+<p align="center" style="margin-top: 20px; font-size: 18px;">
+  <strong>¡Listo! Ahora debería ser posible ejecutar el proyecto.</strong>
+</p>
