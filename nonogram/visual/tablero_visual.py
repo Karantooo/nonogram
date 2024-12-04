@@ -215,7 +215,7 @@ class TableroVisual:
 
         if self.pistas == 0:
             sin_vidas_texto = self.fuente.render("No te quedan mas pistas", True, (0, 0, 0))
-            screen.blit(sin_vidas_texto,( self.dimensiones[0] * 0.2, self.dimensiones[1] * 0.8))
+            screen.blit(sin_vidas_texto,(20, self.dimensiones[1] * 0.8))
 
     def validar_click(self,mouse_pos: tuple[int,int]) -> None:
         try:
