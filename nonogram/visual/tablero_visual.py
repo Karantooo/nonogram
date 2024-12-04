@@ -113,8 +113,8 @@ class TableroVisual:
                                                     dimensiones=self.dimensiones, casilla=casilla_especifica)
 
                 contador += 1
-        self.boton_ajustes_juego = BotonPista(ancho = self.ancho_boton, alto =self.alto_boton, dimensiones = self.dimensiones, tablero = self.botones, valores = self.valores, cant_botones = numero_botones)
-        self.boton_pistas = BotonPista(ancho = self.ancho_boton, alto = self.alto_boton, dimensiones = self.dimensiones, tablero = self.botones, valores = self.valores, cant_botones = numero_botones)
+        self.boton_ajustes_juego = BotonPista(ancho = self.ancho_boton, alto =self.alto_boton, dimensiones = self.dimensiones, tablero = self.botones, valores = self.valores, cant_botones = self.numero_botones)
+        self.boton_pistas = BotonPista(ancho = self.ancho_boton, alto = self.alto_boton, dimensiones = self.dimensiones, tablero = self.botones, valores = self.valores, cant_botones = self.numero_botones)
         self.numeros_superiores = self.__calculo_num_superiores()
         self.numeros_laterales = self.__calculo_num_laterales()
 
